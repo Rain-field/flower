@@ -1,7 +1,23 @@
 <template>
   <div id="app">
     <div class="contain">
-     <Head></Head>
+      <header>
+        <div class="mall_head">
+          <div class="mall_left">
+            <span>欢迎来到有花商城!</span>
+          </div>
+          <div class="mall_right">
+            <ul>
+              <li>我的账户</li>
+              <li>我的订单</li>
+              <li>
+                <Icon type="md-cart" size="14"/>购物车
+              </li>
+              <li>帮助中心</li>
+            </ul>
+          </div>
+        </div>
+      </header>
       <div class="header_bg">
         <div class="mall_bg">
           <div class="logo">
@@ -50,15 +66,39 @@
 </template>
 
 <script>
-import Head from './components/Header';
 export default {
-  name: "App",
-  components:{
-    Head
-  }
+  name: "App"
 };
 </script>
-
+<style>
+.ivu-input {
+  height: 40px;
+}
+.ivu-input-suffix {
+  width: 45px;
+}
+.ivu-input-suffix i {
+  line-height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.ivu-dropdown-item:hover{
+  background: #ff6700;
+}
+.ivu-btn-warning{
+  background: #ff6700;
+  border-color: #ff6700;
+  font-size: 16px;
+}
+.ivu-btn-warning:hover{
+  background: #ff781f;
+  border-color: #ff781f;
+  font-size: 16px;
+}
+.ivu-dropdown-item{
+  padding: 10px 25px;
+}
+</style>
 
 
 <style lang="less" scoped>
