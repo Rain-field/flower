@@ -28,6 +28,8 @@ export default {};
 }
 .ivu-input-suffix {
   width: 45px;
+  background: #ff6700;
+  border-radius: 4px;
 }
 .ivu-input-suffix i {
   line-height: 40px;
