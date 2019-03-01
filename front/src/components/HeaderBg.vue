@@ -2,7 +2,7 @@
   <div class="header_bg">
     <div class="mall_bg">
       <div class="logo">
-        <img src="./assets/logo.png" alt="有花商城" title="有花商城">
+        <img src="../assets/logo.png" alt="有花商城" title="有花商城">
       </div>
       <div class="search">
         <Input placeholder="搜索">
