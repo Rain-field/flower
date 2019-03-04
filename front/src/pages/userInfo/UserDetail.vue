@@ -15,13 +15,13 @@
         </RadioGroup>
       </FormItem>
       <FormItem label="生日">
-        <DatePicker type="date" placeholder="Select date" v-model="formItem.birthday"></DatePicker>
+        <DatePicker type="date" placeholder="选择生日" v-model="formItem.birthday"></DatePicker>
       </FormItem>
       <FormItem label="上次登录时间">
-        <Input v-model="formItem.lastLoginTime"></Input>
+        <p>{{formItem.lastLoginTime}}</p>
       </FormItem>
       <FormItem>
-          <button class="btn" @click.prevent="">提交</button>
+          <button class="btn" @click.prevent="handleSubmit">提交</button>
       </FormItem>
     </Form>
   </div>
@@ -40,7 +40,11 @@ export default {
 
       }
     };
-  }
+  },methods: {
+    handleSubmit() {
+      console.log(this.formItem);
+    }
+  },
 };
 </script>
 <style lang="">
