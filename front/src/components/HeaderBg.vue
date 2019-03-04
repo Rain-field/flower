@@ -1,12 +1,12 @@
 <template>
   <div class="header_bg">
     <div class="mall_bg">
-      <div class="logo">
+      <routerLink class="logo" tag="div" :to="{name:'Home'}">
         <img src="../assets/logo.png" alt="有花商城" title="有花商城">
-      </div>
+      </routerLink>
       <div class="search">
         <Input placeholder="搜索">
-          <Icon type="ios-search" slot="suffix"/>
+          <Icon type="ios-search" color="white" slot="suffix"/>
         </Input>
         <ul>
           <li>关键字：</li>
@@ -25,6 +25,13 @@ export default {};
 <style>
 .ivu-input {
   height: 40px;
+  border: 1px solid #ff6700;
+}
+.ivu-input:hover,.ivu-input:focus{
+  border-color: #ff6700;
+}
+.ivu-input:focus{
+  box-shadow: 0 0 0 2px rgba(255,103,0,.6);
 }
 .ivu-input-suffix {
   width: 45px;
@@ -48,6 +55,7 @@ export default {};
     .logo {
       margin-top: -10px;
       float: left;
+      cursor: pointer;
     }
     .search {
       width: 400px;

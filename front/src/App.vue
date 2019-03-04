@@ -1,29 +1,19 @@
 <template>
   <div id="app">
-    <div class="contain">
-      <heads></heads>
-      <router-view/>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Heads from "./components/Header";
 
 export default {
   name: "App",
-  components: {
-    Heads
-  }
 };
 </script>
 
 <style>
-body * {
-  list-style: none;
-}
-.contain {
-  font-size: 14px;
-  min-width: 1240px;
+#app{
+  width: 100%;
+  height: 100%;;
 }
 </style>

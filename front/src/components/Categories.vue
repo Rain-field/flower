@@ -6,7 +6,7 @@
     </div>
     <div class="flower_wrap">
       <div class="flower_main">
-        <img src="../assets/flower/main.jpg" alt>
+        <img :src="mainImg.src" alt>
       </div>
       <div class="flower_sections">
         <div class="flower_section" v-for="(item, index) in imgs" :key="index">
@@ -19,7 +19,6 @@
       </div>
     </div>
     <div></div>
-    <button @click="getchange">点我</button>
   </div>
 </template>
 
@@ -28,6 +27,7 @@ export default {
   name: "Categories",
   data() {
     return {
+      mainImg:{src: require("../assets/flower/main.jpg"), url: ""},
       imgs: [
         { src: require("../assets/flower/001.jpg"), url: "" },
         { src: require("../assets/flower/002.jpg"), url: "" },

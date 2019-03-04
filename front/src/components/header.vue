@@ -6,12 +6,13 @@
           </div>
           <div class="mall_right">
             <ul>
-              <li>我的账户</li>
-              <li>我的订单</li>
-              <li>
+              <routerLink :to="{name:'UserInfo'}" tag="li" v-if="!isOnline">我的账户</routerLink>
+              <routerLink :to="{name:'UserInfo'}" tag="li" v-if="isOnline">点烟哥寂寞<Icon type="logo-vimeo" v-if="!isVip" /></routerLink>
+              <routerLink :to="{name:'Login'}" tag="li">我的订单</routerLink>
+              <routerLink :to="{name:'Login'}" tag="li">
                 <Icon type="md-cart" size="14"/>购物车
-              </li>
-              <li>帮助中心</li>
+              </routerLink>
+              <routerLink :to="{name:'Login'}" tag="li">帮助中心</routerLink>
             </ul>
           </div>
         </div>
@@ -20,7 +21,13 @@
 
 <script>
 export default {
-  
+  name:'Head',
+  data() {
+    return {
+      isOnline:true,
+      isVip:false
+    }
+  },
 }
 </script>
 

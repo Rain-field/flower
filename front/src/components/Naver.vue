@@ -7,19 +7,18 @@
             <Icon type="ios-arrow-down"></Icon>
           </Button>
           <DropdownMenu slot="list">
-            <DropdownItem>鲜花</DropdownItem>
-            <DropdownItem>蛋糕</DropdownItem>
-            <DropdownItem>礼品</DropdownItem>
-            <DropdownItem>绿植</DropdownItem>
             <Dropdown placement="right-start">
-              <DropdownItem>北京烤鸭
+              <DropdownItem>鲜花
                 <Icon type="ios-arrow-forward"></Icon>
               </DropdownItem>
               <DropdownMenu slot="list">
-                <DropdownItem>挂炉烤鸭</DropdownItem>
-                <DropdownItem>焖炉烤鸭</DropdownItem>
+                <DropdownItem>送长辈</DropdownItem>
+                <DropdownItem>送女友</DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            <DropdownItem>蛋糕</DropdownItem>
+            <DropdownItem>礼品</DropdownItem>
+            <DropdownItem>绿植</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>

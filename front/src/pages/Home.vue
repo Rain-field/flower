@@ -1,28 +1,33 @@
 <template>
-  <div id="Home">
-    <header-bg></header-bg>
-    <naver></naver>
-    <lun-bo></lun-bo>
-    <categories></categories>
-  </div>
+  <div id="home">
+      <heads></heads>
+      <header-bg></header-bg>
+      <router-view></router-view>
+      <foots></foots>
+    </div>
 </template>
 
 <script>
+import Heads from "../components/Header";
 import HeaderBg from "../components/HeaderBg";
-import Naver from "../components/Naver";
-import LunBo from '../components/Carousel';
-import Categories from '../components/Categories';
+import foots from "../components/Footer";
 
 export default {
   name: "Home",
   components: {
+    Heads,
     HeaderBg,
-    Naver,
-    LunBo,
-    Categories
+    foots
   }
 };
 </script>
 
 <style>
+body * {
+  list-style: none;
+}
+#home {
+  font-size: 14px;
+  min-width: 1240px;
+}
 </style>
