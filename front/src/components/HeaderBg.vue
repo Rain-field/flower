@@ -5,13 +5,11 @@
         <img src="../assets/logo.png" alt="有花商城" title="有花商城">
       </routerLink>
       <div class="search">
-        <Input placeholder="搜索">
-          <Icon type="ios-search" color="white" slot="suffix"/>
-        </Input>
+        <input type="text" placeholder="搜索" class="searchInput">
+        <Icon type="ios-search" size="20" slot="suffix"/>
         <ul>
           <li>关键字：</li>
-          <li>鲜花</li>
-          <li>蛋糕</li>
+          <routerLink v-for="(item, index) in keywords" :key="index" :to="item.url" tag="li">{{item.name}}</routerLink>
         </ul>
       </div>
     </div>
@@ -19,29 +17,26 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name:'HeaderBg',
+  data() {
+    return {
+      keywords:[
+        {name:"鲜花",url:{name:'Login'}},
+        {name:"蛋糕",url:{name:'Register'}},
+        {name:"礼品",url:{name:'Register'}},
+        {name:"绿植",url:{name:'Register'}},
+      ]
+    }
+  },
+};
 </script>
 
 <style>
-.ivu-input {
-  height: 40px;
-  border: 1px solid #ff6700;
-}
-.ivu-input:hover,.ivu-input:focus{
-  border-color: #ff6700;
-}
-.ivu-input:focus{
-  box-shadow: 0 0 0 2px rgba(255,103,0,.6);
-}
-.ivu-input-suffix {
-  width: 45px;
-  background: #ff6700;
-  border-radius: 4px;
-}
-.ivu-input-suffix i {
-  line-height: 40px;
-  font-size: 20px;
-  cursor: pointer;
+.ivu-icon-ios-search {
+  background-color: #ff6700;
+  height: 35px;
+  line-height: 35px;
 }
 </style>
 
@@ -62,6 +57,23 @@ export default {};
       height: 70px;
       margin: auto;
       margin-top: 20px;
+      font-size: 0;
+      .searchInput {
+        border: 1px solid #ff6700;
+        width: 280px;
+        font-size: 14px;
+        border-radius: 4px 0 0 4px;
+        padding-left: 8px;
+        height: 35px;
+        line-height: 35px;
+        outline: none;
+      }
+      i {
+        padding: 0 15px;
+        margin-top: -9px;
+        color: white;
+        border-radius: 0 4px 4px 0;
+      }
       ul {
         display: flex;
         font-size: 12px;
