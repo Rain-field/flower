@@ -2,7 +2,6 @@
   <div id="app">
     <div class="contain">
       <heads></heads>
-
       <router-view/>
     </div>
   </div>

@@ -7,9 +7,10 @@
             <Icon type="ios-arrow-down"></Icon>
           </Button>
           <DropdownMenu slot="list">
-            <DropdownItem>驴打滚</DropdownItem>
-            <DropdownItem>炸酱面</DropdownItem>
-            <DropdownItem>豆汁儿</DropdownItem>
+            <DropdownItem>鲜花</DropdownItem>
+            <DropdownItem>蛋糕</DropdownItem>
+            <DropdownItem>礼品</DropdownItem>
+            <DropdownItem>绿植</DropdownItem>
             <Dropdown placement="right-start">
               <DropdownItem>北京烤鸭
                 <Icon type="ios-arrow-forward"></Icon>
@@ -19,7 +20,6 @@
                 <DropdownItem>焖炉烤鸭</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <DropdownItem>冰糖葫芦</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>

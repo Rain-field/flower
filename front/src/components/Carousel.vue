@@ -1,29 +1,48 @@
 <template>
   <div id="lunbo">
-      <Carousel autoplay loop height="300px">
-        <CarouselItem>
-            <div class="demo-carousel">1</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">2</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">3</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">4</div>
-        </CarouselItem>
+    <Carousel autoplay loop :autoplay-speed="setting.autoplaySpeed" @on-change="changePic">
+      <CarouselItem v-for="(item, index) in imgs" :key="index">
+        <div class="demo-carousel">
+          <img :src=item.src  alt>
+        </div>
+      </CarouselItem>
     </Carousel>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: "LunBo"
+  name: "LunBo",
+  data() {
+    return {
+      setting: {
+        autoplaySpeed: 4000
+      },
+      imgs: [
+        {src:require('../assets/001.jpg'),url:''},
+        {src:require('../assets/002.jpg'),url:''},
+        {src:require('../assets/003.jpg'),url:''},
+        {src:require('../assets/004.jpg'),url:''},
+        {src:require('../assets/005.jpg'),url:''}
+      ]
+    };
+  },
+  methods: {
+    changePic(oldvalue, value) {
+      // console.log(oldvalue);
+      // console.log(value);
+    }
+  }
 };
 </script>
 
-<style>
-
+<style scoped>
+#lunbo {
+  width: 1240px;
+  margin: auto;
+}
+img {
+  width: 100%;
+  height: 50%;
+}
 </style>
