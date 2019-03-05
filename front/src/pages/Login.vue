@@ -5,6 +5,10 @@
     </routerLink>
     <div class="login">
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
+        <div class="toHome">
+          <Icon type="ios-home" color="#ff6700" size='20'/>
+          <router-link :to="{name:'Home'}" tag="span">首页</router-link>
+        </div>
         <h1>欢迎登录</h1>
         <FormItem prop="user">
           <Input type="text" v-model="formInline.user" placeholder="账号">
@@ -19,6 +23,10 @@
         <FormItem>
           <button @click.prevent="handleSubmit('formInline')">登录</button>
         </FormItem>
+        <!-- <div class="toRegister">
+          <span>不想登录？去<router-link :to="{name:'Home'}" tag="i">首页</router-link>逛逛</span>
+          <span>没有账号？点击<router-link :to="{name:'Register'}" tag="i">注册</router-link></span>
+        </div>-->
         <div class="toRegister">没有账号？点击
           <router-link :to="{name:'Register'}" tag="span">注册</router-link>
         </div>
@@ -97,27 +105,37 @@ body {
   background-size: 100% 100%;
   position: relative;
   .logo {
+    width: 180px;
     padding: 40px;
     cursor: pointer;
   }
   .login {
     width: 400px;
-    height: 500px;
+    height: 480px;
     position: absolute;
     background: rgba(255, 255, 255, 0.4);
     border-radius: 5px;
     right: 7%;
     top: 50%;
     transform: translate(0, -50%);
+    .toHome {
+      top: 0;
+      font-size: 18px;
+      line-height: 1.8;
+      span{
+        vertical-align: middle;
+      }
+    }
     h1 {
+      border-top: 1px solid #ff6700;
       font-size: 48px;
       color: #ff6700;
       letter-spacing: 2px;
       padding: 2px 0 10px 0;
       font-weight: bold;
       text-align: center;
-      padding-bottom: 40px;
-      margin: 30px 0;
+      padding-top: 20px;
+      margin: 40px 0 30px;
     }
     button {
       margin: 20px 0;
@@ -133,17 +151,20 @@ body {
       padding: 8px 0;
     }
     .toRegister {
-      position: absolute;
-      bottom: 0;
-      width: 80%;
-      left: 10%;
-      height: 40px;
-      line-height: 40px;
       font-size: 14px;
+      bottom: 0;
+      line-height: 40px;
       text-align: right;
-      span{
-          color: #ff6700;
-          cursor: pointer;
+    }
+    .toRegister,
+    .toHome {
+      position: absolute;
+      width: 80%;
+      height: 40px;
+      left: 10%;
+      span {
+        color: #ff6700;
+        cursor: pointer;
       }
     }
   }

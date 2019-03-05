@@ -6,7 +6,10 @@ import Register from '../pages/Register';
 import Home from '../pages/Home';
 
 import Page from '../pages/mainPage/page';
+import GoodsDetail from '../pages/goods/GoodsDetail';
 import UserInfo from './userInfo/userInfo';
+import Help from './help/help';
+
 Vue.use(Router)
 
 export default new Router({
@@ -15,10 +18,12 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect:'/page',
+      redirect:'/index',
       children:[
-        {path: '/page',name: 'Pages',component: Page},
-        ...UserInfo
+        {path: '/index',name: 'Pages',component: Page},
+        {path: '/goods',name: 'GoodsDetail',component: GoodsDetail},
+        ...UserInfo,
+        ...Help
       ]
     },
     {

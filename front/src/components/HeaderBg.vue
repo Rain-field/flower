@@ -9,7 +9,12 @@
         <Icon type="ios-search" size="20" slot="suffix"/>
         <ul>
           <li>关键字：</li>
-          <routerLink v-for="(item, index) in keywords" :key="index" :to="item.url" tag="li">{{item.name}}</routerLink>
+          <routerLink
+            v-for="(item, index) in keywords"
+            :key="index"
+            :to="item.url"
+            tag="li"
+          >{{item.name}}</routerLink>
         </ul>
       </div>
     </div>
@@ -18,17 +23,17 @@
 
 <script>
 export default {
-  name:'HeaderBg',
+  name: "HeaderBg",
   data() {
     return {
-      keywords:[
-        {name:"鲜花",url:{name:'Login'}},
-        {name:"蛋糕",url:{name:'Register'}},
-        {name:"礼品",url:{name:'Register'}},
-        {name:"绿植",url:{name:'Register'}},
+      keywords: [
+        { name: "鲜花", url: { name: "Login" } },
+        { name: "蛋糕", url: { name: "Register" } },
+        { name: "礼品", url: { name: "Register" } },
+        { name: "绿植", url: { name: "Register" } }
       ]
-    }
-  },
+    };
+  }
 };
 </script>
 
@@ -67,12 +72,19 @@ export default {
         height: 35px;
         line-height: 35px;
         outline: none;
+        transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+      }
+      .searchInput:focus {
+        border-color: #ff6700;
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(253, 172, 78, 0.2);
       }
       i {
         padding: 0 15px;
-        margin-top: -9px;
+        vertical-align: top;
         color: white;
         border-radius: 0 4px 4px 0;
+        cursor: pointer;
       }
       ul {
         display: flex;
