@@ -89,9 +89,9 @@ export default {
         {
           title: "价格",
           align: "center",
-          key: "sale",
+          key: "price",
           render: (h, params) => {
-            return h("span", "￥" + params.row.sale);
+            return h("span", "￥" + params.row.price);
           }
         },
         {
@@ -142,27 +142,28 @@ export default {
         // {
         //   name: "John Brown",
         //   num: 1,
-        //   sale: 18
+        //   price: 18
         // },
         // {
         //   name: "Jim Green",
         //   num: 2,
-        //   sale: 180
+        //   price: 180
         // },
         // {
         //   name: "Joe Black",
         //   num: 1,
-        //   sale: 640
+        //   price: 640
         // },
         // {
         //   name: "Jon Snow",
         //   num: 4,
-        //   sale: 310
+        //   price: 310
         // }
       ]
     };
   },
   computed: {
+    // 计算购物车总数量
     numTotal() {
       let nTotal = 0;
       this.goodsList.forEach(element => {
@@ -170,10 +171,11 @@ export default {
       });
       return nTotal;
     },
+    // 计算购物车总价格
     saleTotal() {
       let sTotal = 0;
       this.goodsList.forEach(element => {
-        sTotal += element.num * element.sale;
+        sTotal += element.num * element.price;
       });
       return sTotal;
     }
