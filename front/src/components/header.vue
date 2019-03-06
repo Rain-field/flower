@@ -6,10 +6,10 @@
           </div>
           <div class="mall_right">
             <ul>
-              <routerLink :to="{name:'UserInfo'}" tag="li" v-if="!isOnline">我的账户</routerLink>
+              <routerLink :to="{name:'Login'}" tag="li" v-if="isOnline">我的账户</routerLink>
               <routerLink :to="{name:'UserInfo'}" tag="li" v-if="isOnline">点烟哥寂寞<Icon type="logo-vimeo" v-if="!isVip" /></routerLink>
-              <routerLink :to="{name:'Login'}" tag="li">我的订单</routerLink>
-              <routerLink :to="{name:'GoodsDetail'}" tag="li">
+              <routerLink :to="{name:'GoodsDetail'}" tag="li">我的订单</routerLink>
+              <routerLink :to="{name:'Cart'}" tag="li">
                 <Icon type="md-cart" size="14"/>购物车
               </routerLink>
               <routerLink :to="{name:'Help'}" tag="li">帮助中心</routerLink>

@@ -9,6 +9,7 @@ import Page from '../pages/mainPage/page';
 import GoodsDetail from '../pages/goods/GoodsDetail';
 import UserInfo from './userInfo/userInfo';
 import Help from './help/help';
+import Cart from './cart/cart';
 
 Vue.use(Router)
 
@@ -23,7 +24,8 @@ export default new Router({
         {path: '/index',name: 'Pages',component: Page},
         {path: '/goods',name: 'GoodsDetail',component: GoodsDetail},
         ...UserInfo,
-        ...Help
+        ...Help,
+        ...Cart
       ]
     },
     {

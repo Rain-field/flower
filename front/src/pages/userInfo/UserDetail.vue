@@ -66,26 +66,26 @@ export default {
 }
 </style>
 
-<style lang="less" scoped>
-.btn{
-    cursor: pointer;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    line-height: 1.5;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    padding: 5px 15px 6px;
-    font-size: 12px;
-    border-radius: 4px;
-    transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
-    color: #fff;
-    background-color: #ff6700;
-    border-color: #ff6700
-}
-.btn:hover{
-    background-color: #fa9d5f;
-    border-color: #fa9d5f;
-}
+ <style lang="less" scoped>
+// .btn{
+//     cursor: pointer;
+//     border: 1px solid transparent;
+//     white-space: nowrap;
+//     line-height: 1.5;
+//     -webkit-user-select: none;
+//     -moz-user-select: none;
+//     -ms-user-select: none;
+//     user-select: none;
+//     padding: 5px 15px 6px;
+//     font-size: 12px;
+//     border-radius: 4px;
+//     transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
+//     color: #fff;
+//     background-color: #ff6700;
+//     border-color: #ff6700
+// }
+// .btn:hover{
+//     background-color: #fa9d5f;
+//     border-color: #fa9d5f;
+// }
 </style>
