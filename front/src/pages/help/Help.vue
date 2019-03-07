@@ -1,5 +1,4 @@
 <template>
-  <Layout :style="{paddingTop:'20px'}">
     <Content :style="{ minHeight: '300px', background: '#fff'}" id="help">
       <Breadcrumb :style="{margin: '16px 5px'}">
         <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
@@ -15,7 +14,6 @@
         </template>
       </div>
     </Content>
-  </Layout>
 </template>
 
 <script>

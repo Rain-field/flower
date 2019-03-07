@@ -1,10 +1,12 @@
 <template>
   <div id="home">
-      <heads></heads>
-      <header-bg></header-bg>
+    <heads></heads>
+    <header-bg></header-bg>
+    <Layout :style="{paddingTop:'20px'}">
       <router-view></router-view>
-      <foots></foots>
-    </div>
+    </Layout>
+    <foots></foots>
+  </div>
 </template>
 
 <script>

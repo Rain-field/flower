@@ -14,15 +14,21 @@ import Cart from './cart/cart';
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Home',
       component: Home,
-      redirect:'/index',
-      children:[
-        {path: '/index',name: 'Pages',component: Page},
-        {path: '/goods',name: 'GoodsDetail',component: GoodsDetail},
+      redirect: '/index',
+      children: [{
+          path: '/index',
+          name: 'Pages',
+          component: Page
+        },
+        {
+          path: '/goods',
+          name: 'GoodsDetail',
+          component: GoodsDetail
+        },
         ...UserInfo,
         ...Help,
         ...Cart
@@ -37,7 +43,12 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    }
+    },
+    {
+      path: '*',
+      redirect: '/'
+    } //当用户输入错误的路径可以跳转到主页面
+
   ],
-  mode:'history'
+  mode: 'history'
 })

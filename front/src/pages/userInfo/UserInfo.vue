@@ -1,24 +1,23 @@
 <template>
-  <Layout :style="{paddingTop:'20px'}">
-    <Content :style="{ minHeight: '300px', background: '#fff'}" id="userInfo">
-      <Breadcrumb :style="{margin: '16px 5px'}">
-        <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
-        <BreadcrumbItem>账户设置</BreadcrumbItem>
-      </Breadcrumb>
-      <Layout>
-        <Sider hide-trigger :style="{background: '#fff'}">
-          <Menu active-name="1" theme="light" width="auto">
-            <MenuItem name="1" :to="{name:'UserInfo'}">基本信息</MenuItem>
-            <MenuItem name="2" to="ChangePwd">修改密码</MenuItem>
-            <MenuItem name="3" :to="'JoinVip'">加入会员</MenuItem>
-          </Menu>
-        </Sider>
-        <Content :style="{padding: '24px 80px', minHeight: '280px', background: '#fff'}">
-          <router-view></router-view>
-        </Content>
-      </Layout>
-    </Content>
-  </Layout>
+  <Content :style="{ minHeight: '350px', background: '#fff'}" id="userInfo">
+    <Breadcrumb :style="{margin: '16px 5px'}">
+      <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
+      <BreadcrumbItem>账户设置</BreadcrumbItem>
+    </Breadcrumb>
+    <Layout>
+      <Sider hide-trigger :style="{background: '#fff'}">
+        <Menu active-name="1" theme="light" width="auto">
+          <MenuItem name="1" :to="{name:'UserInfo'}">基本信息</MenuItem>
+          <MenuItem name="2" to="ChangePwd">修改密码</MenuItem>
+          <MenuItem name="3" to="Address">地址管理</MenuItem>
+          <MenuItem name="4" :to="'JoinVip'">加入会员</MenuItem>
+        </Menu>
+      </Sider>
+      <Content :style="{padding: '24px 80px', minHeight: '280px', background: '#fff'}">
+        <router-view></router-view>
+      </Content>
+    </Layout>
+  </Content>
 </template>
 
 <script>
@@ -48,6 +47,27 @@ export default {
 .ivu-menu-light.ivu-menu-vertical
   .ivu-menu-item-active:not(.ivu-menu-submenu):after {
   background: #ff6700;
+}
+
+.btn {
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  line-height: 1.5;
+  outline: 0;
+  user-select: none;
+  padding: 5px 15px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: color 0.2s linear, background-color 0.2s linear,
+    border 0.2s linear, box-shadow 0.2s linear;
+  color: #fff;
+  background-color: #ff6700;
+  border-color: #ff6700;
+}
+.btn:hover {
+  background-color: #fa9d5f;
+  border-color: #fa9d5f;
 }
 </style>
 

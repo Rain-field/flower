@@ -1,5 +1,4 @@
 <template>
-  <Layout>
     <Content :style="{padding: '0 20px', minHeight: '380px', background: '#fff'}" id="cart">
       <Breadcrumb :style="{margin: '16px 5px'}">
         <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
@@ -25,11 +24,10 @@
             应付金额：
             <span>￥{{saleTotal}}</span>
           </div>
-          <div class="toSet btn">去结算</div>
+          <routerLink class="toSet btn" tag="div" to="orderConfirm">去结算</routerLink>
         </div>
       </div>
     </Content>
-  </Layout>
 </template>
 
 <script>

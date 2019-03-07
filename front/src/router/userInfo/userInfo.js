@@ -2,23 +2,28 @@ import UserInfo from '@/pages/userInfo/UserInfo';
 import UserDetail from '@/pages/userInfo/UserDetail';
 import ChangePwd from '@/pages/userInfo/ChangePwd';
 import JoinVip from '@/pages/userInfo/JoinVip';
+import Address from '@/pages/userInfo/Address';
 
 export default [{
   path: '/index/userInfo',
   name: 'UserInfo',
   component: UserInfo,
-  redirect: '/index/userDetail',
+  redirect: '/userInfo/userDetail',
   children: [{
-    path: '/index/userDetail',
+    path: '/userInfo/userDetail',
     name: 'UserDetail',
     component: UserDetail,
   },{
-    path: '/index/changePwd',
+    path: '/userInfo/changePwd',
     name: 'ChangePwd',
     component: ChangePwd,
   },{
-    path: '/index/joinVip',
+    path: '/userInfo/joinVip',
     name: 'JoinVip',
     component: JoinVip,
+  },{
+    path: '/userInfo/address',
+    name: 'Address',
+    component: Address,
   }]
 }]
