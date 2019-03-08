@@ -1,33 +1,34 @@
 <template>
-    <Content :style="{padding: '0 20px', minHeight: '380px', background: '#fff'}" id="cart">
-      <Breadcrumb :style="{margin: '16px 5px'}">
-        <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
-        <BreadcrumbItem>购物车</BreadcrumbItem>
-      </Breadcrumb>
-      <Table
-        ref="selection"
-        :columns="carColumn"
-        :data="carData"
-        no-data-text="购物车还是空的哦,去<a href='/index'>首页</a>看看吧"
-        @on-selection-change="selectChange"
-      ></Table>
-      <div class="set" v-if="carData.length">
-        <div class="set_left">
-          <button class="btn" @click="delSelected()">删除选中商品</button>
-        </div>
-        <div class="set_right">
-          <div class="numTotal">
-            已选择
-            <span>{{numTotal}}</span> 件商品
-          </div>
-          <div class="saleTotal">
-            应付金额：
-            <span>￥{{saleTotal}}</span>
-          </div>
-          <routerLink class="toSet btn" tag="div" to="orderConfirm">去结算</routerLink>
-        </div>
+  <Content :style="{padding: '0 20px', minHeight: '380px', background: '#fff'}" id="cart">
+    <Breadcrumb :style="{margin: '16px 5px'}">
+      <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
+      <BreadcrumbItem>购物车</BreadcrumbItem>
+    </Breadcrumb>
+    <Table
+      ref="selection"
+      :columns="carColumn"
+      :data="carData"
+      no-data-text="购物车还是空的哦,去<a href='/index'>首页</a>看看吧"
+      @on-selection-change="selectChange"
+    ></Table>
+    <div class="set" v-if="carData.length">
+      <div class="set_left">
+        <button class="btn" @click="delSelected()">删除选中商品</button>
       </div>
-    </Content>
+      <div class="set_right">
+        <div class="numTotal">
+          已选择
+          <span>{{numTotal}}</span> 件商品
+        </div>
+        <div class="saleTotal">
+          应付金额：
+          <span>￥{{saleTotal}}</span>
+        </div>
+        <!-- <routerLink class="toSet btn" tag="div" to="orderConfirm" @click="toSet">去结算</routerLink> -->
+        <div class="toSet btn" @click="toSet">去结算</div>
+      </div>
+    </div>
+  </Content>
 </template>
 
 <script>
@@ -35,7 +36,7 @@ export default {
   data() {
     return {
       goodsList: [],
-      src:{ dizhi: require("../../assets/flower/001.jpg"), url: "" },
+      src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
       carColumn: [
         {
           type: "selection",
@@ -46,42 +47,45 @@ export default {
           title: "商品名称",
           key: "name",
           render: (h, params) => {
-            return h("div",{
-              style:{
-                display:"flex",
-                padding:"20px 0",
-                alignItems:"center"
-              }
-            }, [
-              h(
-                "div",
-                {
-                  style: {
-                    marginRight: "15px",
-                    width:"50px",
-                    height:"50px"
-                  },
-                  on: {
-                    click: () => {
-                      this.show(params.index);
-                    }
-                  }
-                  
-                },
-                [
-                  h("img",{
-                    attrs:{
-                      src:this.src.dizhi
-                    },
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  padding: "20px 0",
+                  alignItems: "center"
+                }
+              },
+              [
+                h(
+                  "div",
+                  {
                     style: {
-                      width:"100%",
-                      height:"100%"
+                      marginRight: "15px",
+                      width: "50px",
+                      height: "50px"
+                    },
+                    on: {
+                      click: () => {
+                        this.show(params.index);
+                      }
                     }
-                  })
-                ]
-              ),
-              h("div", params.row.name)
-            ]);
+                  },
+                  [
+                    h("img", {
+                      attrs: {
+                        src: this.src.dizhi
+                      },
+                      style: {
+                        width: "100%",
+                        height: "100%"
+                      }
+                    })
+                  ]
+                ),
+                h("div", params.row.name)
+              ]
+            );
           }
         },
         {
@@ -136,28 +140,7 @@ export default {
           }
         }
       ],
-      carData: [
-        // {
-        //   name: "John Brown",
-        //   num: 1,
-        //   price: 18
-        // },
-        // {
-        //   name: "Jim Green",
-        //   num: 2,
-        //   price: 180
-        // },
-        // {
-        //   name: "Joe Black",
-        //   num: 1,
-        //   price: 640
-        // },
-        // {
-        //   name: "Jon Snow",
-        //   num: 4,
-        //   price: 310
-        // }
-      ]
+      carData: []
     };
   },
   computed: {
@@ -203,6 +186,19 @@ export default {
       this.$axios.get("http://localhost:3000/goods").then(res => {
         this.carData = res.data;
       });
+    },
+    toSet() {
+      let obj = { price: 0, num: 0, data: [] };
+      obj.price = this.saleTotal;
+      obj.num = this.numTotal;
+      obj.data = this.goodsList;
+      if (obj.data.length) {
+        this.$axios.post("http://localhost:3000/orders", obj).then(res => {
+          this.$router.push({ name: "OrderConfirm" });
+        });
+      } else {
+        this.$Message.error("请选择商品");
+      }
     }
   },
   created() {

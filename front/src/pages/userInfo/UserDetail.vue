@@ -15,7 +15,7 @@
         </RadioGroup>
       </FormItem>
       <FormItem label="生日：">
-        <DatePicker type="date" placeholder="选择生日" v-model="formItem.birthday"></DatePicker>
+        <DatePicker type="date" placeholder="选择生日" @on-change="getBirthday"></DatePicker>
       </FormItem>
       <FormItem label="上次登录时间：">
         <p>{{formItem.lastLoginTime}}</p>
@@ -41,14 +41,10 @@ export default {
     };
   },
   methods: {
-    // 日期处理
-    birthDeal() {
-      let date = new Date(this.formItem.birthday);
-      this.formItem.birthday =
-        date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    getBirthday(value) {
+      this.formItem.birthday = value;
     },
     handleSubmit() {
-      this.birthDeal();
       console.log(this.formItem);
     }
   }
