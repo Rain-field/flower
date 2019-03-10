@@ -1,0 +1,14 @@
+users:{
+    add:{
+        username:"",
+        password:"",
+
+        nickname:"",
+        sex:"",
+        birthday:""
+    }
+    auto:{
+        str:"",//签名字符串
+        isVip: //是否vip，0非1是（默认0）
+    }
+}
