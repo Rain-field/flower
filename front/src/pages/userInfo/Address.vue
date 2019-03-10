@@ -131,7 +131,7 @@ export default {
     handleSubmit(name) {
       let newData = { name: "", tel: "", address: "" };
       newData.address =
-        this.formItem.area[0] + this.formItem.area[1] + this.formItem.address; //发送数据处理
+        this.formItem.area[0] + this.formItem.area[1] + this.formItem.area[2] + this.formItem.address; //发送数据处理
       newData.name = this.formItem.name;
       newData.tel = this.formItem.tel;
       this.$refs[name].validate(valid => {

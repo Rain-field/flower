@@ -17,9 +17,6 @@
       <FormItem label="生日：">
         <DatePicker type="date" placeholder="选择生日" @on-change="getBirthday"></DatePicker>
       </FormItem>
-      <FormItem label="上次登录时间：">
-        <p>{{formItem.lastLoginTime}}</p>
-      </FormItem>
       <FormItem>
         <button class="btn" @click.prevent="handleSubmit">提交</button>
       </FormItem>
@@ -35,8 +32,7 @@ export default {
         userName: "",
         nickName: "",
         sex: "",
-        birthday: "2019-7-01",
-        lastLoginTime: ""
+        birthday: "2019-7-01"
       }
     };
   },

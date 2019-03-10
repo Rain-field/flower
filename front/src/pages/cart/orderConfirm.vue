@@ -36,14 +36,15 @@
             <FormItem label="配送日期">
               <DatePicker
                 type="date"
-                :start-date="new Date(1991, 4, 14)"
+                :start-date="new Date()"
                 placeholder="Select date"
                 style="width: 200px"
+                format="yyyy年MM月dd日"
                 @on-change="getDate"
               ></DatePicker>
             </FormItem>
             <FormItem label="配送时间">
-              <Select style="width:200px">
+              <Select style="width:200px" v-model="time">
                 <Option v-for="(item,index) in timeList" :value="item" :key="index">{{ item }}</Option>
               </Select>
             </FormItem>
@@ -190,7 +191,7 @@ export default {
     toSubmit() {
       let obj = { address: [], date: "", data: [], tips: "", price: 0, num: 0 };
       obj.address = this.addressDetail;
-      obj.date = this.date +"/"+ this.time;
+      obj.date = this.date + this.time;
       obj.tips = this.tips;
       obj.data = this.data;
       obj.price = this.saleTotal;

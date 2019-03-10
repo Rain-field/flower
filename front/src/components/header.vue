@@ -22,11 +22,15 @@
 <script>
 export default {
   name:'Head',
+  props:['lists'],
   data() {
     return {
       isOnline:true,
       isVip:false
     }
+  },
+  created() {
+    console.log(this.lists);
   },
 }
 </script>

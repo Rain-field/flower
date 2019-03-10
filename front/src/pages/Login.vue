@@ -6,12 +6,12 @@
     <div class="login">
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
         <div class="toHome">
-          <Icon type="ios-home" color="#ff6700" size='20'/>
+          <Icon type="ios-home" color="#ff6700" size="20"/>
           <router-link :to="{name:'Home'}" tag="span">首页</router-link>
         </div>
         <h1>欢迎登录</h1>
-        <FormItem prop="user">
-          <Input type="text" v-model="formInline.user" placeholder="账号">
+        <FormItem prop="userName">
+          <Input type="text" v-model="formInline.userName" placeholder="账号">
             <Icon type="ios-person-outline" slot="prepend" size="20"></Icon>
           </Input>
         </FormItem>
@@ -23,10 +23,6 @@
         <FormItem>
           <button @click.prevent="handleSubmit('formInline')">登录</button>
         </FormItem>
-        <!-- <div class="toRegister">
-          <span>不想登录？去<router-link :to="{name:'Home'}" tag="i">首页</router-link>逛逛</span>
-          <span>没有账号？点击<router-link :to="{name:'Register'}" tag="i">注册</router-link></span>
-        </div>-->
         <div class="toRegister">没有账号？点击
           <router-link :to="{name:'Register'}" tag="span">注册</router-link>
         </div>
@@ -36,15 +32,16 @@
 </template>
 
 <script>
+import { str_md5 } from "../assets/md5.js";
 export default {
   data() {
     return {
       formInline: {
-        user: "",
+        userName: "",
         password: ""
       },
       ruleInline: {
-        user: [
+        userName: [
           {
             required: true,
             message: "账号不能为空",
@@ -69,11 +66,24 @@ export default {
   },
   methods: {
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
+      let vm = this;
+      vm.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("Success!");
-        } else {
-          this.$Message.error("Fail!");
+          vm.$axios.get("/apis/users").then(res => {
+            let reg = res.data.filter(function(item, index) {
+              return item.userName == vm.formInline.userName;
+            });
+            if (reg.length) {
+              if (reg[0].password === str_md5(vm.formInline.password)) {
+                vm.$Message.success("登录成功");
+                vm.$router.push({name:'Pages',params:{id:reg[0].id,str:reg[0].str,nickName:reg[0].nickName,isVip:reg[0].isVip}})
+              } else {
+                this.$Message.error("账号或密码错误!");
+              }
+            } else {
+              this.$Message.error("账号或密码错误!");
+            }
+          });
         }
       });
     }
@@ -122,7 +132,7 @@ body {
       top: 0;
       font-size: 18px;
       line-height: 1.8;
-      span{
+      span {
         vertical-align: middle;
       }
     }

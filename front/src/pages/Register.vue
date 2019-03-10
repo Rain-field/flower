@@ -6,12 +6,12 @@
     <div class="register">
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
         <div class="toHome">
-          <Icon type="ios-home" color="#ff6700" size='20'/>
+          <Icon type="ios-home" color="#ff6700" size="20"/>
           <router-link :to="{name:'Home'}" tag="span">首页</router-link>
         </div>
         <h1>欢迎注册</h1>
-        <FormItem prop="user">
-          <Input type="text" v-model="formInline.user" placeholder="请输入账号"></Input>
+        <FormItem prop="userName">
+          <Input type="text" v-model="formInline.userName" placeholder="请输入账号"></Input>
         </FormItem>
         <FormItem prop="password">
           <Input type="password" v-model="formInline.password" placeholder="请输入密码"></Input>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { hex_hmac_md5, str_md5 } from "../assets/md5.js";
 export default {
   data() {
     const validatePassCheck = (rule, value, callback) => {
@@ -42,19 +43,34 @@ export default {
         callback();
       }
     };
+     const validateNameCheck = (rule,value,callback) => {
+        this.$axios.get("/apis/users").then(res => {
+          // console.log(res.data);
+         let reg = res.data.filter(function(item,index){
+          //  return item.userName.match(value) ;
+            return (item.userName == value);
+          })
+          if(reg.length){
+            callback(new Error("用户名已存在"));
+          }else{
+            callback();
+          }
+        })
+      };
     return {
       formInline: {
-        user: "",
+        userName: "",
         password: "",
         passwdCheck: ""
       },
       ruleInline: {
-        user: [
+        userName: [
           {
             required: true,
             message: "账号不能为空",
             trigger: "blur"
-          }
+          },
+          { validator: validateNameCheck, trigger: "blur" }
         ],
         password: [
           {
@@ -69,9 +85,7 @@ export default {
             trigger: "blur"
           }
         ],
-        passwdCheck: [
-          { validator: validatePassCheck, trigger: 'blur' }
-        ]
+        passwdCheck: [{ validator: validatePassCheck, trigger: "blur" }]
       }
     };
   },
@@ -79,9 +93,25 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("Success!");
-        } else {
-          this.$Message.error("Fail!");
+          delete this.formInline.passwdCheck;
+          let str = hex_hmac_md5(
+            this.formInline.userName,
+            this.formInline.password
+          ); //签名字符串
+          let nickName = +new Date();
+          nickName = "hua" + String(nickName).substr(6);
+            let obj = {
+              userName:this.formInline.userName,
+              password:str_md5(this.formInline.password),
+              nickName:nickName,
+              str:str,
+              isVip:0
+            }
+          this.$axios.post("/apis/users", obj).then(res => {
+            this.$Message.success("注册成功!");
+            this.$router.push({name:"Login"})
+            this.formInline = {};
+          });
         }
       });
     }
@@ -130,7 +160,7 @@ body {
       top: 0;
       font-size: 18px;
       line-height: 1.8;
-      span{
+      span {
         vertical-align: middle;
       }
     }
