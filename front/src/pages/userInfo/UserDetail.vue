@@ -15,7 +15,13 @@
         </RadioGroup>
       </FormItem>
       <FormItem label="生日：">
-        <DatePicker type="date" v-model="formItem.birthday" placeholder="选择生日" @on-change="getBirthday" transfer></DatePicker>
+        <DatePicker
+          type="date"
+          v-model="formItem.birthday"
+          placeholder="选择生日"
+          @on-change="getBirthday"
+          transfer
+        ></DatePicker>
       </FormItem>
       <FormItem>
         <button class="btn" @click.prevent="handleSubmit">提交</button>
@@ -43,7 +49,7 @@ export default {
     },
     handleSubmit() {
       this.$axios.patch("/apis/users/" + this.id, this.formItem).then(res => {
-        
+        sessionStorage.setItem("nickName",this.formItem.nickName);
         this.$Message.success("修改成功");
       });
     },

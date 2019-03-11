@@ -14,7 +14,7 @@
         <Input v-model="formItem.tel" style="width:190px"></Input>
       </FormItem>
       <FormItem label="所在区域：" prop="area">
-        <Cascader :data="data" v-model="formItem.area" style="width:190px"></Cascader>
+        <Cascader :data="data" v-model="formItem.area" style="width:190px" transfer></Cascader>
       </FormItem>
       <FormItem label="详细地址：" prop="address">
         <Input v-model="formItem.address" style="width:190px"></Input>
@@ -158,9 +158,9 @@ export default {
   },
   created() {
     //获取级联数据
-    // this.$axios.get("http://localhost:3000/cast").then(res => {
-    //   this.data = res.data;
-    // });
+    this.$axios.get("http://localhost:3000/areas").then(res => {
+      this.data = res.data;
+    });
     // this.getData();
   }
 };

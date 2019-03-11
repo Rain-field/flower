@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { str_md5 } from "../../assets/md5.js";
 export default {
   name: "ChangePwd",
   data() {
@@ -41,6 +42,8 @@ export default {
       }
     };
     return {
+      id: 0,
+      pwd: "", //获取原密码
       formInline: {
         pwd: "",
         newPwd: "",
@@ -67,7 +70,9 @@ export default {
             trigger: "blur"
           }
         ],
-        newPwdCheck: [{required:true, validator: validatePassCheck, trigger: "blur" }]
+        newPwdCheck: [
+          { required: true, validator: validatePassCheck, trigger: "blur" }
+        ]
       }
     };
   },
@@ -75,16 +80,30 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("Success!");
-        } else {
-          this.$Message.error("Fail!");
+          //判断密码正确
+          if (str_md5(this.formInline.pwd) === this.pwd) {
+            this.$axios.patch("/apis/users/" + this.id,{password:str_md5(this.formInline.newPwd)}).then(res => {
+              this.formInline = {};
+              this.$Message.success("修改成功!");
+            });
+          } else {
+            this.$Message.error("密码错误!");
+          }
         }
       });
+    },
+    getDatas() {
+      this.$axios.get("/apis/users/" + this.id).then(res => {
+        this.pwd = res.data.password;
+      });
     }
+  },
+  created() {
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.getDatas();
   }
 };
 </script>
 
 <style lang="less" scoped>
-
 </style>
