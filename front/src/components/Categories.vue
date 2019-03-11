@@ -9,12 +9,12 @@
         <img :src="mainImg.src" alt>
       </div>
       <div class="flower_sections">
-        <div class="flower_section" v-for="(item, index) in imgs" :key="index">
-          <div class="flower_img">
-            <img :src="item.src" alt>
+        <div class="flower_section" v-for="(item, index) in lists" :key="index">
+          <div class="flower_img" @click="toDetail(item.id)">
+            <img :src="item.url" alt>
           </div>
-          <div class="flower_name">相濡以沫</div>
-          <div class="flower_price">￥999.00 <span class="flower_high_price">￥1299</span></div>
+          <div class="flower_name">{{item.name}}</div>
+          <div class="flower_price">￥{{item.vipPrice}} <span class="flower_high_price">￥{{item.price}}</span></div>
         </div>
       </div>
     </div>
@@ -28,18 +28,25 @@ export default {
   data() {
     return {
       mainImg:{src: require("../assets/flower/main.jpg"), url: ""},
-      imgs: [
-        { src: require("../assets/flower/001.jpg"), url: "" },
-        { src: require("../assets/flower/002.jpg"), url: "" },
-        { src: require("../assets/flower/003.jpg"), url: "" },
-        { src: require("../assets/flower/004.jpg"), url: "" },
-        { src: require("../assets/flower/005.jpg"), url: "" },
-        { src: require("../assets/flower/006.jpg"), url: "" },
-        { src: require("../assets/flower/007.jpg"), url: "" },
-        { src: require("../assets/flower/008.jpg"), url: "" },
-      ]
+      lists:[]
     };
-  }
+  },
+  methods: {
+    getDatas() {
+      this.$axios.get("/apis/goods").then(res => {
+        this.lists = res.data;
+        this.lists.forEach((item,index) => {
+          item.url = require("@/"+item.url);
+        });
+      })
+    },
+    toDetail(id){
+      this.$router.push({name:"GoodsDetail",params:{id:id}});
+    }
+  },
+  created() {
+    this.getDatas();
+  },
 };
 </script>
 
@@ -94,9 +101,11 @@ export default {
         .flower_price {
             text-align: center;
             font-size: 18px;
+            font-weight: bolder;
             color: #ff6700;
             .flower_high_price{
                 color: #9a9a9a;
+                font-weight: lighter;
                 text-decoration: line-through;
             }
         }

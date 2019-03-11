@@ -107,7 +107,7 @@ export default {
               str:str,
               isVip:0,
               sex:"",
-              birthday:"",
+              birthday:""
             }
           this.$axios.post("/apis/users", obj).then(res => {
             this.$Message.success("注册成功!");

@@ -14,4 +14,20 @@ users:{
 },//用户表
 areas{
 
-}//区域地址表
+},//区域地址表
+address{
+    name:"",
+    tel:"",
+    address:"",
+},//用户地址表-users
+flowers{
+    name:"",
+    num:"",//编号
+    info:"",//介绍
+    inventory:"",//库存
+    price:"",
+    vipPrice:"",
+    online:1,//1代表上线，0代表下线
+    type:1,//1代表鲜花,2代表蛋糕，3代表绿植，4代表礼品
+    url:""//图片地址
+}//商品列表

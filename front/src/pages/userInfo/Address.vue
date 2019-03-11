@@ -33,6 +33,7 @@
 export default {
   data() {
     return {
+      id:0,
       formItem: {
         name: "",
         tel: "",
@@ -123,24 +124,28 @@ export default {
   },
   methods: {
     remove(index) {
-      this.$axios.delete("http://localhost:3000/address/" + index).then(res => {
-        this.getData();
+      this.$axios.delete("/apis/address/" + index).then(res => {
+        this.getDatas();
         this.$Message.success("删除成功!");
       });
     },
     handleSubmit(name) {
-      let newData = { name: "", tel: "", address: "" };
+      let newData = { name: "", tel: "", address: "",userId:0 };
       newData.address =
-        this.formItem.area[0] + this.formItem.area[1] + this.formItem.area[2] + this.formItem.address; //发送数据处理
+        this.formItem.area[0] +
+        this.formItem.area[1] +
+        this.formItem.area[2] +
+        this.formItem.address; //发送数据处理
       newData.name = this.formItem.name;
       newData.tel = this.formItem.tel;
+      newData.userId = this.id;//与users表相关联
       this.$refs[name].validate(valid => {
         if (valid) {
           this.$axios
-            .post("http://localhost:3000/address", newData)
+            .post("/apis/address", newData)
             .then(res => {
               this.formItem = {};
-              this.getData();
+              this.getDatas();
               this.$Message.success("添加成功!");
             });
         }
@@ -149,19 +154,20 @@ export default {
     handleReset(name) {
       this.$refs[name].resetFields();
     },
-    getData() {
+    getDatas() {
       // 获取表格地址数据
-      this.$axios.get("http://localhost:3000/address").then(res => {
+      this.$axios.get("/apis/users/"+this.id+"/address").then(res => {
         this.data1 = res.data;
       });
     }
   },
   created() {
     //获取级联数据
-    this.$axios.get("http://localhost:3000/areas").then(res => {
+    this.$axios.get("/apis/areas").then(res => {
       this.data = res.data;
     });
-    // this.getData();
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.getDatas();
   }
 };
 </script>
