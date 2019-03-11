@@ -76,7 +76,17 @@ export default {
             if (reg.length) {
               if (reg[0].password === str_md5(vm.formInline.password)) {
                 vm.$Message.success("登录成功");
-                vm.$router.push({name:'Pages',params:{id:reg[0].id,str:reg[0].str,nickName:reg[0].nickName,isVip:reg[0].isVip}})
+                let pas = {
+                    id: reg[0].id,
+                    str: reg[0].str,
+                    isVip: reg[0].isVip
+                  }
+                sessionStorage.setItem("obj", JSON.stringify(pas));
+                sessionStorage.setItem("nickName", reg[0].nickName);
+
+                vm.$router.push({
+                  name: "Pages",
+                });
               } else {
                 this.$Message.error("账号或密码错误!");
               }

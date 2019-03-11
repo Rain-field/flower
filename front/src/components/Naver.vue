@@ -30,7 +30,7 @@
 export default {};
 </script>
 
-<style>
+<style >
 .ivu-dropdown-item:hover {
   background: #ff6700;
 }

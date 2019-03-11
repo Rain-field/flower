@@ -158,10 +158,10 @@ export default {
   },
   created() {
     //获取级联数据
-    this.$axios.get("http://localhost:3000/cast").then(res => {
-      this.data = res.data;
-    });
-    this.getData();
+    // this.$axios.get("http://localhost:3000/cast").then(res => {
+    //   this.data = res.data;
+    // });
+    // this.getData();
   }
 };
 </script>

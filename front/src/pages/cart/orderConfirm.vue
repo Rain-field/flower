@@ -27,7 +27,7 @@
           </Form>
         </div>
         <div v-if="!cityList.length" class="bg msg">还没有添加地址,点
-          <router-link :to="{name:'Address'}">这里</router-link>新增
+          <router-link :to="{name:'Address',params:{acNum:'3'}}">这里</router-link>新增
         </div>
         <!-- 配送信息 -->
         <div class="title">配送信息</div>

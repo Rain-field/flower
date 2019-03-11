@@ -105,7 +105,9 @@ export default {
               password:str_md5(this.formInline.password),
               nickName:nickName,
               str:str,
-              isVip:0
+              isVip:0,
+              sex:"",
+              birthday:"",
             }
           this.$axios.post("/apis/users", obj).then(res => {
             this.$Message.success("注册成功!");

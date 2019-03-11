@@ -6,7 +6,7 @@
     </Breadcrumb>
     <Layout>
       <Sider hide-trigger :style="{background: '#fff'}">
-        <Menu active-name="1" theme="light" width="auto">
+        <Menu :active-name="activeNumber" theme="light" width="auto">
           <MenuItem name="1" :to="{name:'UserInfo'}">基本信息</MenuItem>
           <MenuItem name="2" to="ChangePwd">修改密码</MenuItem>
           <MenuItem name="3" to="Address">地址管理</MenuItem>
@@ -22,7 +22,22 @@
 
 <script>
 export default {
-  name: "UserInfo"
+  name: "UserInfo",
+  data() {
+    return {
+      activeNumber: "1"
+    };
+  },
+  created() {
+    if (this.$route.params.acNum) {
+      this.activeNumber = this.$route.params.acNum;
+    }
+  },
+  updated() {
+    if (this.$route.params.acNum) {
+      this.activeNumber = this.$route.params.acNum;
+    }
+  }
 };
 </script>
 

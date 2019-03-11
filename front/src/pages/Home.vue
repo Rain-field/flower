@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <heads :lists="lists"></heads>
+    <heads></heads>
     <header-bg></header-bg>
     <Layout :style="{paddingTop:'20px'}">
       <router-view></router-view>
@@ -23,11 +23,9 @@ export default {
   },
   data() {
     return {
-      lists:{}
     }
   },
   created() {
-    this.lists = this.$route.params;
   }
 };
 </script>
