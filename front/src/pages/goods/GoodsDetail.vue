@@ -4,16 +4,17 @@
       :style="{padding: '24px 20px', minHeight: '380px', background: '#fff'}"
       id="goodsDetail"
     >
-      <div class="imgShow"><img :src=detail.url alt=""></div>
+      <div class="imgShow">
+        <img :src="detail.url" alt>
+      </div>
       <div class="contentShow">
         <h2>{{detail.name}}</h2>
-        <div class="introduction">
-          {{detail.info}}
-        </div>
+        <div class="introduction">{{detail.info}}</div>
         <div class="price">
           <div>
             <div class="orignPrice">原价：￥{{detail.price}}</div>
-            <div class="vipPrice">VIP特价：
+            <div class="vipPrice">
+              VIP特价：
               <span>￥{{detail.vipPrice}}</span>
             </div>
           </div>
@@ -23,8 +24,8 @@
           <span>库存：{{detail.inventory}}</span>
         </div>
         <div class="btns">
-          <button class="btn">立即购买</button>
-          <button class="btn">加入购物车</button>
+          <button class="btn" @click="toBuy">立即购买</button>
+          <button class="btn" @click="toCart">加入购物车</button>
         </div>
       </div>
     </Content>
@@ -36,24 +37,73 @@ export default {
   name: "GoodsDetail",
   data() {
     return {
+      id: null,
       value: 1,
-      goodsId:0,
-      detail:{}
+      goodsId: null,
+      detail: {}
     };
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods/"+this.goodsId).then(res => {
-        console.log(res.data);
+      this.$axios.get("/apis/goods/" + this.goodsId).then(res => {
         this.detail = res.data;
-        this.detail.url = require("@/"+this.detail.url);
-      })
+        this.detail.url = require("@/" + this.detail.url);
+      });
+    },
+    toBuy() {
+      let obj = {
+        goodsId: this.detail.id,
+        name: this.detail.name,
+        num: this.detail.num,
+        quantity: this.value,
+        price: this.value * this.detail.price,
+        vipPrice: this.value * this.detail.vipPrice,
+        url: this.detail.url
+      };
+      this.$router.push({ name: "OrderConfirm" });
+      sessionStorage.setItem("orderObj", JSON.stringify(obj));
+    },
+    toCart() {
+      let obj = {
+        name: this.detail.name,
+        num: this.detail.num,
+        quantity: this.value,
+        price: this.value * this.detail.price,
+        vipPrice: this.value * this.detail.vipPrice,
+        url: this.detail.url,
+        userId: this.id
+      };
+      //加入购物车前先请求购物车数据，如果没有则直接添加
+      this.$axios.get("/apis/users/" + this.id + "/carts").then(res => {
+        if (res.data.length !== 0) {
+          // 查找是商品编号是否有相等的
+          let a = res.data.filter(function(item, index) {
+            return item.num == obj.num;
+          });
+          // 比较编号相等(即过滤出来length!=0)则数量+1
+          if (a.length == 0) {
+            this.$axios.post("/apis/carts", obj).then(res => {
+              this.$router.push({ name: "Cart" });
+            });
+          }else{
+            let newNum = a[0].quantity + obj.quantity;
+            this.$axios.patch("/apis/carts/"+a[0].id, {quantity:newNum}).then(res => {
+              this.$router.push({name:"Cart"});        
+          })
+          }
+        } else {
+          this.$axios.post("/apis/carts", obj).then(res => {
+            this.$router.push({ name: "Cart" });
+          });
+        }
+      });
     }
   },
   created() {
     this.goodsId = this.$route.params.id;
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
     this.getDatas();
-  },
+  }
 };
 </script>
 
@@ -76,7 +126,7 @@ export default {
     width: 65%;
     margin: 20px;
     padding: 0 10px;
-    h2{
+    h2 {
       margin-bottom: 30px;
     }
     .introduction {
@@ -102,6 +152,9 @@ export default {
     }
     .number {
       margin-bottom: 30px;
+      span {
+        margin-left: 20px;
+      }
     }
     .btns {
       margin-bottom: 30px;
@@ -121,7 +174,7 @@ export default {
         background-color: #ff6700;
         border-color: #ff6700;
       }
-      .btn:last-child{
+      .btn:last-child {
         margin-left: 15px;
         background: #fff;
         color: #ff6700;

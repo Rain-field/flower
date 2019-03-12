@@ -84,6 +84,7 @@ export default {
   name: "OrderConfirm",
   data() {
     return {
+      id:0,
       cityList: [], //地址列表
       addressDetail: [], //地址选择详情
       delivery: {}, //配送信息列表
@@ -102,7 +103,8 @@ export default {
       tips: "", //留言
       numTotal: 0, //总数量
       saleTotal: 0, //总价
-      src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
+      url:null,
+      // src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
       columns: [
         {
           title: "商品名称",
@@ -135,7 +137,7 @@ export default {
                   [
                     h("img", {
                       attrs: {
-                        src: this.src.dizhi
+                        src: this.url
                       },
                       style: {
                         width: "100%",
@@ -159,7 +161,7 @@ export default {
         },
         {
           title: "数量",
-          key: "num"
+          key: "quantity"
         }
       ],
       data: []
@@ -167,14 +169,20 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("http://localhost:3000/address").then(res => {
+      this.$axios.get("/apis/users/"+this.id+"/address").then(res => {
         this.cityList = res.data;
       });
-      this.$axios.get("http://localhost:3000/orders").then(res => {
-        this.data = res.data[0].data;
-        this.numTotal = res.data[0].num;
-        this.saleTotal = res.data[0].price;
-      });
+      let lists = JSON.parse(sessionStorage.getItem("orderObj"));
+      console.log(lists);
+      let obj = {
+        name:lists.name,
+        quantity:lists.quantity,
+        price:((lists.price>200)?lists.vipPrice:lists.price)//如果原价大于200元那么就使用会员价，否则保持原价
+      }
+      this.data.push(obj);
+      this.url = lists.url;
+      this.numTotal = lists.quantity;
+      this.saleTotal = lists.price;
     },
     //选择地址
     addressSelected(value) {
@@ -189,17 +197,18 @@ export default {
     },
     //订单提交
     toSubmit() {
-      let obj = { address: [], date: "", data: [], tips: "", price: 0, num: 0 };
+      let obj = { address: [], date: "", data: [], tips: "", price: 0, quantity: 0 };
       obj.address = this.addressDetail;
       obj.date = this.date + this.time;
       obj.tips = this.tips;
       obj.data = this.data;
       obj.price = this.saleTotal;
-      obj.num = this.numTotal;
+      obj.quantity = this.numTotal;
       console.log(obj);
     }
   },
   created() {
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
     this.getDatas();
   }
 };

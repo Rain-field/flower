@@ -33,5 +33,12 @@ goods{
 },//商品列表
 carts{
     name:"",
-    
+    price:"",
+    quanity:""//数量
+    num:""//编号
 },//购物车-users
+orders{
+    num:""//订单编号
+    time:""//下单时间
+
+},//订单表-users

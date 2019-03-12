@@ -16,16 +16,15 @@
         <button class="btn" @click="delSelected()">删除选中商品</button>
       </div>
       <div class="set_right">
-        <div class="numTotal">
+        <div class="quantityTotal">
           已选择
-          <span>{{numTotal}}</span> 件商品
+          <span>{{quantityTotal}}</span> 件商品
         </div>
-        <div class="saleTotal">
+        <div class="priceTotal">
           应付金额：
-          <span>￥{{saleTotal}}</span>
+          <span>￥{{priceTotal}}</span>
         </div>
-        <!-- <routerLink class="toSet btn" tag="div" to="orderConfirm" @click="toSet">去结算</routerLink> -->
-        <div class="toSet btn" @click="toSet">去结算</div>
+        <div class="toBuy btn" @click="toBuy">去结算</div>
       </div>
     </div>
   </Content>
@@ -35,8 +34,8 @@
 export default {
   data() {
     return {
+      id:null,
       goodsList: [],
-      src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
       carColumn: [
         {
           type: "selection",
@@ -74,7 +73,7 @@ export default {
                   [
                     h("img", {
                       attrs: {
-                        src: this.src.dizhi
+                        src: this.carData[params.index].url
                       },
                       style: {
                         width: "100%",
@@ -99,17 +98,17 @@ export default {
         {
           title: "数量",
           align: "center",
-          key: "num",
+          key: "quantity",
           render: (h, params) => {
             return h("InputNumber", {
               props: {
-                value: Number(this.carData[params.index].num),
+                value: Number(this.carData[params.index].quantity),
                 min: 1,
                 max: 20
               },
               on: {
                 "on-change": value => {
-                  this.carData[params.index].num = value;
+                  this.carData[params.index].quantity = value;
                 }
               }
             });
@@ -145,25 +144,26 @@ export default {
   },
   computed: {
     // 计算购物车总数量
-    numTotal() {
-      let nTotal = 0;
+    quantityTotal() {
+      let qTotal = 0;
       this.goodsList.forEach(element => {
-        nTotal += Number(element.num);
+        qTotal += Number(element.quantity);
       });
       return nTotal;
     },
     // 计算购物车总价格
-    saleTotal() {
-      let sTotal = 0;
+    priceTotal() {
+      let pTotal = 0;
       this.goodsList.forEach(element => {
-        sTotal += element.num * element.price;
+        pTotal += element.quantity * element.price;
       });
       return sTotal;
     }
   },
   methods: {
     remove(index) {
-      this.$axios.delete("http://localhost:3000/goods/" + index).then(res => {
+      this.$axios.delete("/apis/carts/" + index).then(res => {
+        this.$Message.success("删除成功");
         this.getDatas();
       });
     },
@@ -183,25 +183,32 @@ export default {
     },
     // 获取数据
     getDatas() {
-      this.$axios.get("http://localhost:3000/goods").then(res => {
+      this.$axios.get("/apis/users/"+this.id+"/carts").then(res => {
         this.carData = res.data;
+        // 如果是会员，价格都变为会员价
+        if(JSON.parse(sessionStorage.getItem("obj")).isVip){
+          for (let i = 0; i < this.carData.length; i++) {
+            this.carData[i].price = this.carData[i].vipPrice;
+          }
+        }
       });
     },
-    toSet() {
+    toBuy() {
       let obj = { price: 0, num: 0, data: [] };
-      obj.price = this.saleTotal;
-      obj.num = this.numTotal;
+      obj.price = this.priceTotal;
+      obj.num = this.quantityTotal;
       obj.data = this.goodsList;
-      if (obj.data.length) {
-        this.$axios.post("http://localhost:3000/orders", obj).then(res => {
+      // if (obj.data.length) {
+      //   this.$axios.post("http://localhost:3000/orders", obj).then(res => {
           this.$router.push({ name: "OrderConfirm" });
-        });
-      } else {
-        this.$Message.error("请选择商品");
-      }
+      //   });
+      // } else {
+      //   this.$Message.error("请选择商品");
+      // }
     }
   },
   created() {
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
     this.getDatas();
   }
 };
