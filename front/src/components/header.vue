@@ -38,7 +38,7 @@
               </DropdownMenu>
             </Dropdown>
           </routerLink>
-          <routerLink :to="{name:'GoodsDetail'}" tag="li">我的订单</routerLink>
+          <routerLink :to="{name:'Help'}" tag="li">我的订单</routerLink>
           <routerLink :to="{name:'Cart'}" tag="li">
             <Icon type="md-cart" size="14"  color="#ff6700" class="mid"/>购物车
           </routerLink>

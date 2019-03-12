@@ -1,5 +1,5 @@
-import Cart from '@/pages/cart/Cart';
-import OrderConfirm from '@/pages/cart/OrderConfirm';
+import Cart from '../../pages/cart/Cart';
+import OrderConfirm from '../../pages/cart/OrderConfirm';
 
 export default [{
   path: '/index/cart',

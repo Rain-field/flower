@@ -8,7 +8,7 @@
         <h2>帮助中心</h2>
         <template v-for="help in helps">
           <div class="helpTitle">{{help.title}}</div>
-          <div class="helpCOntent">
+          <div class="helpContent">
             <p v-for="(contentItem, index) in help.content" :key="index">{{contentItem}}</p>
           </div>
         </template>
@@ -82,7 +82,7 @@ export default {
       padding: 0 10px;
       margin-top: 20px;
     }
-    .helpCOntent {
+    .helpContent {
       width: 100%;
       overflow: hidden;
       p {

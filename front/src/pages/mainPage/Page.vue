@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Naver from "@/components/Naver";
-import LunBo from "@/components/Carousel";
-import Categories from "@/components/Categories";
+import Naver from "../../components/Naver";
+import LunBo from "../../components/Carousel";
+import Categories from "../../components/Categories";
 
 export default {
   name: "Page",

@@ -1,8 +1,8 @@
-import UserInfo from '@/pages/userInfo/UserInfo';
-import UserDetail from '@/pages/userInfo/UserDetail';
-import ChangePwd from '@/pages/userInfo/ChangePwd';
-import JoinVip from '@/pages/userInfo/JoinVip';
-import Address from '@/pages/userInfo/Address';
+import UserInfo from '../../pages/userInfo/UserInfo';
+import UserDetail from '../../pages/userInfo/UserDetail';
+import ChangePwd from '../../pages/userInfo/ChangePwd';
+import JoinVip from '../../pages/userInfo/JoinVip';
+import Address from '../../pages/userInfo/Address';
 
 export default [{
   path: '/index/userInfo',

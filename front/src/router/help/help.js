@@ -1,4 +1,4 @@
-import Help from '@/pages/help/Help';
+import Help from '../../pages/help/Help';
 
 export default [{
   path: '/index/help',

@@ -5,7 +5,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
 
-import Page from '../pages/mainPage/page';
+import Page from '../pages/mainPage/Page';
 import GoodsDetail from '../pages/goods/GoodsDetail';
 import UserInfo from './userInfo/userInfo';
 import Help from './help/help';
