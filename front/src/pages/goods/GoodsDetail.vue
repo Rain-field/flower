@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="number">
-          <InputNumber :max="10" :min="1" v-model="value"></InputNumber>
+          <InputNumber :max="Number(detail.inventory)" :min="1" v-model="value"></InputNumber>
           <span>库存：{{detail.inventory}}</span>
         </div>
         <div class="btns">
@@ -38,40 +38,44 @@ export default {
   data() {
     return {
       id: null,
+      isVip:null,
+      goodId: null,
+
       value: 1,
-      goodsId: null,
       detail: {}
     };
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods/" + this.goodsId).then(res => {
+      this.$axios.get("/apis/goods/" + this.goodId).then(res => {
         this.detail = res.data;
         this.detail.url = require("@/" + this.detail.url);
       });
     },
     toBuy() {
-      let obj = {
-        goodsId: this.detail.id,
-        name: this.detail.name,
-        num: this.detail.num,
-        quantity: this.value,
-        price: this.value * this.detail.price,
-        vipPrice: this.value * this.detail.vipPrice,
-        url: this.detail.url
-      };
+      let arr = [{
+          goodId: this.detail.id,
+          name: this.detail.name,
+          num: this.detail.num,
+          quantity: this.value,
+          price: null,
+          url: this.detail.url
+        }]
+      arr[0].price = this.isVip?this.value * this.detail.vipPrice:this.value * this.detail.price;
       this.$router.push({ name: "OrderConfirm" });
-      sessionStorage.setItem("orderObj", JSON.stringify(obj));
+      sessionStorage.setItem("orderArr", JSON.stringify(arr));
     },
     toCart() {
       let obj = {
+        goodId:this.detail.id,
         name: this.detail.name,
         num: this.detail.num,
         quantity: this.value,
         price: this.value * this.detail.price,
         vipPrice: this.value * this.detail.vipPrice,
         url: this.detail.url,
-        userId: this.id
+        userId: this.id,
+        inventory: this.detail.inventory
       };
       //加入购物车前先请求购物车数据，如果没有则直接添加
       this.$axios.get("/apis/users/" + this.id + "/carts").then(res => {
@@ -100,8 +104,9 @@ export default {
     }
   },
   created() {
-    this.goodsId = this.$route.params.id;
+    this.goodId = this.$route.params.id;
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.isVip = Number(sessionStorage.getItem("isVip"));
     this.getDatas();
   }
 };
@@ -138,7 +143,6 @@ export default {
       font-size: 18px;
       padding-left: 40px;
       .orignPrice {
-        text-decoration: line-through;
         padding: 10px 0;
         color: rgb(175, 175, 175);
       }

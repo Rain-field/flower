@@ -62,13 +62,13 @@
             placeholder="Enter something..."
           />
           <div class="order">
-            <div class="numTotal">
+            <div class="quantityTotal">
               已选择
-              <span>{{numTotal}}</span> 件商品
+              <span>{{quantityTotal}}</span> 件商品
             </div>
-            <div class="saleTotal">
+            <div class="priceTotal">
               应付金额：
-              <span>￥{{saleTotal}}</span>
+              <span>￥{{priceTotal}}</span>
             </div>
             <!-- <routerLink class="toSet btn" tag="div" to="orderConfirm" @click="toSet">去结算</routerLink> -->
             <div class="toOrder btn" @click="toSubmit">确认订单</div>
@@ -101,8 +101,8 @@ export default {
       time: "",//日期
       date:"",//时间
       tips: "", //留言
-      numTotal: 0, //总数量
-      saleTotal: 0, //总价
+      quantityTotal: 0, //总数量
+      priceTotal: 0, //总价
       url:null,
       // src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
       columns: [
@@ -137,7 +137,7 @@ export default {
                   [
                     h("img", {
                       attrs: {
-                        src: this.url
+                        src: this.data[params.index].url
                       },
                       style: {
                         width: "100%",
@@ -172,22 +172,16 @@ export default {
       this.$axios.get("/apis/users/"+this.id+"/address").then(res => {
         this.cityList = res.data;
       });
-      let lists = JSON.parse(sessionStorage.getItem("orderObj"));
-      console.log(lists);
-      let obj = {
-        name:lists.name,
-        quantity:lists.quantity,
-        price:((lists.price>200)?lists.vipPrice:lists.price)//如果原价大于200元那么就使用会员价，否则保持原价
+      this.data = JSON.parse(sessionStorage.getItem("orderArr"));
+      console.log(this.data);
+      for (let i = 0; i < this.data.length; i++) {
+        this.quantityTotal += this.data[i].quantity; 
+        this.priceTotal += this.data[i].price;
       }
-      this.data.push(obj);
-      this.url = lists.url;
-      this.numTotal = lists.quantity;
-      this.saleTotal = lists.price;
     },
     //选择地址
     addressSelected(value) {
       this.$axios.get("http://localhost:3000/address/" + value).then(res => {
-        // console.log(res.data);
         this.addressDetail = res.data;
       });
     },
@@ -197,13 +191,7 @@ export default {
     },
     //订单提交
     toSubmit() {
-      let obj = { address: [], date: "", data: [], tips: "", price: 0, quantity: 0 };
-      obj.address = this.addressDetail;
-      obj.date = this.date + this.time;
-      obj.tips = this.tips;
-      obj.data = this.data;
-      obj.price = this.saleTotal;
-      obj.quantity = this.numTotal;
+      let obj = { address: this.addressDetail, date: this.date + this.time, data: this.data, tips: this.tips, price: this.priceTotal, quantity: this.quantityTotal };
       console.log(obj);
     }
   },

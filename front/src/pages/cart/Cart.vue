@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       id:null,
+      isVip:null,
       goodsList: [],
       carColumn: [
         {
@@ -100,18 +101,29 @@ export default {
           align: "center",
           key: "quantity",
           render: (h, params) => {
-            return h("InputNumber", {
+           return  h("div",[
+               h("InputNumber", {
               props: {
                 value: Number(this.carData[params.index].quantity),
                 min: 1,
-                max: 20
+                max: Number(this.carData[params.index].inventory)
               },
               on: {
                 "on-change": value => {
                   this.carData[params.index].quantity = value;
                 }
               }
-            });
+            }),
+            h("span",{
+              style:{
+                // 库存量小于5的时候才显示
+                display:(params.row.inventory>=5)?"none":"inline-block",
+                marginLeft:"10px",
+                fontSize:"12px",
+                color:"red"
+              }
+            },"库存:"+this.carData[params.index].inventory)
+            ])
           }
         },
         {
@@ -149,7 +161,7 @@ export default {
       this.goodsList.forEach(element => {
         qTotal += Number(element.quantity);
       });
-      return nTotal;
+      return qTotal;
     },
     // 计算购物车总价格
     priceTotal() {
@@ -157,7 +169,7 @@ export default {
       this.goodsList.forEach(element => {
         pTotal += element.quantity * element.price;
       });
-      return sTotal;
+      return pTotal;
     }
   },
   methods: {
@@ -186,7 +198,7 @@ export default {
       this.$axios.get("/apis/users/"+this.id+"/carts").then(res => {
         this.carData = res.data;
         // 如果是会员，价格都变为会员价
-        if(JSON.parse(sessionStorage.getItem("obj")).isVip){
+        if(this.isVip){
           for (let i = 0; i < this.carData.length; i++) {
             this.carData[i].price = this.carData[i].vipPrice;
           }
@@ -194,21 +206,18 @@ export default {
       });
     },
     toBuy() {
-      let obj = { price: 0, num: 0, data: [] };
-      obj.price = this.priceTotal;
-      obj.num = this.quantityTotal;
-      obj.data = this.goodsList;
-      // if (obj.data.length) {
-      //   this.$axios.post("http://localhost:3000/orders", obj).then(res => {
+      if (this.goodsList.length) {
+        //这里保存的id是购物车表的id
+          sessionStorage.setItem("orderArr", JSON.stringify(this.goodsList));
           this.$router.push({ name: "OrderConfirm" });
-      //   });
-      // } else {
-      //   this.$Message.error("请选择商品");
-      // }
+      } else {
+        this.$Message.error("请选择商品");
+      }
     }
   },
   created() {
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.isVip = Number(sessionStorage.getItem("isVip"));
     this.getDatas();
   }
 };

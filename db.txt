@@ -34,9 +34,15 @@ goods{
 carts{
     name:"",
     price:"",
-    quanity:""//数量
-    num:""//编号
+    quanity:"",//数量
+    num:"",//编号
+    goodsId:""//商品id
+    inventory:""//库存
 },//购物车-users
+(carts{
+    userId:"",
+    goodId:"",
+})//购物车2-users
 orders{
     num:""//订单编号
     time:""//下单时间

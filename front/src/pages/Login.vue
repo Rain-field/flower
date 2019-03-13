@@ -83,7 +83,7 @@ export default {
                   }
                 sessionStorage.setItem("obj", JSON.stringify(pas));
                 sessionStorage.setItem("nickName", reg[0].nickName);
-
+                sessionStorage.setItem("isVip", reg[0].isVip);
                 vm.$router.push({
                   name: "Pages",
                 });
