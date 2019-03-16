@@ -36,6 +36,7 @@
             <FormItem label="配送日期">
               <DatePicker
                 type="date"
+                :options="options"
                 :start-date="new Date()"
                 placeholder="Select date"
                 style="width: 200px"
@@ -58,7 +59,7 @@
             v-model="tips"
             type="textarea"
             :row="4"
-            style="width:20%"
+            style="width:40%"
             placeholder="Enter something..."
           />
           <div class="order">
@@ -84,7 +85,8 @@ export default {
   name: "OrderConfirm",
   data() {
     return {
-      id:0,
+      id: null,
+      isVip:null,
       cityList: [], //地址列表
       addressDetail: [], //地址选择详情
       delivery: {}, //配送信息列表
@@ -98,13 +100,17 @@ export default {
         "18-20点",
         "20-22点"
       ], //时间表
-      time: "",//日期
-      date:"",//时间
+      time: "", //日期
+      date: "", //时间
       tips: "", //留言
       quantityTotal: 0, //总数量
       priceTotal: 0, //总价
-      url:null,
-      // src: { dizhi: require("../../assets/flower/001.jpg"), url: "" },
+      url: null,
+      options: {
+          disabledDate (date) {
+              return date && date.valueOf() < Date.now() - 86400000;
+          }
+      },//日期选择限制
       columns: [
         {
           title: "商品名称",
@@ -169,19 +175,18 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/users/"+this.id+"/address").then(res => {
+      this.$axios.get("/apis/users/" + this.id + "/address").then(res => {
         this.cityList = res.data;
       });
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
-      console.log(this.data);
       for (let i = 0; i < this.data.length; i++) {
-        this.quantityTotal += this.data[i].quantity; 
+        this.quantityTotal += this.data[i].quantity;
         this.priceTotal += this.data[i].price;
       }
     },
     //选择地址
     addressSelected(value) {
-      this.$axios.get("http://localhost:3000/address/" + value).then(res => {
+      this.$axios.get("/apis/address/" + value).then(res => {
         this.addressDetail = res.data;
       });
     },
@@ -189,14 +194,62 @@ export default {
     getDate(value) {
       this.date = value;
     },
+    // 日期格式化
+    formatDate (date) {
+        const y = date.getFullYear();
+        let m = date.getMonth() + 1;
+        m = m < 10 ? '0' + m : m;
+        let d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        let h = date.getHours();
+        h = h < 10 ? ('0' + h) : h
+        let M = date.getMinutes();
+        M = M < 10 ? ('0' + M) : M
+        let s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s
+        return y + '-' + m + '-' + d + ' '+ h +':' + M + ':' + s;
+    },
     //订单提交
     toSubmit() {
-      let obj = { address: this.addressDetail, date: this.date + this.time, data: this.data, tips: this.tips, price: this.priceTotal, quantity: this.quantityTotal };
-      console.log(obj);
+      let a = new Date();
+      let obj = {
+        address: this.addressDetail,
+        date: this.date + this.time,
+        data: this.data,
+        tips: this.tips,
+        price: this.priceTotal,
+        quantity: this.quantityTotal,
+        userId:this.id,
+        status:0,
+        time:this.formatDate(a) ,//下单时间
+        num:"0"+(String(a-0).substr(8))+Math.floor(Math.random()*90+10)//订单编号：0+后5毫秒时间戳+2位随机数
+      };
+      // 验证地址和送货时间是否输入
+      if(! Object.keys(obj.address).length || !this.date || !this.time){
+        this.$Message.warning("请补全订单信息!");
+      }else{
+        // 添加数据
+        this.$axios.post("/apis/orders", obj).then(res => {
+          // 修改商品库存
+          for (let i = 0; i < obj.data.length; i++) {
+            let newIventory = obj.data[i].inventory - obj.data[i].quantity;
+            this.$axios.patch("/apis/goods/"+obj.data[i].goodId,{inventory:newIventory})
+          }
+        })
+        if(obj.price>99 && !this.isVip){
+          this.$axios.patch("/apis/users/"+this.id,{isVip:1});
+          this.$Message.success("恭喜您达成会员条件，系统自动为您加入会员！");
+        }else{
+          this.$Message.success("恭喜您下单成功！");
+        }
+        this.$router.push({name:'Home'});
+      }
+     
     }
   },
   created() {
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.isVip = Number(sessionStorage.getItem("isVip"));
     this.getDatas();
   }
 };

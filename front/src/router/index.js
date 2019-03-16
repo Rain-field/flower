@@ -10,6 +10,7 @@ import GoodsDetail from '../pages/goods/GoodsDetail';
 import UserInfo from './userInfo/userInfo';
 import Help from './help/help';
 import Cart from './cart/cart';
+import Order from './order/order';
 
 Vue.use(Router)
 
@@ -31,7 +32,8 @@ export default new Router({
         },
         ...UserInfo,
         ...Help,
-        ...Cart
+        ...Cart,
+        ...Order
       ]
     },
     {

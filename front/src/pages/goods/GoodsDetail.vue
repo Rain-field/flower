@@ -53,6 +53,7 @@ export default {
       });
     },
     toBuy() {
+      this.isVip = Number(sessionStorage.getItem("isVip"));
       let arr = [{
           goodId: this.detail.id,
           name: this.detail.name,
@@ -66,6 +67,7 @@ export default {
       sessionStorage.setItem("orderArr", JSON.stringify(arr));
     },
     toCart() {
+    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
       let obj = {
         goodId:this.detail.id,
         name: this.detail.name,
@@ -105,8 +107,6 @@ export default {
   },
   created() {
     this.goodId = this.$route.params.id;
-    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
-    this.isVip = Number(sessionStorage.getItem("isVip"));
     this.getDatas();
   }
 };
