@@ -197,7 +197,6 @@ export default {
     getDatas() {
       this.$axios.get("/apis/users/"+this.id+"/carts").then(res => {
         this.carData = res.data;
-        console.log(this.carData);
         // 如果是会员，价格都变为会员价
         if(this.isVip){
           for (let i = 0; i < this.carData.length; i++) {
