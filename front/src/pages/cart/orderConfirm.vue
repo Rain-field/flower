@@ -179,6 +179,7 @@ export default {
         this.cityList = res.data;
       });
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
+      console.log(this.data);
       for (let i = 0; i < this.data.length; i++) {
         this.quantityTotal += this.data[i].quantity;
         this.priceTotal += this.data[i].price;
@@ -230,12 +231,15 @@ export default {
       }else{
         // 添加数据
         this.$axios.post("/apis/orders", obj).then(res => {
-          // 修改商品库存
           for (let i = 0; i < obj.data.length; i++) {
+          // 修改商品库存
             let newIventory = obj.data[i].inventory - obj.data[i].quantity;
             this.$axios.patch("/apis/goods/"+obj.data[i].goodId,{inventory:newIventory})
+          //清空购买商品在购物车的数据
+            this.$axios.delete("/apis/carts/"+obj.data[i].id);
           }
         })
+        
         if(obj.price>99 && !this.isVip){
           this.$axios.patch("/apis/users/"+this.id,{isVip:1});
           this.$Message.success("恭喜您达成会员条件，系统自动为您加入会员！");

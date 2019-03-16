@@ -44,7 +44,14 @@ carts{
     goodId:"",
 })//购物车2-users
 orders{
-    num:""//订单编号
-    time:""//下单时间
-
+    num:"",//订单编号
+    time:"",//下单时间
+    status:"",//订单状态
+    address:"",//地址
+    datas:[],//商品详情
+    tips:"",//备注
+    quanity:"",//数量
+    price:"",//总价
+    userId:"",
+    date:""//送货时间
 },//订单表-users
