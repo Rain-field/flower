@@ -17,6 +17,10 @@
           >{{item.name}}</routerLink>
         </ul>
       </div>
+      <div class="contact">
+        <div class="tel"><Icon type="ios-call-outline" size="28" color="#ff6700"/> 400-0008-8888</div>
+        <div class="toUs"><Icon type="ios-headset-outline" size="28" color="#ff6700"/> 在线客服</div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,20 +51,21 @@ export default {
 
 <style lang="less">
 .header_bg {
-  height: 80px;
+  height: 100px;
   border-bottom: 3px solid #ff6700;
   .mall_bg {
     width: 1240px;
     margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     .logo {
-      margin-top: -10px;
-      float: left;
       cursor: pointer;
     }
     .search {
-      width: 400px;
+      width: 28%;
       height: 70px;
-      margin: auto;
+      margin-left: 200px;
       margin-top: 20px;
       font-size: 0;
       .searchInput {
@@ -88,14 +93,21 @@ export default {
       }
       ul {
         display: flex;
-        font-size: 12px;
+        width: 330px;
         margin-top: 8px;
+        font-size: 12px;
         li:not(:first-child) {
           margin-left: 10px;
           color: #9a9a9a;
           cursor: pointer;
         }
       }
+    }
+    .contact{
+      width: 30%;
+      display: flex;
+      justify-content: space-around;
+
     }
   }
 }
