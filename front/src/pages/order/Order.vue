@@ -13,12 +13,21 @@
           v-model="inputFilter"
           @on-click="filterData(0)"
         />
-        <DatePicker type="datetimerange" placeholder="时间查询" style="marginLeft:20px; width: 187px"></DatePicker>
+        <DatePicker
+          type="daterange"
+          placeholder="时间段查询"
+          v-model="timeValue"
+          style="marginLeft:20px; width: 280px"
+          :options="options"
+          @on-change="timeSelected"
+          @on-clear="selectClear"
+        ></DatePicker>
         <Select
           style="marginLeft:20px; width:187px"
           @on-change="selectChange"
           clearable
           @on-clear="selectClear"
+          v-model="selectValue"
         >
           <Option value="0">待处理</Option>
           <Option value="1">已完成</Option>
@@ -32,6 +41,8 @@
       </div>
       <div class="none" v-if="!orignData.length">你还没有订单呢。去
         <router-link to="{name:'Home'}" tag="span">首页</router-link>下单吧！
+      </div>
+      <div class="none" v-if="!data1.length">没有找到符合要求的订单！
       </div>
       <div v-if="orignData.length">
         <div class="item" v-for="(item, index) in data1" :key="index">
@@ -87,7 +98,14 @@ export default {
       data1: [], //分页后进入表格的数据
       total: 0, //分页总数
       limit: 2, //每页条数
-      inputFilter: "" //输入筛选
+      inputFilter: "", //输入筛选
+      timeValue:"",//时间值
+      selectValue:"",//状态值
+      options: {
+        disabledDate(date) {
+          return date && date.valueOf() > Date.now();
+        }
+      } //日期选择限制
     };
   },
   methods: {
@@ -107,7 +125,7 @@ export default {
         this.data1 = JSON.parse(JSON.stringify(res));
       } else {
         // this.data1 = JSON.parse(JSON.stringify(res)).slice(0, this.limit);
-        this.data1 = Object.assign([],res.slice(0, this.limit));
+        this.data1 = Object.assign([], res.slice(0, this.limit));
       }
     },
     // 改变页码(page为改变后的页码)
@@ -139,17 +157,17 @@ export default {
     filterData(type, val) {
       //第一个type为过滤类型，第二个val为要过滤的值
       let vm = this;
-      let value = this.inputFilter;
-      this.data = JSON.parse(JSON.stringify(this.orignData)); //初始化data
-      switch (
-        type //type0表示搜索，type1表示订单状态查询，type2表示订单时间查询
-      ) {
+      let value = vm.inputFilter;
+      vm.data = JSON.parse(JSON.stringify(vm.orignData)); //初始化data
+      switch (type) {//type0表示搜索，type1表示订单状态查询，type2表示订单时间查询
         case 0:
+          this.selectValue = "";
+          this.timeValue = "";
           //如果输入值为空则保持为原数据
           if (value == "") {
-            this.dataChange(this.orignData);
+            vm.dataChange(vm.orignData);
           } else {
-            this.data = this.data.filter(function(item, index, arr) {
+            vm.data = vm.data.filter(function(item, index, arr) {
               let newArr = JSON.parse(JSON.stringify(item.data)); //将商品信息保存起来，用于后续赋值
               item.data = item.data.filter(function(element) {
                 //这里的item.data只会保存匹配的项，而需要的确实整个item的所有项
@@ -166,20 +184,28 @@ export default {
             });
           }
           break;
-        case 1:
-          this.data = this.data.filter(function(item) {
+        case 1: //状态选择
+          vm.data = vm.data.filter(function(item) {
             return item.status == val;
           });
           break;
-        case 2:
-          console.log(2);
+        case 2: //时间选择
+          vm.data = vm.data.filter(function(item) {
+            return (
+              vm.toTime(item.time) > vm.toTime(val[0]) &&
+              vm.toTime(item.time) < vm.toTime(val[1])
+            );
+          });
           break;
       }
-      this.dataChange(this.data);
+      vm.dataChange(vm.data);
     },
     //订单状态选择
     selectChange(value) {
+      this.timeValue="";
+      this.inputFilter="";
       this.filterData(1, value);
+      console.log(value)
     },
     // 订单状态清空
     selectClear() {
@@ -187,8 +213,14 @@ export default {
       // this.dataChange(this.data);
       this.getDatas();
     },
-    timeSelected(name) {
-      console.log(name);
+    timeSelected(value) {
+      this.selectValue="";
+      this.inputFilter="";
+      this.filterData(2, value);
+    },
+    // 日期转时间戳
+    toTime(value) {
+      return new Date(value).getTime();
     }
   },
   created() {
@@ -241,6 +273,7 @@ export default {
       line-height: 64px;
       text-align: center;
       background-color: rgb(229, 229, 229);
+      margin-bottom: 10px;
       span {
         cursor: pointer;
         color: #ff6700;

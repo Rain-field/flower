@@ -108,7 +108,7 @@ export default {
       url: null,
       options: {
           disabledDate (date) {
-              return date && date.valueOf() < Date.now() - 86400000;
+              return date && date.valueOf() < Date.now() - 86400000;//86400000代表一同的时间
           }
       },//日期选择限制
       columns: [
@@ -179,7 +179,6 @@ export default {
         this.cityList = res.data;
       });
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
-      console.log(this.data);
       for (let i = 0; i < this.data.length; i++) {
         this.quantityTotal += this.data[i].quantity;
         this.priceTotal += this.data[i].price;
