@@ -25,7 +25,7 @@
 <script>
 export default {
   name: "Categories",
-  props:['title'],
+  props:['title','goodId'],//标题和类型id
   data() {
     return {
       mainImg:{src: require("../assets/flower/main.jpg"), url: ""},
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods").then(res => {
+      this.$axios.get("/apis/goods?_page=1&_limit=8&type="+this.goodId).then(res => {
         this.lists = res.data;
         this.lists.forEach((item,index) => {
           item.url = require("@/"+item.url);
