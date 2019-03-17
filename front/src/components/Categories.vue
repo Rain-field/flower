@@ -1,8 +1,8 @@
 <template>
   <div id="categories">
     <div class="flower">
-      <div class="flower_title">鲜花</div>
-      <div class="flower_more">查看更多</div>
+      <div class="flower_title">{{title}}</div>
+      <div class="flower_more"><Icon type="ios-arrow-dropright-circle" size="30" color="#ff6700"/></div>
     </div>
     <div class="flower_wrap">
       <div class="flower_main">
@@ -25,6 +25,7 @@
 <script>
 export default {
   name: "Categories",
+  props:['title'],
   data() {
     return {
       mainImg:{src: require("../assets/flower/main.jpg"), url: ""},
@@ -42,7 +43,7 @@ export default {
     },
     toDetail(id){
       this.$router.push({name:"GoodsDetail",params:{id:id}});
-    }
+    },
   },
   created() {
     this.getDatas();
@@ -53,6 +54,9 @@ export default {
 <style lang="less" scoped>
 #categories {
   width: 1240px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow:1px 2px 3px 4px #ff6700 outset;
   margin: 20px auto;
   .flower {
     display: flex;

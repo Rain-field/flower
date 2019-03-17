@@ -79,6 +79,7 @@
           show-sizer
           show-total
           transfer
+          :page-size-opts=pageSize
           @on-change="changPage"
           @on-page-size-change="changePageSize"
         />
@@ -98,6 +99,7 @@ export default {
       data1: [], //分页后进入表格的数据
       total: 0, //分页总数
       limit: 2, //每页条数
+      pageSize:[2,5,10,15,20],//自定义每页条数
       inputFilter: "", //输入筛选
       timeValue:"",//时间值
       selectValue:"",//状态值
@@ -253,7 +255,7 @@ export default {
       line-height: 32px;
       text-align: center;
       display: flex;
-      background-color: rgb(245, 245, 245);
+      background-color: #ff670029;
       border-radius: 5px;
       margin-bottom: 10px;
       .tabsDetail {
@@ -285,7 +287,7 @@ export default {
       .itemTop {
         padding: 0 20px;
         height: 32px;
-        background-color: rgb(245, 245, 245);
+        background-color: #ff670029;
         display: flex;
         justify-content: space-between;
         align-items: center;

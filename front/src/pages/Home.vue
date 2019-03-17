@@ -2,7 +2,7 @@
   <div id="home">
     <heads></heads>
     <header-bg></header-bg>
-    <Layout :style="{paddingTop:'20px'}">
+    <Layout>
       <router-view></router-view>
     </Layout>
     <foots></foots>

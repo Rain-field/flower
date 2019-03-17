@@ -2,7 +2,10 @@
   <div id="page">
       <naver></naver>
       <lun-bo></lun-bo>
-      <categories></categories>
+      <categories title="鲜花"></categories>
+      <categories title="蛋糕"></categories>
+      <categories title="绿植"></categories>
+      <categories title="礼品"></categories>
     </div>
 </template>
 
