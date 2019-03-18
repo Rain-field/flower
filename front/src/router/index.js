@@ -6,7 +6,7 @@ import Register from '../pages/Register';
 import Home from '../pages/Home';
 
 import Page from '../pages/mainPage/Page';
-import GoodsDetail from '../pages/goods/GoodsDetail';
+import Goods from './goods/goods';
 import UserInfo from './userInfo/userInfo';
 import Help from './help/help';
 import Cart from './cart/cart';
@@ -25,11 +25,7 @@ export default new Router({
           name: 'Pages',
           component: Page
         },
-        {
-          path: '/goods/:id',
-          name: 'GoodsDetail',
-          component: GoodsDetail
-        },
+        ...Goods,
         ...UserInfo,
         ...Help,
         ...Cart,

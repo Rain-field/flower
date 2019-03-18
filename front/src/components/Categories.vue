@@ -2,10 +2,10 @@
   <div id="categories">
     <div class="flower">
       <div class="flower_title">{{title}}</div>
-      <div class="flower_more"><Icon type="ios-arrow-dropright-circle" size="30" color="#ff6700"/></div>
+      <div class="flower_more" @click="toGoods"><Icon type="ios-arrow-dropright-circle" size="30" color="#ff6700"/></div>
     </div>
     <div class="flower_wrap">
-      <div class="flower_main">
+      <div class="flower_main" @click="toGoods">
         <img :src="mainImg.src" alt>
       </div>
       <div class="flower_sections">
@@ -44,6 +44,9 @@ export default {
     toDetail(id){
       this.$router.push({name:"GoodsDetail",params:{id:id}});
     },
+    toGoods(){
+       this.$router.push({name:"Goods",params:{id:this.goodId}});
+    }
   },
   created() {
     this.getDatas();
@@ -76,6 +79,7 @@ export default {
   .flower_wrap {
     display: flex;
     .flower_main {
+      cursor: pointer;
       width: 21%;
       height: 600px;
       img {

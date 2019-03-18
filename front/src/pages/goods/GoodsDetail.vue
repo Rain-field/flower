@@ -60,7 +60,9 @@ export default {
           num: this.detail.num,
           quantity: this.value,
           price: null,
-          url: this.detail.url
+          url: this.detail.url,
+          inventory: this.detail.inventory,
+          haveSaled:this.detail.haveSaled
         }]
       arr[0].price = this.isVip?this.value * this.detail.vipPrice:this.value * this.detail.price;
       this.$router.push({ name: "OrderConfirm" });
@@ -77,7 +79,8 @@ export default {
         vipPrice: this.value * this.detail.vipPrice,
         url: this.detail.url,
         userId: this.id,
-        inventory: this.detail.inventory
+        inventory: this.detail.inventory,
+        haveSaled:this.detail.haveSaled
       };
       //加入购物车前先请求购物车数据，如果没有则直接添加
       this.$axios.get("/apis/users/" + this.id + "/carts").then(res => {

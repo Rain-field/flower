@@ -240,7 +240,6 @@ export default {
 
 <style lang="less" scoped>
 .order {
-  margin-top: 20px;
   width: 1240px;
   margin: auto;
   .orderContent {
@@ -359,10 +358,6 @@ export default {
     .page {
       text-align: right;
     }
-    // .item:hover .del {
-    //   background: url("../../assets/delete.png");
-    //   background-size: 100% 100%;
-    // }
   }
 }
 </style>

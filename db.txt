@@ -9,7 +9,7 @@ users:{
     }
     auto:{
         str:"",//签名字符串
-        isVip: //是否vip，0非1是（默认0）
+        isVip: 0//是否vip，0非1是（默认0）
     }
 },//用户表
 areas{
@@ -29,7 +29,8 @@ goods{
     vipPrice:"",
     online:1,//1代表上线，0代表下线
     type:1,//1代表鲜花,2代表蛋糕，3代表绿植，4代表礼品
-    url:""//图片地址
+    url:""，//图片地址
+    haveSaled:""//销量
 },//商品列表
 carts{
     name:"",
@@ -53,5 +54,5 @@ orders{
     quanity:"",//数量
     price:"",//总价
     userId:"",
-    date:""//送货时间
+    date:"",//送货时间
 },//订单表-users

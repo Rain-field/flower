@@ -180,8 +180,8 @@ export default {
       });
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
       for (let i = 0; i < this.data.length; i++) {
-        this.quantityTotal += this.data[i].quantity;
-        this.priceTotal += this.data[i].price;
+        this.quantityTotal += Number(this.data[i].quantity);
+        this.priceTotal += Number(this.data[i].price);
       }
     },
     //选择地址
@@ -233,9 +233,12 @@ export default {
           for (let i = 0; i < obj.data.length; i++) {
           // 修改商品库存
             let newIventory = obj.data[i].inventory - obj.data[i].quantity;
-            this.$axios.patch("/apis/goods/"+obj.data[i].goodId,{inventory:newIventory})
+            let newHaveSaled =obj.data[i].haveSaled+obj.data[i].quantity;
+            this.$axios.patch("/apis/goods/"+obj.data[i].goodId,{inventory:newIventory,haveSaled:newHaveSaled})
           //清空购买商品在购物车的数据
-            this.$axios.delete("/apis/carts/"+obj.data[i].id);
+            if(obj.data[i].vipPrice){
+              this.$axios.delete("/apis/carts/"+obj.data[i].id);
+            }
           }
         })
         
