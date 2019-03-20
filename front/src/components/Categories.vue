@@ -6,7 +6,7 @@
     </div>
     <div class="flower_wrap">
       <div class="flower_main" @click="toGoods">
-        <img :src="mainImg.src" alt>
+        <img :src="main[goodId-1]" alt>
       </div>
       <div class="flower_sections">
         <div class="flower_section" v-for="(item, index) in lists" :key="index">
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       mainImg:{src: require("../assets/flower/main.jpg"), url: ""},
+      main:[require("../assets/activity/main1.jpg"),require("../assets/activity/main2.jpg"),require("../assets/activity/main3.png"),require("../assets/activity/main4.jpg")],
       lists:[]
     };
   },
