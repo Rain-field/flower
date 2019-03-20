@@ -69,7 +69,9 @@ export default {
       sessionStorage.setItem("orderArr", JSON.stringify(arr));
     },
     toCart() {
-    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+      if(sessionStorage.getItem("obj")){
+         this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+      }
       let obj = {
         goodId:this.detail.id,
         name: this.detail.name,

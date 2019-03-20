@@ -357,6 +357,7 @@ export default {
     }
     .page {
       text-align: right;
+      margin: 20px 0;
     }
   }
 }

@@ -5,6 +5,7 @@
     <Layout>
       <router-view></router-view>
     </Layout>
+    <hr>
     <foots></foots>
   </div>
 </template>

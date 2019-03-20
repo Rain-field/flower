@@ -2,23 +2,15 @@
   <nav>
     <div class="mall_nav">
       <div class="nav_top">
-        <Dropdown>
+        <Dropdown  @on-click="toGoods">
           <Button type="warning">商品分类
             <Icon type="ios-arrow-down"></Icon>
           </Button>
           <DropdownMenu slot="list">
-            <Dropdown placement="right-start">
-              <DropdownItem>鲜花
-                <Icon type="ios-arrow-forward"></Icon>
-              </DropdownItem>
-              <DropdownMenu slot="list">
-                <DropdownItem>送长辈</DropdownItem>
-                <DropdownItem>送女友</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <DropdownItem>蛋糕</DropdownItem>
-            <DropdownItem>礼品</DropdownItem>
-            <DropdownItem>绿植</DropdownItem>
+            <DropdownItem name="1">鲜花</DropdownItem>
+            <DropdownItem name="2">蛋糕</DropdownItem>
+            <DropdownItem name="3">礼品</DropdownItem>
+            <DropdownItem name="4">绿植</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -27,7 +19,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+     toGoods(id){
+       this.$router.push({name:"Goods",params:{id:id}});
+    }
+  },
+};
 </script>
 
 <style >

@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods?_page=1&_limit=8&type="+this.goodId).then(res => {
+      this.$axios.get("/apis/goods?online=1&_page=1&_limit=8&type="+this.goodId).then(res => {
         this.lists = res.data;
         this.lists.forEach((item,index) => {
           item.url = require("@/"+item.url);
@@ -91,10 +91,10 @@ export default {
         width: 79%;
         display: flex;
         flex-wrap: wrap;
-        cursor: pointer;
       .flower_section {
           width: 23.5%;
         margin-left: 1.5%;
+        cursor: pointer;
         .flower_img {
           height: 225px;
           img {

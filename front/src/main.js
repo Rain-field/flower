@@ -12,6 +12,15 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios;
 Vue.use(iView);
 
+router.beforeEach((to,from,next) => {
+  if(to.name == 'Login' || to.name == 'Pages' || to.name == 'Goods' || to.name == 'GoodsDetail' || to.name == 'Help' || to.name == 'Register'){
+    next();
+  }else if(sessionStorage.getItem("obj")){
+    next();
+  }else{
+    next({name:'Login'});
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -1,15 +1,15 @@
 <template>
-  <Content :style="{ minHeight: '300px', background: '#f5f7f9;'}" class="goods">
+  <Content class="goods">
     <div class="goodsContent">
       <div class="tabs">
-        <span>销量
-          <Icon type="md-arrow-dropup"/>
-        </span>
-        <span>时间
+        <span :class="[active==1?'active':'']" @click="tabsChange(1)">销量
           <Icon type="md-arrow-dropdown"/>
         </span>
-        <span>价格
-          <Icon type="md-arrow-dropup"/>
+        <span :class="[active==2?'active':'']" @click="tabsChange(2)">新品
+          <Icon type="md-arrow-dropdown"/>
+        </span>
+        <span :class="[active==3?'active':'']" @click="tabsChange(3)">价格
+          <Icon :type="status==0?'md-arrow-dropdown':'md-arrow-dropup'"/>
         </span>
       </div>
       <div class="flower_sections">
@@ -38,6 +38,15 @@
         </div>
       </div>
     </div>
+     <Page
+          :total="total"
+          :page-size="limit"
+          class-name="page"
+          prev-text="上一页" next-text="下一页"
+          show-elevator
+          transfer
+          @on-change="changPage"
+        />
   </Content>
 </template>
 
@@ -47,19 +56,102 @@ export default {
     return {
       id: null,
       isVip: null,
-      lists: []
+      data:[],
+      lists: [],
+      active: 0, //显示激活状态的类
+      status: 0, //升序降序状态,0表示降序，1表示升序
+      total: 0, //分页总数
+      limit: 10, //每页条数
     };
   },
   methods: {
     getDatas() {
       this.$axios
-        .get("/apis/goods/?type=" + this.$route.params.id)
+        .get("/apis/goods/?online=1&type=" + this.$route.params.id)
         .then(res => {
-          this.lists = res.data;
-          this.lists.forEach((item, index) => {
+          this.data = JSON.parse(JSON.stringify(res.data));
+          this.data.forEach((item, index) => {
             item.url = require("@/" + item.url);
           });
+          this.dataChange(this.data);
         });
+    },
+    //因为数据排序后还要重新调用一次所以单独抽离出来
+    dataChange(res) {
+      // 如果获取数据的总条数小于每页的条数，就把总数据赋值给表格数据，否则就根据每页条数进行分页
+      this.total = res.length; //获取数据条数(不能触发length状态的更新)打印长度为0
+      if (this.total < this.limit) {
+        this.lists = JSON.parse(JSON.stringify(res));
+      } else {
+        // this.lists = JSON.parse(JSON.stringify(res)).slice(0, this.limit);
+        this.lists = Object.assign([], res.slice(0, this.limit));
+      }
+    },
+    // 改变页码(page为改变后的页码)
+    changPage(page) {
+      var _start = (page - 1) * this.limit;
+      var _end = page * this.limit;
+      this.lists = this.data.slice(_start, _end);
+    },
+    // 选项卡切换+排序功能
+    tabsChange(id) {
+      this.active = id;
+      switch (id) {
+        case 1:
+          // 销量降序
+          this.$axios
+            .get(
+              "/apis/goods/?online=1&type=" +
+                this.$route.params.id +
+                "&_sort=haveSaled&_order=desc"
+            )
+            .then(res => {
+              this.data = JSON.parse(JSON.stringify(res.data));
+              this.data.forEach((item, index) => {
+                item.url = require("@/" + item.url);
+              });
+              this.dataChange(this.data);
+              this.status = 1;
+            });
+          break;
+        case 2:
+          // 时间降序
+          this.$axios
+            .get("/apis/goods/?online=1&type=" + this.$route.params.id)
+            .then(res => {
+              this.data = JSON.parse(JSON.stringify(res.data)).reverse();
+              this.data.forEach((item, index) => {
+                item.url = require("@/" + item.url);
+              });
+              this.dataChange(this.data);
+            });
+          break;
+        case 3:
+          this.$axios
+            .get(
+              "/apis/goods/?online=1&type=" +
+                this.$route.params.id +
+                "&_sort=vipPrice&_order=desc"
+            )
+            .then(res => {
+          // 价格降序
+              if (this.status) {
+              this.data = JSON.parse(JSON.stringify(res.data));
+                this.data.forEach((item, index) => {
+                  item.url = require("@/" + item.url);
+                });
+              }else{
+          // 价格升序
+              this.data = JSON.parse(JSON.stringify(res.data)).reverse();
+                this.data.forEach((item, index) => {
+                  item.url = require("@/" + item.url);
+                });
+              }
+              this.dataChange(this.data);
+              this.status = !this.status;
+            });
+          break;
+      }
     },
     toDetail(userId) {
       this.$router.push({ name: "GoodsDetail", params: { id: userId } });
@@ -87,7 +179,9 @@ export default {
       });
     },
     toCart(userId) {
-      this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+      if (sessionStorage.getItem("obj")) {
+        this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+      }
       var detail = [];
       this.$axios.get("/apis/goods/" + userId).then(res => {
         detail = res.data;
@@ -96,8 +190,8 @@ export default {
           name: detail.name,
           num: detail.num,
           quantity: 1,
-          price:  detail.price,
-          vipPrice:  detail.vipPrice,
+          price: detail.price,
+          vipPrice: detail.vipPrice,
           url: require("@/" + detail.url),
           userId: this.id,
           inventory: detail.inventory,
@@ -121,14 +215,14 @@ export default {
               this.$axios
                 .patch("/apis/carts/" + a[0].id, { quantity: newNum })
                 .then(res => {
-                //   this.$router.push({ name: "Cart" });
-                this.$Message.success("成功添加到购物车!");
+                  //   this.$router.push({ name: "Cart" });
+                  this.$Message.success("成功添加到购物车!");
                 });
             }
           } else {
             this.$axios.post("/apis/carts", obj).then(res => {
-            //   this.$router.push({ name: "Cart" });
-                this.$Message.success("成功添加到购物车!");
+              //   this.$router.push({ name: "Cart" });
+              this.$Message.success("成功添加到购物车!");
             });
           }
         });
@@ -159,6 +253,7 @@ export default {
   margin: auto;
 
   .goodsContent {
+    padding: 10px 0;
     .tabs {
       height: 32px;
       font-size: 14px;
@@ -171,7 +266,12 @@ export default {
       color: #515a6e;
       span {
         cursor: pointer;
+        padding: 0 20px;
         margin-left: 20px;
+      }
+      .active {
+        background-color: #ff6700;
+        color: white;
       }
     }
     .flower_sections {
@@ -180,11 +280,11 @@ export default {
       flex-wrap: wrap;
       font-size: 14px;
       .flower_section {
+        border: 1px solid #e3e3e3;
         cursor: pointer;
-        width: 18%;
+        width: 17.6%;
         padding: 10px;
         border-radius: 5px;
-        background-color: #fff;
         margin-left: 2%;
         div {
           margin-top: 5px;
@@ -253,5 +353,9 @@ export default {
       }
     }
   }
+    .page {
+      text-align: right;
+      margin: 20px 0;
+    }
 }
 </style>

@@ -1,7 +1,7 @@
 import Help from '../../pages/help/Help';
 
 export default [{
-  path: '/index/help',
+  path: '/help',
   name: 'Help',
   component: Help
 }]
