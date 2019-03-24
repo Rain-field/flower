@@ -42,10 +42,9 @@
       <div class="none" v-if="!orignData.length">你还没有订单呢。去
         <router-link to="{name:'Home'}" tag="span">首页</router-link>下单吧！
       </div>
-      <div class="none" v-if="!data1.length">没有找到符合要求的订单！
-      </div>
+      <div class="none" v-if="!data.length">没有找到符合要求的订单！</div>
       <div v-if="orignData.length">
-        <div class="item" v-for="(item, index) in data1" :key="index">
+        <div class="item" v-for="(item, index) in data" :key="index">
           <div class="itemTop">
             <div class="itemTopLeft">
               <span class="time">{{item.time}}</span>
@@ -79,7 +78,7 @@
           show-sizer
           show-total
           transfer
-          :page-size-opts=pageSize
+          :page-size-opts="pageSize"
           @on-change="changPage"
           @on-page-size-change="changePageSize"
         />
@@ -96,13 +95,13 @@ export default {
       id: null,
       orignData: [], //原始数据，主要用于筛选初始化后恢复原来的数据
       data: [], //原始数据
-      data1: [], //分页后进入表格的数据
+      data: [], //分页后进入表格的数据
       total: 0, //分页总数
-      limit: 2, //每页条数
-      pageSize:[2,5,10,15,20],//自定义每页条数
+      limit: 5, //每页条数
+      pageSize: [2, 5, 10, 15, 20], //自定义每页条数
       inputFilter: "", //输入筛选
-      timeValue:"",//时间值
-      selectValue:"",//状态值
+      timeValue: "", //时间值
+      selectValue: "", //状态值
       options: {
         disabledDate(date) {
           return date && date.valueOf() > Date.now();
@@ -116,7 +115,7 @@ export default {
         res.data = res.data.reverse();
         this.data = JSON.parse(JSON.stringify(res.data));
         this.orignData = JSON.parse(JSON.stringify(res.data));
-        this.dataChange(this.data); //必须使用this.data，不能使用res.data，事关深拷贝
+        this.dataChange(this.orignData); //必须使用this.data，不能使用res.data，事关深拷贝
       });
     },
     //因为筛选数据后还要重新调用一次所以单独抽离出来
@@ -124,17 +123,17 @@ export default {
       // 如果获取数据的总条数小于每页的条数，就把总数据赋值给表格数据，否则就根据每页条数进行分页
       this.total = res.length; //获取数据条数(不能触发length状态的更新)打印长度为0
       if (this.total < this.limit) {
-        this.data1 = JSON.parse(JSON.stringify(res));
+        this.data = JSON.parse(JSON.stringify(res));
       } else {
-        // this.data1 = JSON.parse(JSON.stringify(res)).slice(0, this.limit);
-        this.data1 = Object.assign([], res.slice(0, this.limit));
+        this.data = JSON.parse(JSON.stringify(res)).slice(0, this.limit);
+        // this.data = Object.assign([], res.slice(0, this.limit));
       }
     },
     // 改变页码(page为改变后的页码)
     changPage(page) {
       var _start = (page - 1) * this.limit;
       var _end = page * this.limit;
-      this.data1 = this.data.slice(_start, _end);
+      this.data = this.orignData.slice(_start, _end);
     },
     //改变每页条数
     changePageSize(pageSize) {
@@ -161,7 +160,9 @@ export default {
       let vm = this;
       let value = vm.inputFilter;
       vm.data = JSON.parse(JSON.stringify(vm.orignData)); //初始化data
-      switch (type) {//type0表示搜索，type1表示订单状态查询，type2表示订单时间查询
+      switch (
+        type //type0表示搜索，type1表示订单状态查询，type2表示订单时间查询
+      ) {
         case 0:
           this.selectValue = "";
           this.timeValue = "";
@@ -184,12 +185,14 @@ export default {
                 return item.num.match(value) || item.address.name.match(value);
               }
             });
+            vm.dataChange(vm.data);
           }
           break;
         case 1: //状态选择
           vm.data = vm.data.filter(function(item) {
             return item.status == val;
           });
+          vm.dataChange(vm.data);
           break;
         case 2: //时间选择
           vm.data = vm.data.filter(function(item) {
@@ -198,26 +201,23 @@ export default {
               vm.toTime(item.time) < vm.toTime(val[1])
             );
           });
+          vm.dataChange(vm.data);
           break;
       }
-      vm.dataChange(vm.data);
     },
     //订单状态选择
     selectChange(value) {
-      this.timeValue="";
-      this.inputFilter="";
+      this.timeValue = "";
+      this.inputFilter = "";
       this.filterData(1, value);
-      console.log(value)
     },
     // 订单状态清空
     selectClear() {
-      // this.data = JSON.parse(JSON.stringify(this.orignData));
-      // this.dataChange(this.data);
       this.getDatas();
     },
     timeSelected(value) {
-      this.selectValue="";
-      this.inputFilter="";
+      this.selectValue = "";
+      this.inputFilter = "";
       this.filterData(2, value);
     },
     // 日期转时间戳
@@ -226,7 +226,7 @@ export default {
     }
   },
   created() {
-    this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+    this.id = Number(JSON.parse(sessionStorage.getItem("obj")).id);
     this.getDatas();
   }
 };
