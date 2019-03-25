@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/users/" + this.id + "/orders").then(res => {
+      this.$axios.get(this.baseURL+"/users/" + this.id + "/orders").then(res => {
         res.data = res.data.reverse();
         this.data = JSON.parse(JSON.stringify(res.data));
         this.orignData = JSON.parse(JSON.stringify(res.data));
@@ -147,7 +147,7 @@ export default {
         title: "提示",
         content: "确认要删除吗？",
         onOk: () => {
-          this.$axios.delete("/apis/orders/" + id).then(res => {
+          this.$axios.delete(this.baseURL+"/orders/" + id).then(res => {
             vm.$Message.info("删除成功");
             vm.getDatas();
           });

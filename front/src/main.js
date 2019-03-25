@@ -10,6 +10,7 @@ import 'iview/dist/styles/iview.css';
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios;
+Vue.prototype.baseURL = process.env.API_ROOT;
 Vue.use(iView);
 
 router.beforeEach((to,from,next) => {

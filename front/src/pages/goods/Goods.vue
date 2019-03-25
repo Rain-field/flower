@@ -67,7 +67,7 @@ export default {
   methods: {
     getDatas() {
       this.$axios
-        .get("/apis/goods/?online=1&type=" + this.$route.params.id)
+        .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
         .then(res => {
           this.data = JSON.parse(JSON.stringify(res.data));
           this.data.forEach((item, index) => {
@@ -101,7 +101,7 @@ export default {
           // 销量降序
           this.$axios
             .get(
-              "/apis/goods/?online=1&type=" +
+              this.baseURL+"/goods/?online=1&type=" +
                 this.$route.params.id +
                 "&_sort=haveSaled&_order=desc"
             )
@@ -117,7 +117,7 @@ export default {
         case 2:
           // 时间降序
           this.$axios
-            .get("/apis/goods/?online=1&type=" + this.$route.params.id)
+            .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
             .then(res => {
               this.data = JSON.parse(JSON.stringify(res.data)).reverse();
               this.data.forEach((item, index) => {
@@ -129,7 +129,7 @@ export default {
         case 3:
           this.$axios
             .get(
-              "/apis/goods/?online=1&type=" +
+              this.baseURL+"/goods/?online=1&type=" +
                 this.$route.params.id +
                 "&_sort=vipPrice&_order=desc"
             )
@@ -159,7 +159,7 @@ export default {
     toBuy(userId) {
       this.isVip = Number(sessionStorage.getItem("isVip"));
       var detail = [];
-      this.$axios.get("/apis/goods/" + userId).then(res => {
+      this.$axios.get(this.baseURL+"/goods/" + userId).then(res => {
         detail = res.data;
         let arr = [
           {
@@ -183,7 +183,7 @@ export default {
         this.id = JSON.parse(sessionStorage.getItem("obj")).id;
       }
       var detail = [];
-      this.$axios.get("/apis/goods/" + userId).then(res => {
+      this.$axios.get(this.baseURL+"/goods/" + userId).then(res => {
         detail = res.data;
         let obj = {
           goodId: detail.id,
@@ -198,7 +198,7 @@ export default {
           haveSaled: detail.haveSaled
         };
         //加入购物车前先请求购物车数据，如果没有则直接添加
-        this.$axios.get("/apis/users/" + this.id + "/carts").then(res => {
+        this.$axios.get(this.baseURL+"/users/" + this.id + "/carts").then(res => {
           if (res.data.length !== 0) {
             // 查找是商品编号是否有相等的
             let a = res.data.filter(function(item, index) {
@@ -206,21 +206,21 @@ export default {
             });
             // 比较编号相等(即过滤出来length!=0)则数量+1
             if (a.length == 0) {
-              this.$axios.post("/apis/carts", obj).then(res => {
+              this.$axios.post(this.baseURL+"/carts", obj).then(res => {
                 // this.$router.push({ name: "Cart" });
                 this.$Message.success("成功添加到购物车!");
               });
             } else {
               let newNum = a[0].quantity + obj.quantity;
               this.$axios
-                .patch("/apis/carts/" + a[0].id, { quantity: newNum })
+                .patch(this.baseURL+"/carts/" + a[0].id, { quantity: newNum })
                 .then(res => {
                   //   this.$router.push({ name: "Cart" });
                   this.$Message.success("成功添加到购物车!");
                 });
             }
           } else {
-            this.$axios.post("/apis/carts", obj).then(res => {
+            this.$axios.post(this.baseURL+"/carts", obj).then(res => {
               //   this.$router.push({ name: "Cart" });
               this.$Message.success("成功添加到购物车!");
             });

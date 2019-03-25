@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods/" + this.goodId).then(res => {
+      this.$axios.get(this.baseURL+"/goods/" + this.goodId).then(res => {
         this.detail = res.data;
         this.detail.url = require("@/" + this.detail.url);
       });
@@ -85,7 +85,7 @@ export default {
         haveSaled:this.detail.haveSaled
       };
       //加入购物车前先请求购物车数据，如果没有则直接添加
-      this.$axios.get("/apis/users/" + this.id + "/carts").then(res => {
+      this.$axios.get(this.baseURL+"/users/" + this.id + "/carts").then(res => {
         if (res.data.length !== 0) {
           // 查找是商品编号是否有相等的
           let a = res.data.filter(function(item, index) {
@@ -93,17 +93,17 @@ export default {
           });
           // 比较编号相等(即过滤出来length!=0)则数量+1
           if (a.length == 0) {
-            this.$axios.post("/apis/carts", obj).then(res => {
+            this.$axios.post(this.baseURL+"/carts", obj).then(res => {
               this.$router.push({ name: "Cart" });
             });
           }else{
             let newNum = a[0].quantity + obj.quantity;
-            this.$axios.patch("/apis/carts/"+a[0].id, {quantity:newNum}).then(res => {
+            this.$axios.patch(this.baseURL+"/carts/"+a[0].id, {quantity:newNum}).then(res => {
               this.$router.push({name:"Cart"});        
           })
           }
         } else {
-          this.$axios.post("/apis/carts", obj).then(res => {
+          this.$axios.post(this.baseURL+"/carts", obj).then(res => {
             this.$router.push({ name: "Cart" });
           });
         }

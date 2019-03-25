@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     remove(index) {
-      this.$axios.delete("/apis/address/" + index).then(res => {
+      this.$axios.delete(this.baseURL+"/address/" + index).then(res => {
         this.getDatas();
         this.$Message.success("删除成功!");
       });
@@ -142,7 +142,7 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           this.$axios
-            .post("/apis/address", newData)
+            .post(this.baseURL+"/address", newData)
             .then(res => {
               this.formItem = {};
               this.getDatas();
@@ -156,14 +156,14 @@ export default {
     },
     getDatas() {
       // 获取表格地址数据
-      this.$axios.get("/apis/users/"+this.id+"/address").then(res => {
+      this.$axios.get(this.baseURL+"/users/"+this.id+"/address").then(res => {
         this.data1 = res.data;
       });
     }
   },
   created() {
     //获取级联数据
-    this.$axios.get("/apis/areas").then(res => {
+    this.$axios.get(this.baseURL+"/areas").then(res => {
       this.data = res.data;
     });
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;

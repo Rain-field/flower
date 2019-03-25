@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get("/apis/goods?online=1&_page=1&_limit=8&type="+this.goodId).then(res => {
+      this.$axios.get(this.baseURL+"/goods?online=1&_page=1&_limit=8&type="+this.goodId).then(res => {
         this.lists = res.data;
         this.lists.forEach((item,index) => {
           item.url = require("@/"+item.url);

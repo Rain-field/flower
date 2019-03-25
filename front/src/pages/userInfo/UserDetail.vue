@@ -48,13 +48,13 @@ export default {
       this.formItem.birthday = value;
     },
     handleSubmit() {
-      this.$axios.patch("/apis/users/" + this.id, this.formItem).then(res => {
+      this.$axios.patch(this.baseURL+"/users/" + this.id, this.formItem).then(res => {
         sessionStorage.setItem("nickName",this.formItem.nickName);
         this.$Message.success("修改成功");
       });
     },
     getDatas() {
-      this.$axios.get("/apis/users/" + this.id).then(res => {
+      this.$axios.get(this.baseURL+"/users/" + this.id).then(res => {
         this.formItem = res.data;
       });
     }

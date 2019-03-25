@@ -82,7 +82,7 @@ export default {
         if (valid) {
           //判断密码正确
           if (str_md5(this.formInline.pwd) === this.pwd) {
-            this.$axios.patch("/apis/users/" + this.id,{password:str_md5(this.formInline.newPwd)}).then(res => {
+            this.$axios.patch(this.baseURL+"/users/" + this.id,{password:str_md5(this.formInline.newPwd)}).then(res => {
               this.formInline = {};
               this.$Message.success("修改成功!");
             });
@@ -93,7 +93,7 @@ export default {
       });
     },
     getDatas() {
-      this.$axios.get("/apis/users/" + this.id).then(res => {
+      this.$axios.get(this.baseURL+"/users/" + this.id).then(res => {
         this.pwd = res.data.password;
       });
     }

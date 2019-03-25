@@ -174,7 +174,7 @@ export default {
   },
   methods: {
     remove(index) {
-      this.$axios.delete("/apis/carts/" + index).then(res => {
+      this.$axios.delete(this.baseURL+"/carts/" + index).then(res => {
         this.$Message.success("删除成功");
         this.getDatas();
       });
@@ -195,7 +195,7 @@ export default {
     },
     // 获取数据
     getDatas() {
-      this.$axios.get("/apis/users/"+this.id+"/carts").then(res => {
+      this.$axios.get(this.baseURL+"/users/"+this.id+"/carts").then(res => {
         this.carData = res.data;
         // 如果是会员，价格都变为会员价
         if(this.isVip){

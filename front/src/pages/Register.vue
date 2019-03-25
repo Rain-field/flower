@@ -44,7 +44,7 @@ export default {
       }
     };
      const validateNameCheck = (rule,value,callback) => {
-        this.$axios.get("/apis/users").then(res => {
+        this.$axios.get(this.baseURL+"/users").then(res => {
           // console.log(res.data);
          let reg = res.data.filter(function(item,index){
           //  return item.userName.match(value) ;
@@ -109,7 +109,7 @@ export default {
               sex:"",
               birthday:""
             }
-          this.$axios.post("/apis/users", obj).then(res => {
+          this.$axios.post(this.baseURL+"/users", obj).then(res => {
             this.$Message.success("注册成功!");
             this.$router.push({name:"Login"})
             this.formInline = {};
