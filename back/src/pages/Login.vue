@@ -5,10 +5,6 @@
     </routerLink>
     <div class="login">
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
-        <div class="toHome">
-          <Icon type="ios-home" color="#ff6700" size="20"/>
-          <router-link :to="{name:'Home'}" tag="span">首页</router-link>
-        </div>
         <h1>欢迎登录</h1>
         <FormItem prop="userName">
           <Input type="text" v-model="formInline.userName" placeholder="账号">
@@ -23,16 +19,12 @@
         <FormItem>
           <button @click.prevent="handleSubmit('formInline')">登录</button>
         </FormItem>
-        <div class="toRegister">没有账号？点击
-          <router-link :to="{name:'Register'}" tag="span">注册</router-link>
-        </div>
       </Form>
     </div>
   </div>
 </template>
 
 <script>
-import { str_md5 } from "../assets/md5.js";
 export default {
   data() {
     return {
@@ -69,23 +61,16 @@ export default {
       let vm = this;
       vm.$refs[name].validate(valid => {
         if (valid) {
-          vm.$axios.get(this.baseURL+"/users").then(res => {
+          vm.$axios.get(this.baseURL+"/administrator").then(res => {
             let reg = res.data.filter(function(item, index) {
               return item.userName == vm.formInline.userName;
             });
             if (reg.length) {
-              if (reg[0].password === str_md5(vm.formInline.password)) {
+              if (reg[0].password === vm.formInline.password) {
                 vm.$Message.success("登录成功");
-                let pas = {
-                    id: reg[0].id,
-                    str: reg[0].str,
-                    isVip: reg[0].isVip
-                  }
-                sessionStorage.setItem("obj", JSON.stringify(pas));
-                sessionStorage.setItem("nickName", reg[0].nickName);
-                sessionStorage.setItem("isVip", reg[0].isVip);
+                sessionStorage.setItem("str", reg[0].str);
                 vm.$router.push({
-                  name: "Pages",
+                  name: "Home",
                 });
               } else {
                 this.$Message.error("账号或密码错误!");
@@ -138,16 +123,7 @@ body {
     right: 7%;
     top: 50%;
     transform: translate(0, -50%);
-    .toHome {
-      top: 0;
-      font-size: 18px;
-      line-height: 1.8;
-      span {
-        vertical-align: middle;
-      }
-    }
     h1 {
-      border-top: 1px solid #ff6700;
       font-size: 48px;
       color: #ff6700;
       letter-spacing: 2px;
@@ -169,23 +145,6 @@ body {
       font-size: 18px;
       outline: none;
       padding: 8px 0;
-    }
-    .toRegister {
-      font-size: 14px;
-      bottom: 0;
-      line-height: 40px;
-      text-align: right;
-    }
-    .toRegister,
-    .toHome {
-      position: absolute;
-      width: 80%;
-      height: 40px;
-      left: 10%;
-      span {
-        color: #ff6700;
-        cursor: pointer;
-      }
     }
   }
 }

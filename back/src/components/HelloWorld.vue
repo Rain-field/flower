@@ -88,9 +88,18 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      datas:{name:'leiliang',age:18,sex:'男',tel:'15983249701'}
     }
-  }
+  },
+  methods: {
+    getDatas(){
+      this.$emit('getDatas',this.datas);
+    }
+  },
+  created() {
+    // this.getDatas();
+  },
 }
 </script>
 
