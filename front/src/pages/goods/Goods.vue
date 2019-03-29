@@ -22,8 +22,8 @@
             <span class="flower_high_price">￥{{item.price}}</span>
           </div>
           <div class="flower_name" :title="item.info">
-            <span>{{item.name}}</span>
-            /{{item.info}}
+            <span>{{item.goodName}}</span>
+            {{item.info}}我说那么多的事情你怎么就是不知道呢
           </div>
           <div class="flower_number">
             <div class="inventory">库存：{{item.inventory}}</div>
@@ -298,9 +298,8 @@ export default {
           }
         }
         .flower_name {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
+          white-space:nowrap;
+          text-overflow:ellipsis;
           overflow: hidden;
           span {
             color: black;

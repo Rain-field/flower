@@ -29,8 +29,9 @@ goods{
     vipPrice:"",
     online:1,//1代表上线，0代表下线
     type:1,//1代表鲜花,2代表蛋糕，3代表绿植，4代表礼品
-    url:""，//图片地址
-    haveSaled:""//销量
+    url:"",//图片地址
+    haveSaled:"",//销量
+    time:"",//商品上线的时间
 },//商品列表
 carts{
     name:"",
