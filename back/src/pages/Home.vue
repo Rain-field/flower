@@ -41,8 +41,7 @@
                         <BreadcrumbItem>首页</BreadcrumbItem>
                         <BreadcrumbItem v-if="title">{{title}}</BreadcrumbItem>
                     </Breadcrumb>
-                    <Card>
-                        <!-- <div style="height: 400px"></div> -->
+                    <Card style="padding:40px">
                         <router-view></router-view>
                     </Card>
                 </Content>

@@ -187,7 +187,7 @@ export default {
 
 <style lang="less" scoped>
 .goodAdd {
-  padding: 40px;
+  
 }
 </style>
 

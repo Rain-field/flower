@@ -66,7 +66,7 @@
                 </td>
                 <td class="name">{{item.address.name}}</td>
                 <td class="price">￥{{item.price}}</td>
-                <td class="status">{{item.status?"已完成":"待处理"}}</td>
+                <td class="status"><span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span><button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button></td>
               </tr>
             </table>
           </div>
@@ -153,6 +153,20 @@ export default {
           });
         }
       });
+    },
+    // 确认收货
+    getConfirm(orderId) {
+      let vm = this;
+      vm.$Modal.confirm({
+          title:"提示",
+          content: "确认收货吗？",
+           onOk() {
+             vm.$axios.patch(vm.baseURL+"/orders/"+orderId,{status:2}).then(res => {
+                vm.$Message.success("订单处理成功");
+                vm.getDatas();
+             })
+          }
+        });
     },
     // 数据过滤
     filterData(type, val) {
@@ -360,5 +374,26 @@ export default {
       margin: 20px 0;
     }
   }
+}
+
+.btn {
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  line-height: 1.5;
+  outline: 0;
+  user-select: none;
+  padding: 5px 15px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: color 0.2s linear, background-color 0.2s linear,
+    border 0.2s linear, box-shadow 0.2s linear;
+  color: #fff;
+  background-color: #ff6700;
+  border-color: #ff6700;
+}
+.btn:hover {
+  background-color: #fa9d5f;
+  border-color: #fa9d5f;
 }
 </style>
