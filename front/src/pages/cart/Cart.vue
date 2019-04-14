@@ -64,11 +64,6 @@ export default {
                       marginRight: "15px",
                       width: "50px",
                       height: "50px"
-                    },
-                    on: {
-                      click: () => {
-                        this.show(params.index);
-                      }
                     }
                   },
                   [

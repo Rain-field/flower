@@ -39,7 +39,8 @@
         <div class="tabsPrice">金额</div>
         <div class="tabsStatus">订单状态</div>
       </div>
-      <div class="none" v-if="!orignData.length">你还没有订单呢。去
+      <div class="none" v-if="!orignData.length">
+        你还没有订单呢。去
         <router-link to="{name:'Home'}" tag="span">首页</router-link>下单吧！
       </div>
       <div class="none" v-if="!data.length">没有找到符合要求的订单！</div>
@@ -67,7 +68,10 @@
                   </td>
                   <td class="name">{{item.address.name}}</td>
                   <td class="price">￥{{item.price}}</td>
-                  <td class="status"><span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span><button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button></td>
+                  <td class="status">
+                    <span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span>
+                    <button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -112,12 +116,14 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get(this.baseURL+"/users/" + this.id + "/orders").then(res => {
-        res.data = res.data.reverse();
-        this.data = JSON.parse(JSON.stringify(res.data));
-        this.orignData = JSON.parse(JSON.stringify(res.data));
-        this.dataChange(this.orignData); //必须使用this.data，不能使用res.data，事关深拷贝
-      });
+      this.$axios
+        .get(this.baseURL + "/users/" + this.id + "/orders")
+        .then(res => {
+          res.data = res.data.reverse();
+          this.data = JSON.parse(JSON.stringify(res.data));
+          this.orignData = JSON.parse(JSON.stringify(res.data));
+          this.dataChange(this.orignData); //必须使用this.data，不能使用res.data，事关深拷贝
+        });
     },
     //因为筛选数据后还要重新调用一次所以单独抽离出来
     dataChange(res) {
@@ -148,10 +154,12 @@ export default {
         title: "提示",
         content: "确认要删除吗？",
         onOk: () => {
-          this.$axios.patch(this.baseURL+"/orders/" + id,{del:1}).then(res => {
-            vm.$Message.info("删除成功");
-            vm.getDatas();
-          });
+          this.$axios
+            .patch(this.baseURL + "/orders/" + id, { del: 1 })
+            .then(res => {
+              vm.$Message.info("删除成功");
+              vm.getDatas();
+            });
         }
       });
     },
@@ -159,15 +167,17 @@ export default {
     getConfirm(orderId) {
       let vm = this;
       vm.$Modal.confirm({
-          title:"提示",
-          content: "确认收货吗？",
-           onOk() {
-             vm.$axios.patch(vm.baseURL+"/orders/"+orderId,{status:2}).then(res => {
-                vm.$Message.success("订单处理成功");
-                vm.getDatas();
-             })
-          }
-        });
+        title: "提示",
+        content: "确认收货吗？",
+        onOk() {
+          vm.$axios
+            .patch(vm.baseURL + "/orders/" + orderId, { status: 2 })
+            .then(res => {
+              vm.$Message.success("订单处理成功");
+              vm.getDatas();
+            });
+        }
+      });
     },
     // 数据过滤
     filterData(type, val) {
