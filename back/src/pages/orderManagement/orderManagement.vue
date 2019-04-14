@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Table border :columns="columns" :data="data"></Table>
+    <div class="filter">
+       <Input v-model="value" placeholder="请输入订单编号/商品名称/用户名" style="width: 200px;marginRight: 20px" />
+    </div>
+    <Table :loading="loading" :columns="columns" :data="data" no-data-text="无" no-filtered-data-text="暂无搜索数据"></Table>
   </div>
 </template>
 
@@ -8,14 +11,19 @@
 export default {
   data() {
     return {
+      value:'',
+      loading:true,
       columns: [
         {
           title: "订单编号",
-          key: "num"
+          align:"center",
+          key: "num",
+          sortable:"true"
         },
         {
           title: "商品名称",
           key: "data",
+          align:"center",
           ellipsis: "true",
           render: (h, params) => {
             if (params.row.data.length > 1) {
@@ -58,15 +66,22 @@ export default {
           }
         },
         {
-          title: "收货人",
-          key: "address",
-          render: (h, params) => {
-            return h("span", params.row.address.name);
-          }
+          title: "用户名",
+          align:"center",
+          key: "name",
+        },
+        {
+          title: "备注信息",
+          align:"center",
+          key: "tips",
+          tooltip:true
         },
         {
           title: "订单时间",
-          key: "time"
+          align:"center",
+          width:"150px",
+          key: "time",
+          sortable:"true"
         },
         {
           title: "订单状态",
@@ -158,6 +173,8 @@ export default {
       this.$axios.get(this.baseURL + "/orders").then(res => {
         console.log(res.data);
         this.data = res.data.reverse();
+      }).then(res2 => {
+        this.loading = false;
       });
     }
   },
@@ -168,6 +185,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.filter{
+  margin-bottom: 20px;
+}
 </style>
 
 

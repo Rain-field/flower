@@ -55,5 +55,6 @@ orders{
     quanity:"",//数量
     price:"",//总价
     userId:"",
+    name:"",//用户id名
     date:"",//送货时间
 },//订单表-users
