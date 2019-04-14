@@ -46,15 +46,43 @@
           <div>订单编号:{{modalDatas.num}}</div>
           <div>订单时间:{{modalDatas.time}}</div>
         </div>
-        <div v-for="(item, index) in modalDatas.data" :key="index">
-          <div class="modalItem">
-            <div class="imgs"><img :src="item.url" alt=""></div>
+        <div class="modalListContent">
+          <div class="modalList" v-for="(item, index) in modalDatas.data" :key="index">
+            <div class="imgWrap"><img src="../../assets/head.jpg" alt=""></div>
+            <!-- <div class="imgWrap"><img :src="item.url" alt=""></div> -->
             <div class="modalDetail">
-              <div class="modalName">{{item.name}}</div>
+              <div class="modalName">
+                <div>{{item.name}}</div>
+                <div :class="[modalDatas.status==0?'warning':'']">{{statusChange(modalDatas.status)}}</div>
+              </div>
               <div>数量：×{{item.quantity}}</div>
-              <div></div>
+              <div>价格:¥{{item.price}}</div>
             </div>
           </div>
+        </div>
+        <div class="modalItem">
+          <div>总价</div>
+          <div class="font">¥{{modalDatas.price}}</div>
+        </div>
+        <div class="modalItem">
+          <div>收货人</div>
+          <div>{{modalAddress.name}}</div>
+        </div>
+        <div class="modalItem">
+          <div>联系电话</div>
+          <div>{{modalAddress.tel}}</div>
+        </div>
+        <div class="modalItem">
+          <div>联系地址</div>
+          <div>{{modalAddress.address}}</div>
+        </div>
+        <div class="modalItem">
+          <div>送货时间</div>
+          <div>{{modalDatas.date}}</div>
+        </div>
+        <div class="modalItem">
+          <div>备注</div>
+          <div>{{modalDatas.tips}}</div>
         </div>
       </div>
     </Modal>
@@ -67,6 +95,7 @@ export default {
     return {
       modalShow: false,
       modalDatas:{},
+      modalAddress:{},
       inputFilter: "", //输入筛选
       timeValue: "", //时间值
       selectValue: "", //状态值
@@ -208,13 +237,23 @@ export default {
     };
   },
   methods: {
+    statusChange(id) {
+      if(id == 0){
+        return '待处理'
+      }else if(id == 1){
+        return '待确认'
+      }else{
+        return '已完成'
+      }
+    },
     show(index) {
       this.modalShow = !this.modalShow;
      this.$axios
         .get(this.baseURL + "/orders/"+index)
         .then(res => {
-          this.modalDatas = res.data;
           console.log(res.data);
+          this.modalDatas = res.data;
+          this.modalAddress = res.data.address;
         })
     },
     // 处理订单
@@ -357,27 +396,54 @@ export default {
   text-align: right;
   margin: 20px 0;
 }
+.warning{
+  color:#ffad33 !important;
+}
 .modalContent{
   .modalItem{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0px;
-    border-bottom: 1px solid #eee;
-    .imgs{
-      width: 100px;
-      height: 100px;
-      img{
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .modalName{
-      font-weight: bold;
-      font-size: 16px;
+    
+    .font{
+      font-size: 20px;
     }
   }
+  .modalItem:not(:last-child){
+    border-bottom: 1px solid #eee;
+  }
 }
+    .modalListContent{
+      padding: 10px 0;
+        .modalList{
+          display:flex;
+          .imgWrap{
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .modalDetail{
+            width: calc(100% - 120px);
+            .modalName{
+              display: flex;
+              justify-content: space-between;
+              div:first-child{
+                font-weight: bold;
+                font-size: 16px;
+              }
+              div:last-child{
+                font-size: 16px;
+                color:#2d8cf0;
+              }
+            }
+          }
+        }
+      }
 </style>
 
 
