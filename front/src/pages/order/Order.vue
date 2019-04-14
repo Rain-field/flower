@@ -45,30 +45,32 @@
       <div class="none" v-if="!data.length">没有找到符合要求的订单！</div>
       <div v-if="orignData.length">
         <div class="item" v-for="(item, index) in data" :key="index">
-          <div class="itemTop">
-            <div class="itemTopLeft">
-              <span class="time">{{item.time}}</span>
-              <span class="num">订单编号：{{item.num}}</span>
+          <div v-if="!item.del">
+            <div class="itemTop">
+              <div class="itemTopLeft">
+                <span class="time">{{item.time}}</span>
+                <span class="num">订单编号：{{item.num}}</span>
+              </div>
+              <div class="del" @click="del(item.id)">
+                <Icon type="ios-trash" size="22"/>
+              </div>
             </div>
-            <div class="del" @click="del(item.id)">
-              <Icon type="ios-trash" size="22"/>
+            <div class="itemBottom">
+              <table class="datas">
+                <tr class="dataItem">
+                  <td class="itemDetail">
+                    <div v-for="(dataItem, dataIndex) in item.data" :key="dataIndex">
+                      <img :src="dataItem.url" alt>
+                      <span class="goodName">{{dataItem.name}}</span>
+                      <span class="quantity">×{{dataItem.quantity}}</span>
+                    </div>
+                  </td>
+                  <td class="name">{{item.address.name}}</td>
+                  <td class="price">￥{{item.price}}</td>
+                  <td class="status"><span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span><button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button></td>
+                </tr>
+              </table>
             </div>
-          </div>
-          <div class="itemBottom">
-            <table class="datas">
-              <tr class="dataItem">
-                <td class="itemDetail">
-                  <div v-for="(dataItem, dataIndex) in item.data" :key="dataIndex">
-                    <img :src="dataItem.url" alt>
-                    <span class="goodName">{{dataItem.name}}</span>
-                    <span class="quantity">×{{dataItem.quantity}}</span>
-                  </div>
-                </td>
-                <td class="name">{{item.address.name}}</td>
-                <td class="price">￥{{item.price}}</td>
-                <td class="status"><span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span><button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button></td>
-              </tr>
-            </table>
           </div>
         </div>
         <Page
@@ -95,7 +97,6 @@ export default {
       id: null,
       orignData: [], //原始数据，主要用于筛选初始化后恢复原来的数据
       data: [], //原始数据
-      data: [], //分页后进入表格的数据
       total: 0, //分页总数
       limit: 5, //每页条数
       pageSize: [2, 5, 10, 15, 20], //自定义每页条数
@@ -147,7 +148,7 @@ export default {
         title: "提示",
         content: "确认要删除吗？",
         onOk: () => {
-          this.$axios.delete(this.baseURL+"/orders/" + id).then(res => {
+          this.$axios.patch(this.baseURL+"/orders/" + id,{del:1}).then(res => {
             vm.$Message.info("删除成功");
             vm.getDatas();
           });

@@ -57,4 +57,5 @@ orders{
     userId:"",
     name:"",//用户id名
     date:"",//送货时间
+    del:""//是否删除，0：未删除，1：已删除
 },//订单表-users

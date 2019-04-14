@@ -1,7 +1,7 @@
 <template>
   <div id="userDetail">
     <Form :model="formItem" label-position="left" :label-width="100">
-      <FormItem label="用户名：">
+      <FormItem label="账号：">
         <p>{{formItem.userName}}</p>
       </FormItem>
       <FormItem label="昵称：">

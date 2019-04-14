@@ -221,8 +221,9 @@ export default {
         quantity: this.quantityTotal,
         userId:this.id,
         status:0,
-        userName:sessionStorage.getItem("nickName"),
+        userName:sessionStorage.getItem("name"),
         time:this.formatDate(a) ,//下单时间
+        isDel:0,
         num:"0"+this.id+(String(a-0).substr(8))+Math.floor(Math.random()*90+10)//订单编号：0+id+后5毫秒时间戳+2位随机数
       };
       // 验证地址和送货时间是否输入

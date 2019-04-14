@@ -7,8 +7,8 @@
       label-position="left"
       :label-width="100"
     >
-      <FormItem label="商品名称：" prop="goodName">
-        <Input v-model="formItem.goodName" style="width:400px" placeholder="请输入商品名称"></Input>
+      <FormItem label="商品名称：" prop="name">
+        <Input v-model="formItem.name" style="width:400px" placeholder="请输入商品名称"></Input>
       </FormItem>
       <FormItem label="商品原价：" prop="price">
         <Input v-model="formItem.price" style="width:400px" placeholder="请输入商品价格"></Input>
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       formItem: {
-        goodName: "",
+        name: "",
         price: "",
         vipPrice: "",
         info: "",
@@ -57,7 +57,7 @@ export default {
         inventory: null
       },
       ruleValidate: {
-        goodName: [
+        name: [
           {
             required: true,
             message: "收货人姓名不能为空",
