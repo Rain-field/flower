@@ -110,7 +110,6 @@ export default {
           title: "订单编号",
           align: "center",
           key: "num",
-          sortable: "true"
         },
         {
           title: "商品名称",
