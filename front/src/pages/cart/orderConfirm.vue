@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get(this.baseURL+"/users/" + this.id + "/address").then(res => {
+      this.$axios.get(this.baseURL+"/address?userId=" + this.id).then(res => {
         this.cityList = res.data;
       });
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
@@ -247,6 +247,7 @@ export default {
         if(obj.price>99 && !this.isVip){
           this.$axios.patch(this.baseURL+"/users/"+this.id,{isVip:1});
           this.$Message.success("恭喜您达成会员条件，系统自动为您加入会员！");
+          sessionStorage.setItem("isVip", 1);
         }else{
           this.$Message.success("恭喜您下单成功！");
         }
@@ -259,7 +260,11 @@ export default {
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;
     this.isVip = Number(sessionStorage.getItem("isVip"));
     this.getDatas();
-  }
+    //从添加地址页面跳转而来，需要删除存储
+    if(sessionStorage.getItem('pathName')){
+      sessionStorage.removeItem('pathName');
+    }
+  },
 };
 </script>
 

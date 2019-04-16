@@ -43,7 +43,7 @@
         你还没有订单呢。去
         <router-link to="{name:'Home'}" tag="span">首页</router-link>下单吧！
       </div>
-      <div class="none" v-if="!data.length">没有找到符合要求的订单！</div>
+      <!-- <div class="none" v-if="!data.length">没有找到符合要求的订单！</div> -->
       <div v-if="orignData.length">
         <div class="item" v-for="(item, index) in data" :key="index">
           <div v-if="!item.del">
@@ -117,7 +117,7 @@ export default {
   methods: {
     getDatas() {
       this.$axios
-        .get(this.baseURL + "/users/" + this.id + "/orders")
+        .get(this.baseURL + "/orders?userId=" + this.id)
         .then(res => {
           res.data = res.data.reverse();
           this.data = JSON.parse(JSON.stringify(res.data));

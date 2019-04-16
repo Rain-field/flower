@@ -2,7 +2,7 @@ users:{
     add:{
         username:"",
         password:"",
-
+        
         nickname:"",
         sex:"",
         birthday:""

@@ -22,7 +22,8 @@
         <FormItem>
           <button @click.prevent="handleSubmit('formInline')">注册</button>
         </FormItem>
-        <div class="toLogin">已有账号？点击
+        <div class="toLogin">
+          已有账号？点击
           <router-link :to="{name:'Login'}" tag="span">登录</router-link>
         </div>
       </Form>
@@ -43,20 +44,20 @@ export default {
         callback();
       }
     };
-     const validateNameCheck = (rule,value,callback) => {
-        this.$axios.get(this.baseURL+"/users").then(res => {
-          // console.log(res.data);
-         let reg = res.data.filter(function(item,index){
+    const validateNameCheck = (rule, value, callback) => {
+      this.$axios.get(this.baseURL + "/users").then(res => {
+        // console.log(res.data);
+        let reg = res.data.filter(function(item, index) {
           //  return item.userName.match(value) ;
-            return (item.userName == value);
-          })
-          if(reg.length){
-            callback(new Error("用户名已存在"));
-          }else{
-            callback();
-          }
-        })
-      };
+          return item.userName == value;
+        });
+        if (reg.length) {
+          callback(new Error("用户名已存在"));
+        } else {
+          callback();
+        }
+      });
+    };
     return {
       formInline: {
         userName: "",
@@ -90,30 +91,69 @@ export default {
     };
   },
   methods: {
+    // 日期格式化
+    formatDate(date) {
+      const y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let M = date.getMinutes();
+      M = M < 10 ? "0" + M : M;
+      let s = date.getSeconds();
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + m + "-" + d + " " + h + ":" + M + ":" + s;
+    },
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
+      let vm = this;
+      vm.$refs[name].validate(valid => {
         if (valid) {
-          delete this.formInline.passwdCheck;
+          delete vm.formInline.passwdCheck;
+          let a = new Date();
           let str = hex_hmac_md5(
-            this.formInline.userName,
-            this.formInline.password
+            vm.formInline.userName,
+            vm.formInline.password
           ); //签名字符串
           let nickName = +new Date();
           nickName = "hua" + String(nickName).substr(6);
-            let obj = {
-              userName:this.formInline.userName,
-              password:str_md5(this.formInline.password),
-              nickName:nickName,
-              str:str,
-              isVip:0,
-              sex:"",
-              birthday:""
-            }
-          this.$axios.post(this.baseURL+"/users", obj).then(res => {
-            this.$Message.success("注册成功!");
-            this.$router.push({name:"Login"})
-            this.formInline = {};
-          });
+          let obj = {
+            userName: vm.formInline.userName,
+            password: str_md5(vm.formInline.password),
+            nickName: nickName,
+            str: str,
+            isVip: 0,
+            sex: "",
+            birthday: "",
+            time: vm.formatDate(a) //注册时间
+          };
+          vm.$axios
+            .post(vm.baseURL + "/users", obj)
+            .then(res => {
+              vm.$Message.success("注册成功!");
+              // vm.$router.push({name:"Login"})
+              vm.formInline = {};
+            })
+            .then(res => {
+              vm.$axios
+                .get(vm.baseURL + "/users?userName=" + obj.userName)
+                .then(res => {
+                  console.log(res);
+                  let pas = {
+                    id: res.data[0].id,
+                    str: res.data[0].str,
+                    isVip: res.data[0].isVip
+                  };
+                  sessionStorage.setItem("obj", JSON.stringify(pas));
+                  sessionStorage.setItem("nickName", res.data[0].nickName);
+                  sessionStorage.setItem("isVip", res.data[0].isVip);
+                  sessionStorage.setItem("name", res.data[0].userName);
+                  vm.$router.push({
+                    name: "Pages"
+                  });
+                });
+            });
         }
       });
     }

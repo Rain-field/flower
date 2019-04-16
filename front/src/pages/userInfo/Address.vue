@@ -147,6 +147,10 @@ export default {
               this.formItem = {};
               this.getDatas();
               this.$Message.success("添加成功!");
+              //如果是从确认订单页面而来则返回
+              if(sessionStorage.getItem('pathName')){
+                this.$router.push({name:sessionStorage.getItem('pathName')});
+              }
             });
         }
       });
@@ -156,7 +160,7 @@ export default {
     },
     getDatas() {
       // 获取表格地址数据
-      this.$axios.get(this.baseURL+"/users/"+this.id+"/address").then(res => {
+      this.$axios.get(this.baseURL+"/address?userId="+this.id).then(res => {
         this.data1 = res.data;
       });
     }
@@ -168,6 +172,10 @@ export default {
     });
     this.id = JSON.parse(sessionStorage.getItem("obj")).id;
     this.getDatas();
+  },
+  beforeRouteEnter (to, from, next) {
+    sessionStorage.setItem('pathName',from.name);
+    next();
   }
 };
 </script>
