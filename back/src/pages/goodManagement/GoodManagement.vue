@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card style="padding:40px">
     <div class="filter">
       <Input
         icon="md-search"
@@ -85,7 +85,7 @@
         </FormItem>
       </Form>
     </Modal>
-  </div>
+  </Card>
 </template>
 
 <script>
@@ -367,7 +367,7 @@ export default {
             vm.dataChange(vm.orignData);
           } else {
             vm.data = vm.data.filter(function(item, index) {
-                return item.num.match(value) || item.name.match(value);
+              return item.num.match(value) || item.name.match(value);
             });
             vm.dataChange(vm.data);
           }
@@ -380,7 +380,7 @@ export default {
           break;
         case 2: //时间选择
           vm.data = vm.data.filter(function(item) {
-            return item.online == val
+            return item.online == val;
           });
           vm.dataChange(vm.data);
           break;
@@ -465,15 +465,13 @@ export default {
         title: "提示",
         content: "确认要删除吗？",
         onOk: () => {
-          this.$axios
-            .delete(this.baseURL + "/goods/" + id)
-            .then(res => {
-              vm.$Message.info("删除成功");
-              vm.getDatas();
-            });
+          this.$axios.delete(this.baseURL + "/goods/" + id).then(res => {
+            vm.$Message.info("删除成功");
+            vm.getDatas();
+          });
         }
       });
-    },
+    }
   },
   created() {
     this.getDatas();

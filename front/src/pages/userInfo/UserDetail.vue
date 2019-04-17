@@ -23,6 +23,12 @@
           transfer
         ></DatePicker>
       </FormItem>
+       <FormItem label="手机号：">
+        <Input v-model="formItem.tel" style="width:190px"></Input>
+      </FormItem>
+       <FormItem label="邮箱：">
+        <Input v-model="formItem.email" style="width:190px"></Input>
+      </FormItem>
       <FormItem>
         <button class="btn" @click.prevent="handleSubmit">提交</button>
       </FormItem>
@@ -39,7 +45,9 @@ export default {
         userName: "",
         nickName: "",
         sex: "",
-        birthday: ""
+        birthday: "",
+        tel:"",
+        email:""
       }
     };
   },

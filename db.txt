@@ -5,7 +5,9 @@ users:{
         
         nickname:"",
         sex:"",
-        birthday:""
+        birthday:"",
+        tel:"",
+        email:"",
     }
     auto:{
         str:"",//签名字符串

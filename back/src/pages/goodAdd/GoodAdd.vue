@@ -1,5 +1,5 @@
 <template>
-  <div class="goodAdd">
+  <Card style="padding:40px">
     <Form
       ref="formValidate"
       :model="formItem"
@@ -26,7 +26,12 @@
         ></Input>
       </FormItem>
       <FormItem label="商品种类：" prop="type">
-        <Select v-model="formItem.type" placeholder="请选择商品种类" style="width:400px" @on-change="toNumber">
+        <Select
+          v-model="formItem.type"
+          placeholder="请选择商品种类"
+          style="width:400px"
+          @on-change="toNumber"
+        >
           <Option value="1">鲜花</Option>
           <Option value="2">蛋糕</Option>
           <Option value="3">绿植</Option>
@@ -41,7 +46,7 @@
         <Button @click.prevent="handleReset('formValidate')" style="margin-left: 30px">清空</Button>
       </FormItem>
     </Form>
-  </div>
+  </Card>
 </template>
 
 <script>
@@ -98,12 +103,12 @@ export default {
           }
         ]
       },
-      obj:{
-          num:'',
-          date:'',
-          online:1,
-          haveSaled:0,
-          url:""
+      obj: {
+        num: "",
+        date: "",
+        online: 1,
+        haveSaled: 0,
+        url: ""
       }
     };
   },
@@ -113,10 +118,10 @@ export default {
       vm.$refs[name].validate(valid => {
         vm.toImg(vm.formItem.type);
         vm.obj.date = vm.formatDate(new Date());
-        if(vm.formItem.vipPrice == ""){
+        if (vm.formItem.vipPrice == "") {
           vm.formItem.vipPrice = vm.formItem.price;
         }
-        let newObj = Object.assign({},vm.obj,vm.formItem);
+        let newObj = Object.assign({}, vm.obj, vm.formItem);
         if (valid) {
           vm.$axios.post(vm.baseURL + "/goods", newObj).then(res => {
             vm.$Message.success("商品添加成功!");
@@ -126,69 +131,65 @@ export default {
       });
     },
     // 日期格式化
-      formatDate (date) {
-        const y = date.getFullYear();
-        let m = date.getMonth() + 1;
-        m = m < 10 ? '0' + m : m;
-        let d = date.getDate();
-        d = d < 10 ? ('0' + d) : d;
-        let h = date.getHours();
-        h = h < 10 ? ('0' + h) : h
-        let M = date.getMinutes();
-        M = M < 10 ? ('0' + M) : M
-        let s = date.getSeconds();
-        s = s < 10 ? ('0' + s) : s
-        return y + '-' + m + '-' + d + ' '+ h +':' + M + ':' + s;
+    formatDate(date) {
+      const y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let M = date.getMinutes();
+      M = M < 10 ? "0" + M : M;
+      let s = date.getSeconds();
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + m + "-" + d + " " + h + ":" + M + ":" + s;
     },
     // 生成商品编号
     toNumber(type) {
-      this.$axios.get(this.baseURL + "/goods?type="+type).then(res => {
-            if(!res.data.length){
-                this.obj.num = String(type+"000001");
-            }else{
-                this.obj.num = String((Number(res.data[res.data.length-1].num)+1));
-            }
-          });
+      this.$axios.get(this.baseURL + "/goods?type=" + type).then(res => {
+        if (!res.data.length) {
+          this.obj.num = String(type + "000001");
+        } else {
+          this.obj.num = String(Number(res.data[res.data.length - 1].num) + 1);
+        }
+      });
     },
     // 生成随机图片
-    toImg(type){
-      let a = Math.ceil(Math.random()*20);
-      if(a>9){
-        this.obj.url = "assets/"+this.typeJudge(type)+"/0"+a+".jpg";
-      }else{
-        this.obj.url = "assets/"+this.typeJudge(type)+"/00"+a+".jpg";
+    toImg(type) {
+      let a = Math.ceil(Math.random() * 20);
+      if (a > 9) {
+        this.obj.url = "assets/" + this.typeJudge(type) + "/0" + a + ".jpg";
+      } else {
+        this.obj.url = "assets/" + this.typeJudge(type) + "/00" + a + ".jpg";
       }
     },
     // 类型判断
-    typeJudge(type){
-      switch(type){
-        case '1':
-          return 'flower';
-        break;
-        case '2':
-          return 'cake';
-        break;
-        case '3':
-          return 'green';
-        break;
-        case '4':
-          return 'gift';
-        break;
+    typeJudge(type) {
+      switch (type) {
+        case "1":
+          return "flower";
+          break;
+        case "2":
+          return "cake";
+          break;
+        case "3":
+          return "green";
+          break;
+        case "4":
+          return "gift";
+          break;
       }
     },
     handleReset(name) {
       this.$refs[name].resetFields();
     }
   },
-  created() {
-  },
+  created() {}
 };
 </script>
 
 <style lang="less" scoped>
-.goodAdd {
-  
-}
 </style>
 
 

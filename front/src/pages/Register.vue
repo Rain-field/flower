@@ -124,8 +124,10 @@ export default {
             nickName: nickName,
             str: str,
             isVip: 0,
-            sex: "",
+            sex: "保密",
             birthday: "",
+            tel:"",
+            email:"",
             time: vm.formatDate(a) //注册时间
           };
           vm.$axios

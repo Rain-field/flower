@@ -19,17 +19,23 @@
       </div>
       <div class="contact">
         <div class="tel"><Icon type="ios-call-outline" size="28" color="#ff6700"/> 400-0008-8888</div>
-        <div class="toUs"><Icon type="ios-headset-outline" size="28" color="#ff6700"/> 在线客服</div>
+        <div class="toUs" @click="toKefu"><Icon type="ios-headset-outline" size="28" color="#ff6700"/> 在线客服</div>
       </div>
     </div>
+    <!-- <uni-pop :show="show" @hidePopup="togglePopup" msg="你好啊"></uni-pop> -->
   </div>
 </template>
 
 <script>
+import uniPop from '@/components/Pop.vue';
 export default {
+  components:{
+    uniPop
+  },
   name: "HeaderBg",
   data() {
     return {
+      show:true,
       keywords: [
         { name: "鲜花", url: { name: "Login" } },
         { name: "蛋糕", url: { name: "Register" } },
@@ -37,7 +43,16 @@ export default {
         { name: "绿植", url: { name: "Register" } }
       ]
     };
-  }
+  },
+  methods: {
+    togglePopup() {
+      this.show = !this.show;
+      console.log('hello');
+    },
+    toKefu() {
+      this.$Message.info("客服暂未开通，敬请期待！")
+    }
+  },
 };
 </script>
 
@@ -107,7 +122,9 @@ export default {
       width: 30%;
       display: flex;
       justify-content: space-around;
-
+      div{
+        cursor: pointer;
+      }
     }
   }
 }

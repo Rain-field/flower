@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <Card style="padding:40px">
     <div class="filter">
       <Input
         icon="md-search"
         placeholder="商品名称/订单号/收货人"
         style="width: auto"
         v-model="inputFilter"
+        @on-enter="filterData(0)"
         @on-click="filterData(0)"
       />
       <DatePicker
@@ -37,6 +38,7 @@
       show-sizer
       show-total
       transfer
+      :page-size-opts="pageSize"
       @on-change="changPage"
       @on-page-size-change="changePageSize"
     />
@@ -48,12 +50,16 @@
         </div>
         <div class="modalListContent">
           <div class="modalList" v-for="(item, index) in modalDatas.data" :key="index">
-            <div class="imgWrap"><img src="../../assets/head.jpg" alt=""></div>
+            <div class="imgWrap">
+              <img src="../../assets/head.jpg" alt>
+            </div>
             <!-- <div class="imgWrap"><img :src="item.url" alt=""></div> -->
             <div class="modalDetail">
               <div class="modalName">
                 <div>{{item.name}}</div>
-                <div :class="[modalDatas.status==0?'warning':'']">{{statusChange(modalDatas.status)}}</div>
+                <div
+                  :class="[modalDatas.status==0?'warning':'']"
+                >{{statusChange(modalDatas.status)}}</div>
               </div>
               <div>数量：×{{item.quantity}}</div>
               <div>价格:¥{{item.price}}</div>
@@ -86,7 +92,7 @@
         </div>
       </div>
     </Modal>
-  </div>
+  </Card>
 </template>
 
 <script>
@@ -94,8 +100,8 @@ export default {
   data() {
     return {
       modalShow: false,
-      modalDatas:{},
-      modalAddress:{},
+      modalDatas: {},
+      modalAddress: {},
       inputFilter: "", //输入筛选
       timeValue: "", //时间值
       selectValue: "", //状态值
@@ -109,7 +115,7 @@ export default {
         {
           title: "订单编号",
           align: "center",
-          key: "num",
+          key: "num"
         },
         {
           title: "商品名称",
@@ -231,29 +237,28 @@ export default {
       ],
       orignData: [], //原始数据，主要用于筛选初始化后恢复原来的数据
       data: [], //原始数据
+      pageSize: [5, 10, 15, 20], //自定义每页条数
       total: 0, //分页总数
       limit: 5 //每页条数
     };
   },
   methods: {
     statusChange(id) {
-      if(id == 0){
-        return '待处理'
-      }else if(id == 1){
-        return '待确认'
-      }else{
-        return '已完成'
+      if (id == 0) {
+        return "待处理";
+      } else if (id == 1) {
+        return "待确认";
+      } else {
+        return "已完成";
       }
     },
     show(index) {
       this.modalShow = !this.modalShow;
-     this.$axios
-        .get(this.baseURL + "/orders/"+index)
-        .then(res => {
-          console.log(res.data);
-          this.modalDatas = res.data;
-          this.modalAddress = res.data.address;
-        })
+      this.$axios.get(this.baseURL + "/orders/" + index).then(res => {
+        console.log(res.data);
+        this.modalDatas = res.data;
+        this.modalAddress = res.data.address;
+      });
     },
     // 处理订单
     dealOrder(orderId) {
@@ -395,54 +400,54 @@ export default {
   text-align: right;
   margin: 20px 0;
 }
-.warning{
-  color:#ffad33 !important;
+.warning {
+  color: #ffad33 !important;
 }
-.modalContent{
-  .modalItem{
+.modalContent {
+  .modalItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0px;
-    
-    .font{
+
+    .font {
       font-size: 20px;
     }
   }
-  .modalItem:not(:last-child){
+  .modalItem:not(:last-child) {
     border-bottom: 1px solid #eee;
   }
 }
-    .modalListContent{
-      padding: 10px 0;
-        .modalList{
-          display:flex;
-          .imgWrap{
-            width: 100px;
-            height: 100px;
-            margin-right: 20px;
-            img{
-              width: 100%;
-              height: 100%;
-            }
-          }
-          .modalDetail{
-            width: calc(100% - 120px);
-            .modalName{
-              display: flex;
-              justify-content: space-between;
-              div:first-child{
-                font-weight: bold;
-                font-size: 16px;
-              }
-              div:last-child{
-                font-size: 16px;
-                color:#2d8cf0;
-              }
-            }
-          }
+.modalListContent {
+  padding: 10px 0;
+  .modalList {
+    display: flex;
+    .imgWrap {
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .modalDetail {
+      width: calc(100% - 120px);
+      .modalName {
+        display: flex;
+        justify-content: space-between;
+        div:first-child {
+          font-weight: bold;
+          font-size: 16px;
+        }
+        div:last-child {
+          font-size: 16px;
+          color: #2d8cf0;
         }
       }
+    }
+  }
+}
 </style>
 
 
