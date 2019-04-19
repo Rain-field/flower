@@ -34,8 +34,7 @@
         <Option value="1">已上线</Option>
       </Select>
     </div>
-
-    <Table :loading="loading" :columns="columns" :data="data" no-data-text="暂无搜索数据"></Table>
+    <Table :loading="loading" :columns="columns" :data="data" no-data-text="暂无搜索数据" @on-sort-change="sortData"></Table>
     <Page
       :total="total"
       :page-size="limit"
@@ -101,12 +100,14 @@ export default {
         {
           title: "商品编号",
           align: "center",
-          key: "num"
+          key: "num",
+          sortable: "true"
         },
         {
           title: "商品名称",
           key: "name",
-          align: "center"
+          align: "center",
+          tooltip: true
         },
         {
           title: "商品分类",
@@ -329,6 +330,19 @@ export default {
           this.loading = false;
         });
     },
+    getDatas2(key,order) {
+      // 初始化筛选数据
+      this.$axios
+        .get(this.baseURL + "/goods?_sort="+key+"&_order="+order)
+        .then(res => {
+          this.data = JSON.parse(JSON.stringify(res.data));
+          this.orignData = JSON.parse(JSON.stringify(res.data));
+          this.dataChange(this.orignData); //必须使用this.data，不能使用res.data，事关深拷贝
+        })
+        .then(res2 => {
+          this.loading = false;
+        });
+    },
     dataChange(res) {
       // 如果获取数据的总条数小于每页的条数，就把总数据赋值给表格数据，否则就根据每页条数进行分页
       this.total = res.length; //获取数据条数(不能触发length状态的更新)打印长度为0
@@ -471,6 +485,10 @@ export default {
           });
         }
       });
+    },
+    // 排序管理
+    sortData(option) {
+      this.getDatas2(option.key,option.order);
     }
   },
   created() {
