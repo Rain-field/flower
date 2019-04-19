@@ -174,7 +174,9 @@ export default {
     this.getDatas();
   },
   beforeRouteEnter (to, from, next) {
-    sessionStorage.setItem('pathName',from.name);
+    if(from.name == 'OrderConfirm'){
+      sessionStorage.setItem('pathName',from.name);
+    }
     next();
   }
 };
