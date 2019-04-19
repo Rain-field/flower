@@ -32,6 +32,20 @@ export default {
     if (this.$route.params.acNum) {
       this.activeNumber = this.$route.params.acNum;
     }
+    switch (this.$route.name) {
+      case "UserInfo":
+        this.activeNumber = "1";
+        break;
+      case "ChangePwd":
+        this.activeNumber = "2";
+        break;
+      case "Address":
+        this.activeNumber = "3";
+        break;
+      case "JoinVip":
+        this.activeNumber = "4";
+        break;
+    }
   },
   updated() {
     if (this.$route.params.acNum) {
