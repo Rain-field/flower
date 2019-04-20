@@ -48,7 +48,7 @@ export default new Router({
     } //当用户输入错误的路径可以跳转到主页面
 
   ],
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior(to, from, savedPosition) {
     return {
       x: 0,

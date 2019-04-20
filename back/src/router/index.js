@@ -59,9 +59,13 @@ export default new Router({
           meta:'订单管理'
         },
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ],
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior(to, from, savedPosition) {
     return {
       x: 0,
