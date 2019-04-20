@@ -231,7 +231,10 @@ export default {
   },
   created() {
     this.getDatas();
-  }
+  },
+  updated() {
+    this.getDatas();
+  },
 };
 </script>
 
