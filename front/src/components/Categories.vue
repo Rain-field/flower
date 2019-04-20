@@ -17,8 +17,8 @@
           </div>
           <div class="flower_name">{{item.name}}</div>
           <div class="flower_price">
-            ￥{{item.vipPrice}}
             <span class="flower_high_price">￥{{item.price}}</span>
+            ￥{{item.vipPrice}}
           </div>
         </div>
       </div>

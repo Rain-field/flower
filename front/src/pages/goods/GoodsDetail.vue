@@ -10,16 +10,16 @@
       <div class="contentShow">
         <h2>{{detail.name}}</h2>
         <div class="introduction">{{detail.info}}</div>
+        <div class="havesaled">销量:  {{detail.haveSaled}}</div>
         <div class="price">
-          <div>
             <div class="orignPrice">原价：￥{{detail.price}}</div>
             <div class="vipPrice">
               VIP特价：
               <span>￥{{detail.vipPrice}}</span>
             </div>
-          </div>
         </div>
         <div class="number">
+          <span>数量：</span>
           <InputNumber :max="Number(detail.inventory)" :min="1" v-model="value"></InputNumber>
           <span>库存：{{detail.inventory}}</span>
         </div>
@@ -139,29 +139,30 @@ export default {
     h2 {
       margin-bottom: 30px;
     }
-    .introduction {
-      margin-bottom: 30px;
+    .havesaled{
+      margin: 10px 0;
     }
     .price {
       background: #f8f8f9;
       margin-bottom: 30px;
+      padding: 20px;
       font-size: 18px;
-      padding-left: 40px;
+      display: flex;
+      align-items: center;
       .orignPrice {
-        padding: 10px 0;
         color: rgb(175, 175, 175);
+        text-decoration: line-through;
+        margin-right: 40px;
       }
       .vipPrice {
-        padding: 10px 0;
         span {
           color: #ff6700;
-          font-size: 26px;
         }
       }
     }
     .number {
       margin-bottom: 30px;
-      span {
+      span:last-child{
         margin-left: 20px;
       }
     }

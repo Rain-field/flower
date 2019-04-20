@@ -180,13 +180,20 @@ export default {
     },
     // 删除选中的商品
     delSelected() {
-      this.goodsList.forEach(element => {
-        this.$axios
-          .delete("http://localhost:3000/goods/" + element.id)
+      // this.goodsList.forEach(element => {
+      //   this.$axios
+      //     .delete("http://localhost:3000/carts/" + element.id)
+      //     .then(res => {
+      //       this.getDatas();
+      //     });
+      // });
+      for (let i = 0; i < this.goodsList.length; i++) {
+          this.$axios
+          .delete("http://localhost:3000/carts/" + this.goodsList[i].id)
           .then(res => {
             this.getDatas();
           });
-      });
+      }
     },
     // 获取数据
     getDatas() {
