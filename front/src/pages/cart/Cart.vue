@@ -180,13 +180,6 @@ export default {
     },
     // 删除选中的商品
     delSelected() {
-      // this.goodsList.forEach(element => {
-      //   this.$axios
-      //     .delete("http://localhost:3000/carts/" + element.id)
-      //     .then(res => {
-      //       this.getDatas();
-      //     });
-      // });
       for (let i = 0; i < this.goodsList.length; i++) {
           this.$axios
           .delete("http://localhost:3000/carts/" + this.goodsList[i].id)
@@ -197,7 +190,7 @@ export default {
     },
     // 获取数据
     getDatas() {
-      this.$axios.get(this.baseURL+"/users/"+this.id+"/carts").then(res => {
+      this.$axios.get(this.baseURL+"/carts?userId="+this.id).then(res => {
         this.carData = res.data;
         // 如果是会员，价格都变为会员价
         if(this.isVip){
