@@ -37,10 +37,10 @@ export default {
     return {
       show:true,
       keywords: [
-        { name: "鲜花", url: { name: "Login" } },
-        { name: "蛋糕", url: { name: "Register" } },
-        { name: "礼品", url: { name: "Register" } },
-        { name: "绿植", url: { name: "Register" } }
+        { name: "鲜花", url: { name: "Goods", params: { id: 1 } } },
+        { name: "蛋糕", url: { name: "Goods", params: { id: 2 } } },
+        { name: "礼品", url: { name: "Goods", params: { id: 3 } } },
+        { name: "绿植", url: { name: "Goods", params: { id: 4 } } }
       ]
     };
   },

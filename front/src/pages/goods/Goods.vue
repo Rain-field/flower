@@ -17,13 +17,13 @@
           <div class="flower_img" @click="toDetail(item.id)">
             <img :src="item.url" alt>
           </div>
-          <div class="flower_price">
-            ￥{{item.vipPrice}}
-            <span class="flower_high_price">￥{{item.price}}</span>
-          </div>
           <div class="flower_name" :title="item.info">
-            <span>{{item.goodName}}</span>
-            {{item.info}}我说那么多的事情你怎么就是不知道呢
+            <span>{{item.name}}</span>
+            {{item.info}}
+          </div>
+          <div class="flower_price">
+            <span class="flower_high_price">￥{{item.price}}</span>
+            ￥{{item.vipPrice}}
           </div>
           <div class="flower_number">
             <div class="inventory">库存：{{item.inventory}}</div>
@@ -231,7 +231,10 @@ export default {
   },
   created() {
     this.getDatas();
-  }
+  },
+  updated() {
+    this.getDatas();
+  },
 };
 </script>
 
