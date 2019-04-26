@@ -3,7 +3,7 @@
     <div class="filter">
       <Input
         icon="md-search"
-        placeholder="商品名称/订单号/收货人"
+        placeholder="用户名/电话"
         style="width: auto"
         v-model="inputFilter"
         @on-enter="filterData(0)"

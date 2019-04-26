@@ -109,6 +109,7 @@ export default {
       .flower_section {
         width: 23.5%;
         margin-left: 1.5%;
+        box-shadow:0 0 10px #e5e5e5;
         cursor: pointer;
         .flower_img {
           height: 225px;
@@ -118,16 +119,15 @@ export default {
           }
         }
         .flower_name {
-          text-align: center;
-          font-size: 16px;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          overflow: hidden;
+          font-size: 14px;
+          overflow:hidden;
+          white-space:nowrap;
+          text-overflow:ellipsis;
+          padding: 5px 10px;
         }
         .flower_price {
-          text-align: center;
           font-size: 18px;
+          padding: 5px 10px;
           font-weight: bolder;
           color: #ff6700;
           .flower_high_price {

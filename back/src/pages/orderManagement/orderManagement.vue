@@ -26,7 +26,7 @@
         @on-clear="selectClear"
       >
         <Option value="0">待处理</Option>
-        <Option value="1">待确认</Option>
+        <Option value="1">待收货</Option>
         <Option value="2">已完成</Option>
       </Select>
     </div>
