@@ -11,6 +11,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios;
 Vue.prototype.baseURL = process.env.API_ROOT;
+Vue.prototype.baseImg = 'http://localhost/img/';
 Vue.use(iView);
 
 router.beforeEach((to,from,next) => {

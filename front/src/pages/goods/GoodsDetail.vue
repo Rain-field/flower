@@ -50,7 +50,6 @@ export default {
     getDatas() {
       this.$axios.get(this.baseURL+"/goods/" + this.goodId).then(res => {
         this.detail = res.data;
-        this.detail.url = require("@/" + this.detail.url);
       });
     },
     toBuy() {

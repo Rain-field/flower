@@ -19,11 +19,11 @@ export default {
         autoplaySpeed: 4000
       },
       imgs: [
-        {src:require('../assets/lunbo/001.jpg'),url:''},
-        {src:require('../assets/lunbo/002.jpg'),url:''},
-        {src:require('../assets/lunbo/003.jpg'),url:''},
-        {src:require('../assets/lunbo/004.jpg'),url:''},
-        {src:require('../assets/lunbo/005.jpg'),url:''}
+        {src:this.baseImg+'/lunbo/001.jpg',url:''},
+        {src:this.baseImg+'/lunbo/002.jpg',url:''},
+        {src:this.baseImg+'/lunbo/003.jpg',url:''},
+        {src:this.baseImg+'/lunbo/004.jpg',url:''},
+        {src:this.baseImg+'/lunbo/005.jpg',url:''}
       ]
     };
   },

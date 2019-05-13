@@ -34,12 +34,7 @@ export default {
   data() {
     return {
       mainImg: { src: require("../assets/flower/main.jpg"), url: "" },
-      main: [
-        require("../assets/activity/main1.jpg"),
-        require("../assets/activity/main2.jpg"),
-        require("../assets/activity/main3.png"),
-        require("../assets/activity/main4.jpg")
-      ],
+      main: [this.baseImg+'/activity/main1.jpg',this.baseImg+'/activity/main2.jpg',this.baseImg+'/activity/main3.png',this.baseImg+'/activity/main4.jpg'],
       lists: []
     };
   },
@@ -51,9 +46,6 @@ export default {
         )
         .then(res => {
           this.lists = res.data;
-          this.lists.forEach((item, index) => {
-            item.url = require("@/" + item.url);
-          });
         });
     },
     toDetail(id) {

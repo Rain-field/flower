@@ -71,9 +71,6 @@ export default {
         .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
         .then(res => {
           this.data = JSON.parse(JSON.stringify(res.data));
-          this.data.forEach((item, index) => {
-            item.url = require("@/" + item.url);
-          });
           this.dataChange(this.data);
         });
     },

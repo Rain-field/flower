@@ -159,9 +159,9 @@ export default {
     toImg(type) {
       let a = Math.ceil(Math.random() * 20);
       if (a > 9) {
-        this.obj.url = "assets/" + this.typeJudge(type) + "/0" + a + ".jpg";
+        this.obj.url = "http://localhost/img/" + this.typeJudge(type) + "/0" + a + ".jpg";
       } else {
-        this.obj.url = "assets/" + this.typeJudge(type) + "/00" + a + ".jpg";
+        this.obj.url = "http://localhost/img/" + this.typeJudge(type) + "/00" + a + ".jpg";
       }
     },
     // 类型判断

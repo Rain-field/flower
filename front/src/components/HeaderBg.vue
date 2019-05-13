@@ -6,7 +6,7 @@
       </routerLink>
       <div class="search">
         <input type="text" placeholder="搜索" class="searchInput">
-        <Icon type="ios-search" size="20" slot="suffix"/>
+        <Icon class="search_btn" type="ios-search" size="20" slot="suffix"/>
         <ul>
           <li>关键字：</li>
           <routerLink
@@ -105,6 +105,7 @@ export default {
         color: white;
         border-radius: 0 4px 4px 0;
         cursor: pointer;
+        line-height: 35px;
       }
       ul {
         display: flex;

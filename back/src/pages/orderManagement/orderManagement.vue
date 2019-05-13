@@ -53,13 +53,13 @@
         <div class="modalListContent">
           <div class="modalList" v-for="(item, index) in modalDatas.data" :key="index">
             <div class="imgWrap">
-              <img src="../../assets/head.jpg" alt>
+              <img :src="item.url" alt>
             </div>
             <!-- <div class="imgWrap"><img :src="item.url" alt=""></div> -->
             <div class="modalDetail">
               <div class="modalName">
-                <div>{{item.name}}</div>
-                <div
+                <div style="width:80%">{{item.name}}</div>
+                <div style="width:20%"
                   :class="[modalDatas.status==0?'warning':'']"
                 >{{statusChange(modalDatas.status)}}</div>
               </div>
@@ -260,14 +260,14 @@ export default {
     show(index) {
       this.modalShow = !this.modalShow;
       this.$axios.get(this.baseURL + "/orders/" + index).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.modalDatas = res.data;
         this.modalAddress = res.data.address;
       });
     },
     // 处理订单
     dealOrder(orderId) {
-      console.log(orderId);
+      // console.log(orderId);
       let vm = this;
       vm.$Modal.confirm({
         title: "确认开始处理订单吗",
@@ -413,7 +413,6 @@ export default {
   }
 };
 </script>
-
 <style lang="less" scoped>
 .filter {
   margin-bottom: 20px;
