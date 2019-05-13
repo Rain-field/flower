@@ -15,6 +15,7 @@
         v-model="selectValue"
         @on-change="selectChange"
         @on-clear="selectClear"
+        placeholder="是否会员"
       >
         <Option value="0">非会员</Option>
         <Option value="1">会员</Option>

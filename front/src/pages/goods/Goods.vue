@@ -29,12 +29,13 @@
             <div class="inventory">库存：{{item.inventory}}</div>
             <div class="haveSaled">销量：{{item.haveSaled}}</div>
           </div>
-          <div class="flower_features">
+          <div class="flower_features" v-if="item.inventory">
             <div class="flower_carts" @click="toCart(item.id)">
               <img src="../../assets/cart.png" alt>
             </div>
             <div class="flower_buy" @click="toBuy(item.id)">立即购买</div>
           </div>
+          <div class="noList" v-if="!item.inventory">商品暂时无货！</div>
         </div>
       </div>
     </div>
@@ -283,7 +284,7 @@ export default {
       flex-wrap: wrap;
       font-size: 14px;
       .flower_section {
-        border: 1px solid #e3e3e3;
+        border: 2px solid #fff;
         cursor: pointer;
         width: 17.6%;
         padding: 10px;
@@ -358,6 +359,10 @@ export default {
     .page {
       text-align: right;
       margin: 20px 0;
+    }
+    .noList{
+      font-size: 24px;
+      color: #ff6700;
     }
 }
 </style>

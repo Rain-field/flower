@@ -32,6 +32,7 @@
           <Option value="0">待处理</Option>
           <Option value="1">待收货</Option>
           <Option value="2">已完成</Option>
+          <Option value="3">已取消</Option>
         </Select>
       </div>
       <div class="tabs">
@@ -65,16 +66,20 @@
                       <img :src="dataItem.url" alt>
                       <span class="goodName">{{dataItem.name}}</span>
                       <span class="quantity">×{{dataItem.quantity}}</span>
+                      <span class="price">{{dataItem.price}}</span>
                     </div>
                   </td>
                   <td class="name">{{item.address.name}}</td>
                   <td class="price">￥{{item.price}}</td>
                   <td class="status">
-                    <span v-if="item.status != 1">{{item.status?"已完成":"待处理"}}</span>
-                    <button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">待收货</button>
+                    <span>{{statusChange(item.status)}}</span>
                   </td>
                 </tr>
               </table>
+            </div>
+            <div class="cancel" v-if="item.status !== 3 && item.status !==2">
+              <button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">确认收货</button>
+              <button class="btn" v-if="item.status == 1 || item.status == 0" @click="cancel(item.id)">退换货</button>
             </div>
           </div>
         </div>
@@ -116,9 +121,30 @@ export default {
     };
   },
   methods: {
+    cancel(count) {
+      let vm = this;
+      this.$axios
+        .patch(this.baseURL + "/orders/" + count, { status: 3 })
+        .then(res => {
+          vm.$Message.info("退货成功");
+          vm.getDatas();
+        });
+    },
+    //状态
+    statusChange(count) {
+      if(count == 0){
+        return '待发货'
+      }else if(count == 1){
+        return '待收货'
+      }else if(count == 2) {
+        return '已完成'
+      }else{
+        return '已取消'
+      }
+    },
     getDatas() {
       this.$axios
-        .get(this.baseURL + "/orders?userId=" + this.id)
+        .get(this.baseURL + "/orders?userId=" + this.id +"&isDel=0")
         .then(res => {
           res.data = res.data.reverse();
           this.data = JSON.parse(JSON.stringify(res.data));
@@ -156,7 +182,7 @@ export default {
         content: "确认要删除吗？",
         onOk: () => {
           this.$axios
-            .patch(this.baseURL + "/orders/" + id, { del: 1 })
+            .patch(this.baseURL + "/orders/" + id, { isDel: 1 })
             .then(res => {
               vm.$Message.info("删除成功");
               vm.getDatas();
@@ -364,7 +390,8 @@ export default {
                   width: 60%;
                 }
                 span {
-                  margin-left: 20px;
+                  width:30px;
+                  margin-left: 15px;
                   display: inline-block;
                 }
               }
@@ -377,6 +404,9 @@ export default {
             .status {
               width: 16.66%;
             }
+          }
+          .cancel{
+            width:100%;
           }
         }
       }
@@ -407,5 +437,11 @@ export default {
 .btn:hover {
   background-color: #fa9d5f;
   border-color: #fa9d5f;
+}
+.cancel{
+  text-align:right;
+  border: 1px solid rgb(229, 229, 229);
+  padding:8px 5px;
+  border-top:none;
 }
 </style>

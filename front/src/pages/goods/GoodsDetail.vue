@@ -23,10 +23,11 @@
           <InputNumber :max="Number(detail.inventory)" :min="1" v-model="value"></InputNumber>
           <span>库存：{{detail.inventory}}</span>
         </div>
-        <div class="btns">
+        <div class="btns" v-if="detail.inventory">
           <button class="btn" @click="toBuy">立即购买</button>
           <button class="btn" @click="toCart">加入购物车</button>
         </div>
+        <div class="noList" v-if="!detail.inventory">商品暂时无货！</div>
       </div>
     </Content>
   </Layout>
@@ -165,6 +166,10 @@ export default {
       span:last-child{
         margin-left: 20px;
       }
+    }
+    .noList{
+      font-size: 24px;
+      color: #ff6700;
     }
     .btns {
       margin-bottom: 30px;

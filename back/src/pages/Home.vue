@@ -32,16 +32,16 @@
       <Layout>
         <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
           <ul class="headerLists">
-            <li>
+            <!-- <li>
               <Icon type="md-volume-down" size="22"/>
               <span>消息通知</span>
+            </li> -->
+            <li class="headImg">
+              <img src="@/assets/head.jpg" alt>
             </li>
             <li @click="logout">
               <Icon type="md-power" size="22"/>
               <span>退出</span>
-            </li>
-            <li class="headImg">
-              <img src="@/assets/head.jpg" alt>
             </li>
           </ul>
         </Header>

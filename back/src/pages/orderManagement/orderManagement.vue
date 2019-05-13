@@ -3,7 +3,7 @@
     <div class="filter">
       <Input
         icon="md-search"
-        placeholder="商品名称/订单号/收货人"
+        placeholder="订单名称/订单号/收货人"
         style="width: auto"
         v-model="inputFilter"
         @on-enter="filterData(0)"
@@ -24,10 +24,12 @@
         v-model="selectValue"
         @on-change="selectChange"
         @on-clear="selectClear"
+        placeholder="订单状态"
       >
         <Option value="0">待处理</Option>
         <Option value="1">待收货</Option>
         <Option value="2">已完成</Option>
+        <Option value="3">已取消</Option>
       </Select>
     </div>
     <Table :loading="loading" :columns="columns" :data="data" no-data-text="暂无搜索数据" @on-sort-change="sortData"></Table>
@@ -189,8 +191,10 @@ export default {
             if (params.row.status == 2) {
               return h("div", "已完成");
             } else if (params.row.status == 1) {
-              return h("div", "待确认");
-            } else {
+              return h("div", "待收货");
+            } else if(params.row.status == 3){
+              return h("div", "已取消");
+            }else {
               return h(
                 "Button",
                 {

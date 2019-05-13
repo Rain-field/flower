@@ -181,7 +181,7 @@ export default {
       this.data = JSON.parse(sessionStorage.getItem("orderArr"));
       for (let i = 0; i < this.data.length; i++) {
         this.quantityTotal += Number(this.data[i].quantity);
-        this.priceTotal += Number(this.data[i].price);
+        this.priceTotal += Number(this.data[i].price)*this.data[i].quantity;
       }
     },
     //选择地址

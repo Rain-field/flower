@@ -39,8 +39,8 @@ export default {
       keywords: [
         { name: "鲜花", url: { name: "Goods", params: { id: 1 } } },
         { name: "蛋糕", url: { name: "Goods", params: { id: 2 } } },
-        { name: "礼品", url: { name: "Goods", params: { id: 3 } } },
-        { name: "绿植", url: { name: "Goods", params: { id: 4 } } }
+        { name: "绿植", url: { name: "Goods", params: { id: 3 } } },
+        { name: "礼品", url: { name: "Goods", params: { id: 4 } } }
       ]
     };
   },

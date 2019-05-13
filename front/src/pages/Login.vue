@@ -70,6 +70,7 @@ export default {
       vm.$refs[name].validate(valid => {
         if (valid) {
           vm.$axios.get(this.baseURL+"/users").then(res => {
+            console.log(res);
             let reg = res.data.filter(function(item, index) {
               return item.userName == vm.formInline.userName;
             });
@@ -174,6 +175,7 @@ body {
     .toRegister {
       font-size: 14px;
       bottom: 0;
+      color:black;
       line-height: 40px;
       text-align: right;
     }

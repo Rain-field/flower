@@ -235,6 +235,7 @@ body {
     .toLogin {
       font-size: 14px;
       bottom: 0;
+      color:black;
       line-height: 40px;
       text-align: right;
     }

@@ -270,7 +270,7 @@ export default {
         name: [
           {
             required: true,
-            message: "收货人姓名不能为空",
+            message: "商品名称不能为空",
             trigger: "blur"
           }
         ],
