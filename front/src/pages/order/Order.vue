@@ -25,6 +25,7 @@
         <Select
           style="marginLeft:20px; width:187px"
           @on-change="selectChange"
+          placeholder="订单状态"
           clearable
           @on-clear="selectClear"
           v-model="selectValue"

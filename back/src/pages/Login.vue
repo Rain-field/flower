@@ -1,8 +1,8 @@
 <template>
   <div class="contain">
-    <routerLink class="logo" tag="div" :to="{name:'Home'}">
+    <div class="logo">
       <img src="../assets/logo.png" alt="有花商城" title="有花商城">
-    </routerLink>
+    </div>
     <div class="login">
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
         <h1>欢迎登录</h1>

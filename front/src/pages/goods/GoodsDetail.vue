@@ -10,13 +10,13 @@
       <div class="contentShow">
         <h2>{{detail.name}}</h2>
         <div class="introduction">{{detail.info}}</div>
-        <div class="havesaled">销量:  {{detail.haveSaled}}</div>
+        <div class="havesaled">销量: {{detail.haveSaled}}</div>
         <div class="price">
-            <div class="orignPrice">原价：￥{{detail.price}}</div>
-            <div class="vipPrice">
-              VIP特价：
-              <span>￥{{detail.vipPrice}}</span>
-            </div>
+          <div class="orignPrice">原价：￥{{detail.price}}</div>
+          <div class="vipPrice">
+            VIP特价：
+            <span>￥{{detail.vipPrice}}</span>
+          </div>
         </div>
         <div class="number">
           <span>数量：</span>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       id: null,
-      isVip:null,
+      isVip: null,
       goodId: null,
 
       value: 1,
@@ -48,13 +48,14 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios.get(this.baseURL+"/goods/" + this.goodId).then(res => {
+      this.$axios.get(this.baseURL + "/goods/" + this.goodId).then(res => {
         this.detail = res.data;
       });
     },
     toBuy() {
       this.isVip = Number(sessionStorage.getItem("isVip"));
-      let arr = [{
+      let arr = [
+        {
           goodId: this.detail.id,
           name: this.detail.name,
           num: this.detail.num,
@@ -62,18 +63,20 @@ export default {
           price: null,
           url: this.detail.url,
           inventory: this.detail.inventory,
-          haveSaled:this.detail.haveSaled
-        }]
-      arr[0].price = this.isVip?this.value * this.detail.vipPrice:this.value * this.detail.price;
+          haveSaled: this.detail.haveSaled
+        }
+      ];
+      arr[0].price = this.isVip ? this.detail.vipPrice : this.detail.price;
       this.$router.push({ name: "OrderConfirm" });
       sessionStorage.setItem("orderArr", JSON.stringify(arr));
     },
     toCart() {
-      if(sessionStorage.getItem("obj")){
-         this.id = JSON.parse(sessionStorage.getItem("obj")).id;
+      let vm = this;
+      if (sessionStorage.getItem("obj")) {
+        this.id = JSON.parse(sessionStorage.getItem("obj")).id;
       }
       let obj = {
-        goodId:this.detail.id,
+        goodId: this.detail.id,
         name: this.detail.name,
         num: this.detail.num,
         quantity: this.value,
@@ -82,32 +85,35 @@ export default {
         url: this.detail.url,
         userId: this.id,
         inventory: this.detail.inventory,
-        haveSaled:this.detail.haveSaled
+        haveSaled: this.detail.haveSaled
       };
       //加入购物车前先请求购物车数据，如果没有则直接添加
-      this.$axios.get(this.baseURL+"/users/" + this.id + "/carts").then(res => {
-        if (res.data.length !== 0) {
-          // 查找是商品编号是否有相等的
-          let a = res.data.filter(function(item, index) {
-            return item.num == obj.num;
-          });
-          // 比较编号相等(即过滤出来length!=0)则数量+1
-          if (a.length == 0) {
-            this.$axios.post(this.baseURL+"/carts", obj).then(res => {
-              this.$router.push({ name: "Cart" });
+      this.$axios.get(this.baseURL + "/users/" + this.id + "/carts").then(res => {
+          if (res.data.length !== 0) {
+            // 查找是商品编号是否有相等的
+            let a = res.data.filter(function(item, index) {
+              return item.num == obj.num;
             });
-          }else{
-            let newNum = a[0].quantity + obj.quantity;
-            this.$axios.patch(this.baseURL+"/carts/"+a[0].id, {quantity:newNum}).then(res => {
-              this.$router.push({name:"Cart"});        
-          })
+            // 比较编号相等(即过滤出来length!=0)则数量+1
+            if (a.length == 0) {
+              this.$axios.post(this.baseURL + "/carts", obj).then(res => {
+                // this.$router.push({ name: "Cart" });
+              });
+            } else {
+              let newNum = a[0].quantity + obj.quantity;
+              this.$axios.patch(this.baseURL + "/carts/" + a[0].id, { quantity: newNum }).then(res => {
+                  // this.$router.push({ name: "Cart" });
+                });
+            }
+          } else {
+            this.$axios.post(this.baseURL + "/carts", obj).then(res => {
+              // this.$router.push({ name: "Cart" });
+            });
           }
-        } else {
-          this.$axios.post(this.baseURL+"/carts", obj).then(res => {
-            this.$router.push({ name: "Cart" });
-          });
-        }
-      });
+          setTimeout(function(){
+            vm.$router.push({ name: "Cart" });
+          },100);
+        });
     }
   },
   created() {
@@ -139,7 +145,7 @@ export default {
     h2 {
       margin-bottom: 30px;
     }
-    .havesaled{
+    .havesaled {
       margin: 10px 0;
     }
     .price {
@@ -162,11 +168,11 @@ export default {
     }
     .number {
       margin-bottom: 30px;
-      span:last-child{
+      span:last-child {
         margin-left: 20px;
       }
     }
-    .noList{
+    .noList {
       font-size: 24px;
       color: #ff6700;
     }

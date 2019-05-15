@@ -37,27 +37,90 @@ export default {
       headers: [
         {
           name: "年度总销量",
-          num: "1000"
+          num: "0"
         },
         {
           name: "年度总营收",
-          price: "51600000"
+          price: "0"
         },
         {
           name: "年度总订单量",
-          num: "102234300"
+          num: "0"
         },
         {
           name: "用户总量",
-          num: "145000"
+          num: "0"
         }
       ]
     };
   },
   methods: {
-    draws1() {
-      let myChart = this.$echarts.init(document.getElementById("mychart1"));
-      myChart.setOption({
+    getDatas() {
+      // 初始化筛选数据
+      this.$axios.get(this.baseURL + "/orders").then(res => {
+          res = res.data;
+          let price = 0;
+          let number = 0;
+          this.headers[2].num = res.length;
+          let type = 1;//保存商品类型
+          let draws4Arr = new Array(4).fill(0);
+          let draws3Arr1 = new Array(12).fill(0);//不同商品类型的数组
+          let draws3Arr2 = new Array(12).fill(0);
+          let draws3Arr3 = new Array(12).fill(0);
+          let draws3Arr4 = new Array(12).fill(0);
+          let toTalPrice = 0;//保存不同类型商品总收入
+          let month = 0;//月份
+          res.forEach(function(item,index){
+            number += item.data.length;
+            price += item.price;
+            month = Number(item.time.slice(5,7))-1;
+            item.data.forEach(function(item2,index2){
+              type = item2.num.slice(0,1);
+              // console.log(type);
+              draws4Arr[type-1] += Number(item2.price)*item2.quantity;
+              if(type == 1){
+                draws3Arr1[month] += Number(item2.price)*item2.quantity;
+              }else if(type == 2){
+                draws3Arr2[month] += Number(item2.price)*item2.quantity;
+              }else if(type == 3){
+                draws3Arr3[month] += Number(item2.price)*item2.quantity;
+              }else{
+                draws3Arr4[month] += Number(item2.price)*item2.quantity;
+              }
+            })
+          })
+          this.draws3(draws3Arr1,draws3Arr2,draws3Arr3,draws3Arr4);
+          this.draws4(draws4Arr);
+          this.headers[1].price = price;
+          this.headers[0].num = number;
+        })
+      this.$axios.get(this.baseURL + "/users").then(res => {
+          // console.log(res.data);
+          res = res.data;
+          this.headers[3].num = res.length;
+          let vipNumber = 0;//会员数量
+          let number = 0;//非会员数量
+          let month = 0;//月份
+          let monthArr = new Array(12).fill(0);//注册用户数组
+          let monthVipArr = new Array(12).fill(0);//会员数组
+          res.forEach(function(item,index){
+            month = Number(item.time.slice(5,7))-1;
+            if(item.isVip == 1){
+              monthVipArr[month] ++;
+              vipNumber++;
+            }else{
+              number++;
+            }
+            monthArr[month] ++; 
+          })
+          this.draws1(monthArr,monthVipArr);
+          this.draws2(vipNumber,number);
+        })
+
+    },
+    draws1(monthArr,monthVipArr) {
+      let myChart1 = this.$echarts.init(document.getElementById("mychart1"));
+      myChart1.setOption({
         tooltip: {},
         color: ["#4ecb73", "#3aa1ff"],
         legend: {
@@ -109,7 +172,7 @@ export default {
             label: {
               show: true
             },
-            data: [25, 30, 66, 40, 30, 40, 96, 73, 75, 84, 52, 87]
+            data: monthArr
           },
           {
             name: "会员",
@@ -117,15 +180,15 @@ export default {
             label: {
               show: true
             },
-            data: [5, 20, 36, 10, 10, 20, 76, 23, 45, 64, 12, 67]
+            data: monthVipArr
           }
         ]
       });
-      myChart.resize();
+      myChart1.resize();
     },
-    draws2() {
-      let myChart = this.$echarts.init(document.getElementById("mychart2"));
-      myChart.setOption({
+    draws2(vipNumber,number) {
+      let myChart2 = this.$echarts.init(document.getElementById("mychart2"));
+      myChart2.setOption({
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c}个 ({d}%)"
@@ -148,8 +211,8 @@ export default {
             radius: "65%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "会员" },
-              { value: 310, name: "非会员" }
+              { value: vipNumber, name: "会员" },
+              { value: number, name: "非会员" }
             ],
             itemStyle: {
               emphasis: {
@@ -161,11 +224,11 @@ export default {
           }
         ]
       });
-      myChart.resize();
+      myChart2.resize();
     },
-    draws3() {
-      let myChart = this.$echarts.init(document.getElementById("mychart3"));
-      myChart.setOption({
+    draws3(arr1,arr2,arr3,arr4) {
+      let myChart3 = this.$echarts.init(document.getElementById("mychart3"));
+      myChart3.setOption({
         tooltip: {},
         color: ["#4ecb73", "#3aa1ff", "#edafda", "#36cbcb"],
         legend: {
@@ -214,10 +277,11 @@ export default {
           {
             name: "鲜花",
             type: "bar",
+            stack: "总收入",
             label: {
               show: true
             },
-            data: [250, 300, 660, 400, 300, 400, 960, 730, 750, 840, 520, 870]
+            data: arr1
           },
           {
             name: "蛋糕",
@@ -226,7 +290,7 @@ export default {
             label: {
               show: true
             },
-            data: [150, 200, 360, 100, 100, 200, 760, 230, 450, 640, 120, 670]
+            data: arr2
           },
           {
             name: "绿植",
@@ -235,7 +299,7 @@ export default {
             label: {
               show: true
             },
-            data: [110, 100, 205, 160, 400, 207, 306, 503, 405, 504, 302, 507]
+            data: arr3
           },
           {
             name: "礼品",
@@ -244,15 +308,15 @@ export default {
             label: {
               show: true
             },
-            data: [520, 220, 160, 300, 400, 100, 106, 205, 705, 601, 202, 107]
+            data: arr4
           }
         ]
       });
-      myChart.resize();
+      myChart3.resize();
     },
-    draws4() {
-      let myChart = this.$echarts.init(document.getElementById("mychart4"));
-      myChart.setOption({
+    draws4(arr) {
+      let myChart4 = this.$echarts.init(document.getElementById("mychart4"));
+      myChart4.setOption({
         color: ["#4ecb73", "#3aa1ff", "#edafda", "#36cbcb"],
         // tooltip: {
         //   trigger: "item",
@@ -289,32 +353,25 @@ export default {
               }
             },
             data: [
-              { value: 335, name: "鲜花" },
-              { value: 310, name: "蛋糕" },
-              { value: 234, name: "绿植" },
-              { value: 135, name: "礼品" }
+              { value: arr[0], name: "鲜花" },
+              { value: arr[1], name: "蛋糕" },
+              { value: arr[2], name: "绿植" },
+              { value: arr[3], name: "礼品" }
             ]
           }
         ]
       });
-      myChart.resize();
+      myChart4.resize();
     }
   },
   mounted() {
+    this.getDatas();
     setTimeout(() => {
-      this.draws1();
-      this.draws2();
-      this.draws3();
-      this.draws4();
+      // this.draws1();
+      // this.draws2();
+      // this.draws3();
+      // this.draws4();
     });
-    window.onresize = () => {
-      return (() => {
-        this.draws1();
-        this.draws2();
-        this.draws3();
-        this.draws4();
-      })();
-    };
   }
 };
 </script>

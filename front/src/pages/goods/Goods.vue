@@ -190,7 +190,7 @@ export default {
           quantity: 1,
           price: detail.price,
           vipPrice: detail.vipPrice,
-          url: require("@/" + detail.url),
+          url: detail.url,
           userId: this.id,
           inventory: detail.inventory,
           haveSaled: detail.haveSaled
