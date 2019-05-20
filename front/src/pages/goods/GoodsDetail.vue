@@ -1,33 +1,36 @@
 <template>
   <Layout :style="{paddingTop:'20px'}">
-    <Content
-      :style="{padding: '24px 20px', minHeight: '380px', background: '#fff'}"
-      id="goodsDetail"
-    >
-      <div class="imgShow">
-        <img :src="detail.url" alt>
-      </div>
-      <div class="contentShow">
-        <h2>{{detail.name}}</h2>
-        <div class="introduction">{{detail.info}}</div>
-        <div class="havesaled">销量: {{detail.haveSaled}}</div>
-        <div class="price">
-          <div class="orignPrice">原价：￥{{detail.price}}</div>
-          <div class="vipPrice">
-            VIP特价：
-            <span>￥{{detail.vipPrice}}</span>
+    <Content :style="{padding: '24px 20px', minHeight: '380px', background: '#fff'}">
+      <Breadcrumb :style="{width:'1240px' ,margin: 'auto',paddingLeft:'20px'}">
+        <BreadcrumbItem :to="{name:'Home'}">首页</BreadcrumbItem>
+        <BreadcrumbItem>商品详情</BreadcrumbItem>
+      </Breadcrumb>
+      <div id="goodsDetail">
+        <div class="imgShow">
+          <img :src="detail.url" alt>
+        </div>
+        <div class="contentShow">
+          <h2>{{detail.name}}</h2>
+          <div class="introduction">{{detail.info}}</div>
+          <div class="havesaled">销量: {{detail.haveSaled}}</div>
+          <div class="price">
+            <div class="orignPrice">原价：￥{{detail.price}}</div>
+            <div class="vipPrice">
+              VIP特价：
+              <span>￥{{detail.vipPrice}}</span>
+            </div>
           </div>
+          <div class="number">
+            <span>数量：</span>
+            <InputNumber :max="Number(detail.inventory)" :min="1" v-model="value"></InputNumber>
+            <span>库存：{{detail.inventory}}</span>
+          </div>
+          <div class="btns" v-if="detail.inventory">
+            <button class="btn" @click="toBuy">立即购买</button>
+            <button class="btn" @click="toCart">加入购物车</button>
+          </div>
+          <div class="noList" v-if="!detail.inventory">商品暂时无货！</div>
         </div>
-        <div class="number">
-          <span>数量：</span>
-          <InputNumber :max="Number(detail.inventory)" :min="1" v-model="value"></InputNumber>
-          <span>库存：{{detail.inventory}}</span>
-        </div>
-        <div class="btns" v-if="detail.inventory">
-          <button class="btn" @click="toBuy">立即购买</button>
-          <button class="btn" @click="toCart">加入购物车</button>
-        </div>
-        <div class="noList" v-if="!detail.inventory">商品暂时无货！</div>
       </div>
     </Content>
   </Layout>

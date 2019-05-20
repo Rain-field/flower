@@ -30,6 +30,7 @@
         <Option value="1">待收货</Option>
         <Option value="2">已完成</Option>
         <Option value="3">已取消</Option>
+        <Option value="4">退换货</Option>
       </Select>
     </div>
     <Table :loading="loading" :columns="columns" :data="data" no-data-text="暂无搜索数据" @on-sort-change="sortData"></Table>
@@ -179,7 +180,7 @@ export default {
         {
           title: "订单时间",
           align: "center",
-          width: "150px",
+          width: "160px",
           key: "time",
           sortable: "true"
         },
@@ -188,13 +189,15 @@ export default {
           key: "status",
           align: "center",
           render: (h, params) => {
-            if (params.row.status == 2) {
-              return h("div", "已完成");
-            } else if (params.row.status == 1) {
+            if (params.row.status == 1) {
               return h("div", "待收货");
+            } else if (params.row.status == 2) {
+              return h("div", "已完成");
             } else if(params.row.status == 3){
               return h("div", "已取消");
-            }else {
+            } else if(params.row.status == 4){
+              return h("div", "退换货");
+            } else {
               return h(
                 "Button",
                 {
@@ -287,6 +290,8 @@ export default {
       this.selectValue = "";
       this.inputFilter = "";
       this.timeValue = "";
+      this.total = 0;
+      this.limit = 5;
       this.$axios
         .get(this.baseURL + "/orders")
         .then(res => {

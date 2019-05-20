@@ -5,8 +5,8 @@
         <img src="../assets/logo.png" alt="有花商城" title="有花商城">
       </routerLink>
       <div class="search">
-        <input type="text" placeholder="搜索" class="searchInput">
-        <Icon class="search_btn" type="ios-search" size="20" slot="suffix"/>
+        <input type="text" placeholder="搜索" v-model="inputValue" class="searchInput">
+        <Icon class="search_btn" type="ios-search" size="20" slot="suffix" @click="inputSearch"/>
         <ul>
           <li>关键字：</li>
           <routerLink
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       show:true,
+      inputValue:'',
       keywords: [
         { name: "鲜花", url: { name: "Goods", params: { id: 1 } } },
         { name: "蛋糕", url: { name: "Goods", params: { id: 2 } } },
@@ -51,8 +52,18 @@ export default {
     },
     toKefu() {
       this.$Message.info("客服暂未开通，敬请期待！")
+    },
+    inputSearch() {
+      this.$router.push({name:"Goods",params:{key:this.inputValue}});
     }
   },
+  watch: {
+　　// 利用watch方法检测路由变化：
+　　'$route': function (to, from) {
+　　　　// 拿到目标参数 to.query.id 去再次请求数据接口
+      console.log(to);
+　　}
+}
 };
 </script>
 

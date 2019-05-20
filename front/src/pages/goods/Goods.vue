@@ -1,7 +1,10 @@
 <template>
   <Content class="goods">
     <div class="goodsContent">
-      <div class="tabs">
+      <div class="tabs" v-show="$route.params.id">
+        <span :class="[active==0?'active':'']" @click="tabsChange(0)">默认
+          <Icon type="md-arrow-dropdown"/>
+        </span>
         <span :class="[active==1?'active':'']" @click="tabsChange(1)">销量
           <Icon type="md-arrow-dropdown"/>
         </span>
@@ -58,6 +61,7 @@ export default {
       id: null,
       isVip: null,
       data:[],
+      orignData:[],
       lists: [],
       active: 0, //显示激活状态的类
       status: 0, //升序降序状态,0表示降序，1表示升序
@@ -67,12 +71,24 @@ export default {
   },
   methods: {
     getDatas() {
-      this.$axios
-        .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
-        .then(res => {
+      this.active = 0;
+      this.status = 0;
+      this.total = 0;
+      this.limit = 5;
+      if(this.$route.params.id){
+        this.$axios
+          .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
+          .then(res => {
+            this.data = JSON.parse(JSON.stringify(res.data));
+            this.dataChange(this.data);
+          });
+      }else if(this.$route.params.key){
+        this.$axios.get(this.baseURL+"/goods").then(res => {
+          this.orignData = JSON.parse(JSON.stringify(res.data));
           this.data = JSON.parse(JSON.stringify(res.data));
-          this.dataChange(this.data);
-        });
+          this.filterData(this.$route.params.key);
+        })
+      }
     },
     //因为数据排序后还要重新调用一次所以单独抽离出来
     dataChange(res) {
@@ -91,10 +107,24 @@ export default {
       var _end = page * this.limit;
       this.lists = this.data.slice(_start, _end);
     },
+    filterData(val) {
+      let vm = this;
+      vm.data=vm.data.filter(function(item,index){
+        return item.name.match(val) || item.info.match(val);
+      })
+      vm.dataChange(vm.data);
+    },
     // 选项卡切换+排序功能
     tabsChange(id) {
       this.active = id;
+      if(this.$route.params.key){
+
+      }
       switch (id) {
+        case 0:
+          // 默认
+          this.getDatas();
+          break;
         case 1:
           // 销量降序
           this.$axios
@@ -105,9 +135,6 @@ export default {
             )
             .then(res => {
               this.data = JSON.parse(JSON.stringify(res.data));
-              this.data.forEach((item, index) => {
-                item.url = require("@/" + item.url);
-              });
               this.dataChange(this.data);
               this.status = 1;
             });
@@ -118,9 +145,6 @@ export default {
             .get(this.baseURL+"/goods/?online=1&type=" + this.$route.params.id)
             .then(res => {
               this.data = JSON.parse(JSON.stringify(res.data)).reverse();
-              this.data.forEach((item, index) => {
-                item.url = require("@/" + item.url);
-              });
               this.dataChange(this.data);
             });
           break;
@@ -135,15 +159,9 @@ export default {
           // 价格降序
               if (this.status) {
               this.data = JSON.parse(JSON.stringify(res.data));
-                this.data.forEach((item, index) => {
-                  item.url = require("@/" + item.url);
-                });
               }else{
           // 价格升序
               this.data = JSON.parse(JSON.stringify(res.data)).reverse();
-                this.data.forEach((item, index) => {
-                  item.url = require("@/" + item.url);
-                });
               }
               this.dataChange(this.data);
               this.status = !this.status;
@@ -166,7 +184,7 @@ export default {
             num: detail.num,
             quantity: 1,
             price: null,
-            url: require("@/" + detail.url),
+            url: detail.url,
             inventory: detail.inventory,
             haveSaled: detail.haveSaled
           }
@@ -230,9 +248,13 @@ export default {
   created() {
     this.getDatas();
   },
-  // updated() {
-  //   this.getDatas();
-  // },
+  watch: {
+　　// 利用watch方法检测路由变化：
+　　'$route': function (to, from) {
+　　　　// 拿到目标参数 to.query.id 去再次请求数据接口
+      this.getDatas();
+　　}
+}
 };
 </script>
 

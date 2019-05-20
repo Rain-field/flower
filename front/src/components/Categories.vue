@@ -65,6 +65,7 @@ export default {
 #categories {
   width: 1240px;
   background: #fff;
+  padding: 0 0 20px;
   border-radius: 5px;
   box-shadow: 1px 2px 3px 4px #ff6700 outset;
   margin: 20px auto;

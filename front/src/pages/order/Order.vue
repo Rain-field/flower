@@ -34,6 +34,7 @@
           <Option value="1">待收货</Option>
           <Option value="2">已完成</Option>
           <Option value="3">已取消</Option>
+          <Option value="4">退换货</Option>
         </Select>
       </div>
       <div class="tabs">
@@ -78,9 +79,10 @@
                 </tr>
               </table>
             </div>
-            <div class="cancel" v-if="item.status !== 3 && item.status !==2">
+            <div class="cancel" v-if="item.status !== 3 && item.status !== 4">
               <button class="btn" v-if="item.status == 1" @click="getConfirm(item.id)">确认收货</button>
-              <button class="btn" v-if="item.status == 1 || item.status == 0" @click="cancel(item.id)">退换货</button>
+              <button class="btn" v-if="item.status == 1 || item.status == 0" @click="cancel(item.id,'已为您成功取消订单!')">取消订单</button>
+              <button class="btn" v-if="item.status == 2" @click="cancel(item.id,'退换货成功!')">退换货</button>
             </div>
           </div>
         </div>
@@ -122,12 +124,18 @@ export default {
     };
   },
   methods: {
-    cancel(count) {
+    cancel(count,msg) {
       let vm = this;
+      let state = 0;
+      if(msg == '退换货成功!'){
+        state = 4;
+      }else{
+        state = 3;
+      }
       this.$axios
-        .patch(this.baseURL + "/orders/" + count, { status: 3 })
+        .patch(this.baseURL + "/orders/" + count, { status: state })
         .then(res => {
-          vm.$Message.info("退货成功");
+          vm.$Message.info(msg);
           vm.getDatas();
         });
     },
@@ -139,8 +147,10 @@ export default {
         return '待收货'
       }else if(count == 2) {
         return '已完成'
-      }else{
+      }else if(count == 3){
         return '已取消'
+      }else{
+        return '退换货'
       }
     },
     getDatas() {
@@ -186,6 +196,8 @@ export default {
             .patch(this.baseURL + "/orders/" + id, { isDel: 1 })
             .then(res => {
               vm.$Message.info("删除成功");
+              vm.total = 0;
+              vm.limit = 5;
               vm.getDatas();
             });
         }
